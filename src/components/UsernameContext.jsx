@@ -25,6 +25,9 @@ export const UsernameProvider =({children})=> {
         const updateAvatar = (avatar)=>{
             setAvatar(avatar)
         }
+        useEffect(() => {
+            localStorage.setItem('avatar', avatar);
+          }, [avatar]);
 
 
   return (

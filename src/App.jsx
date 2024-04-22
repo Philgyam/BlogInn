@@ -13,6 +13,7 @@ import { BrowserRouter as Router,Route, Routes } from 'react-router-dom'
 import PrivateRoutes from './utils/PrivateRoutes'
 import { AuthProvider } from './utils/AuthContext'
 import { UsernameProvider } from './components/UsernameContext'
+import Sidebar from './components/Sidebar'
 
 
 
@@ -28,6 +29,7 @@ function App() {
         <Route path='/' element={<Welcome/>}/>
         <Route path='/signIn' element={<SignIn/>}/>
         <Route path='/signUp' element={<SignUp/>}/>
+        <Route path='/sidebar' element ={<Sidebar/>}/>
 
       {/* Protected Pages with Private Routes component */}
 
