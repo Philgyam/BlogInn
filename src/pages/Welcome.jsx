@@ -55,7 +55,7 @@ useEffect(() => {
     
   return (
         <>
-        <div className={`flex flex-col   w-full ${theme.backgroundColor}   `}>
+        <div className={`flex flex-col   w-full ${theme.backgroundColor} `}>
 
           <div >
           <div   className='float-right mr-4 mt-5 h-[3.5rem] flex w-[15rem]  gap-4 bg-white px-2 py-1 shadow-lg rounded-xl '>
