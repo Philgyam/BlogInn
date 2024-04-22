@@ -9,6 +9,8 @@ function Avatar() {
 
     const {theme,updateTheme} = useContext(ThemeContext)
 
+    
+
 
     const {username,updateAvatar,avatar,setAvatar,updateUsername} = useContext(UsernameContext)
 
@@ -17,11 +19,7 @@ function Avatar() {
     const avatar3 = "https://img.freepik.com/free-photo/3d-render-cartoon-asian-girl-with-hat-eyeglasses_1142-51305.jpg?t=st=1713290905~exp=1713294505~hmac=965477b80aaa17f414e8f47cb8296c59941f436e86479003a9d119ae7a00db1b&w=740"
     const avatar4 = "https://img.freepik.com/free-photo/portrait-young-student-education-day_23-2150980069.jpg?t=st=1713288534~exp=1713292134~hmac=11bb57674a785edf19986c8de3b85ee2675f70915e7a49571f375a01c5255efa&w=740"
 
-    useEffect(() => {
-      
-    }, [])
-
-    
+ 
 
  
 

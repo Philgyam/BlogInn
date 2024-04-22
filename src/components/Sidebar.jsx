@@ -1,7 +1,48 @@
-import React,{useState} from 'react'
+import React,{useState,useContext,useEffect} from 'react'
+import {UsernameContext} from '../components/UsernameContext'
+import { ThemeContext } from '../components/ThemeProvider';
+
+
 
 
 function Sidebar() {
+
+    const {username,updateAvatar,avatar,setAvatar,updateUsername} = useContext(UsernameContext)
+
+    const {theme,updateTheme} = useContext(ThemeContext)
+
+    const colorChange1 =()=>{
+        updateTheme({
+          backgroundColor:'bg-[#FFF3C7]',
+          textColor:'text-black'
+        })
+      }
+
+      const colorChange2 =()=>{
+        updateTheme({
+          backgroundColor:'bg-[#068DA9]',
+          textColor:'text-white'
+        })
+      }
+      
+      const colorChange3 =()=>{
+        updateTheme({
+          backgroundColor:'bg-[#ECF8F9]',
+          textColor:'text-black'
+        })
+      }
+      
+      
+      const colorChange4 =()=>{
+        updateTheme({
+          backgroundColor:'bg-black',
+          textColor:'text-white'
+        })
+      }
+      
+      useEffect(() => {
+        localStorage.setItem('theme', JSON.stringify(theme))
+       }, [theme])
 
     const [isClicked, setIsClicked] = useState(false)
     
@@ -11,25 +52,38 @@ function Sidebar() {
 
   return (
    <>
-    <div className='mt-5 bg-white w-16 h-16 rounded-full text-center flex justify-center items-center bg-opacity-50 cursor-pointer'>
+    <div className={`flex flex-col   w-full ${theme.backgroundColor} `}>
+   <button
+   onClick={handleClick}
+   className='fixed top-0 left-0 p-4 bg-[#068DA9] text-white'>
+     
+   </button>
+   
+  <div className={`fixed top-10 left-0 h-full w-[20rem] flex flex-col  bg-gray-900 text-white transition-all duration-300 ease-in-out ${isClicked?'translate-x-0':'-translate-x-full'}`}>
+    <div className='flex flex-row justify-end gap-4 pt-4 pr-4'>
+        <div onClick={colorChange1} className='w-7 h-7 bg-[#FFF3C7] rounded-full hover:cursor-pointer'>
+
+        </div>
+
+        <div onClick={colorChange2} className='w-7 h-7 bg-[#068DA9] rounded-full  hover:cursor-pointer'>
+
+</div>
+<div onClick={colorChange3} className='w-7 h-7 rounded-full bg-[#ECF8F9]  hover:cursor-pointer'>
+
+</div>
+        
+<div onClick={colorChange4} className='w-7 h-7  bg-black rounded-full  hover:cursor-pointer'>
+
+</div>
+    </div>
+  <div className='mt-5 ml-3 bg-white w-16 h-16 rounded-full text-center flex justify-center items-center bg-opacity-50 cursor-pointer'>
             <img className='rounded-full w-16 h-16' src={avatar} alt="" />
             
 
             </div>
-   <button
-   onClick={handleClick}
-   className='fixed top-0 left-0 p-4 bg-gray-900 text-white'>
-     
-   </button>
-  <div className={`fixed top-10 left-0 h-full w-[20rem] flex flex-col gap-[20rem] bg-gray-900 text-white transition-all duration-300 ease-in-out ${isClicked?'translate-x-0':'-translate-x-full'}`}>
-    <div className='pt-10 text-center'>
-        <form action="">
-            <input type="text" 
-            placeholder='search a category'
-            className='h-10 w-[15rem] px-2 font-mono bg-black bg-opacity-50 rounded-md shadow-md text-white'
-            />
-        </form>
-        <ul className={`pt-20 flex flex-col gap-[3.5rem] transition-all duration-500 ease-in-out   ${isClicked?'translate-x-0':'-translate-x-full'} `}>
+    <div className='text-center'>
+        
+        <ul className={`pt-10 flex flex-col  gap-10`}>
             <li
             className={`transition-all duration-[400ms] ease-in-out ${isClicked ? 'translate-x-0': '-translate-x-full' } `}
             >
@@ -90,6 +144,7 @@ function Sidebar() {
             Version 1.0
         </div>
 
+  </div>
   </div>
    </>
   )

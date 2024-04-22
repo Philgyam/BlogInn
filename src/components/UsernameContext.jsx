@@ -20,7 +20,10 @@ export const UsernameProvider =({children})=> {
             localStorage.setItem('username', username);
           }, [username]);
 
-        const [avatar,setAvatar] = useState(null)
+        const [avatar,setAvatar] = useState(()=>{
+            const storedAvatar = localStorage.getItem('avatar')
+            return storedAvatar ? storedAvatar : '';
+        })
 
         const updateAvatar = (avatar)=>{
             setAvatar(avatar)

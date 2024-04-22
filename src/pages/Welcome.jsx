@@ -55,12 +55,12 @@ useEffect(() => {
     
   return (
         <>
-        <div className={`flex flex-col   w-full ${theme.backgroundColor} `}>
+        <div className={`flex flex-col   w-full ${theme.backgroundColor}   `}>
 
           <div >
           <div   className='float-right mr-4 mt-5 h-[3.5rem] flex w-[15rem]  gap-4 bg-white px-2 py-1 shadow-lg rounded-xl '>
 
-            <div onClick={colorChange1}className='bg-[#FFF3C7] rounded-full basis-1/4'></div>
+            <div onClick={colorChange1}className=' bg-[#FFF3C7] rounded-full basis-1/4'></div>
             <div onClick={colorChange2}  className='bg-[#068DA9] rounded-full basis-1/4 '></div>
             <div onClick={colorChange3} className='bg-[#ECF8F9] rounded-full basis-1/4 '></div>
             <div onClick={colorChange4} className='bg-black rounded-full basis-1/4 '></div>
