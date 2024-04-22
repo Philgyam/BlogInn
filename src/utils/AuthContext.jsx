@@ -53,6 +53,7 @@ export const AuthProvider = ({children}) =>{
   const logoutUser = async (userInfo)=>{
     await account.deleteSession('current')
     setUser(null)
+    navigate('/welcome')
 
     
 

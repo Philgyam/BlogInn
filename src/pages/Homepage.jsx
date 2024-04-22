@@ -2,7 +2,7 @@ import React,{useContext} from 'react'
 import { ThemeContext } from '../components/ThemeProvider'
 import { CiMenuBurger } from "react-icons/ci";
 import { HiSearch } from 'react-icons/hi';
-
+import Sidebar from '../components/Sidebar'
 function Homepage() {
 
   const {theme,updateTheme} = useContext(ThemeContext)
@@ -12,20 +12,12 @@ function Homepage() {
 
   return (
     <div className={`flex flex-col h-screen   w-full ${theme.backgroundColor} `}>
-        <h1 className='text-2xl text-orange-500 mb-4 ml-1 font-mono text-center mt-1' >BlogInn</h1>
+        <h1 className='text-2xl text-orange-500 mb-2 ml-1 font-mono text-center mt-1' >BlogInn</h1>
       <div className='flex gap-8'>
-        <div className='h-[15] w-10 ml-3' 
-        ><CiMenuBurger 
-        style={{
-          height:'2rem',
-          width:'2rem',
-          fontStyle:'bold',
-          color:fontColor
-        
-        }}
-        /></div>
+       
 
-        <div > 
+        <div  className='flex gap-[2rem]'> 
+          <Sidebar/>
           <form action="" className='relative flex'>
             <input type="text"
             className='h-10 w-[15rem] pl-1 font-mono bg-black bg-opacity-50 rounded-full shadow-md text-white flex-1 '
@@ -45,3 +37,15 @@ function Homepage() {
 }
 
 export default Homepage
+
+
+{/* <div className='h-[15] w-10 ml-3' 
+><CiMenuBurger 
+style={{
+  height:'2rem',
+  width:'2rem',
+  fontStyle:'bold',
+  color:fontColor
+
+}}
+/></div> */}

@@ -1,6 +1,7 @@
 import React,{useState,useContext,useEffect} from 'react'
 import {UsernameContext} from '../components/UsernameContext'
 import { ThemeContext } from '../components/ThemeProvider';
+import { CiMenuBurger } from "react-icons/ci";
 
 
 
@@ -45,6 +46,8 @@ function Sidebar() {
        }, [theme])
 
     const [isClicked, setIsClicked] = useState(false)
+    const fontColor = theme.backgroundColor === 'bg-black' ? 'black':'white'
+
     
     const handleClick = () => {
         setIsClicked(!isClicked)
@@ -55,17 +58,27 @@ function Sidebar() {
     <div className={`flex flex-col   w-full ${theme.backgroundColor} `}>
    <button
    onClick={handleClick}
-   className='fixed top-0 left-0 p-4 bg-[#068DA9] text-white'>
-     
+   className='ml-2   text-white'>
+
+     <CiMenuBurger 
+style={{
+  height:'2rem',
+  width:'2rem',
+  fontStyle:'bold',
+color: 'black',
+
+
+}}
+/>
    </button>
    
-  <div className={`fixed top-10 left-0 h-full w-[20rem] flex flex-col  bg-gray-900 text-white transition-all duration-300 ease-in-out ${isClicked?'translate-x-0':'-translate-x-full'}`}>
+  <div className={`fixed top-[5rem] left-0 h-full w-[20rem] flex flex-col mt-3  bg-gray-900 text-white transition-all duration-300 ease-in-out ${isClicked?'translate-x-0':'-translate-x-full'}`}>
     <div className='flex flex-row justify-end gap-4 pt-4 pr-4'>
         <div onClick={colorChange1} className='w-7 h-7 bg-[#FFF3C7] rounded-full hover:cursor-pointer'>
 
         </div>
 
-        <div onClick={colorChange2} className='w-7 h-7 bg-[#068DA9] rounded-full  hover:cursor-pointer'>
+        <div onClick={colorChange2} className='w-7 h-7 bg-[#068DA9] rounded-full   hover:cursor-pointer'>
 
 </div>
 <div onClick={colorChange3} className='w-7 h-7 rounded-full bg-[#ECF8F9]  hover:cursor-pointer'>
@@ -90,7 +103,7 @@ function Sidebar() {
                 <button 
                 className='bg-gray-700 py-2 px-4 rounded-full shadow-xl'
                  >
-                   My Profile
+                   My Page
                 </button>
             </li>
 
@@ -101,7 +114,7 @@ function Sidebar() {
                 <button
                    className='bg-gray-700 py-2 px-4 rounded-full shadow-xl'
                 >
-                    New Posts
+                Add Post
                 </button>
             </li>
 
@@ -109,7 +122,7 @@ function Sidebar() {
               className={`transition-all duration-[600ms] ease-in-out ${isClicked ? 'translate-x-0': '-translate-x-full' } `}
               >
                 <button className='bg-gray-700 py-2 px-4 rounded-full shadow-xl'>
-                All Posts
+    Archives
                 </button>
                
                 
@@ -123,23 +136,14 @@ function Sidebar() {
                 <button
                 className='bg-gray-700 py-2 px-4 rounded-full shadow-xl'
                 >
-                Archives
+               Logout
                 </button>
                 </li>
 
-            <li
-              className={`transition-all duration-[700ms] ease-in-out ${isClicked ? 'translate-x-0': '-translate-x-full' } `}
-
-            >
-                <button  className='bg-gray-700 py-2 px-4 rounded-full shadow-xl'
-                >
-                    About BlogInn
-
-                </button>
-                </li>
+           
         </ul>
     </div>
-        <div className='mt-2 bottom-div text-center'>
+        <div className='mt-[5rem] bottom-div text-center'>
       
             Version 1.0
         </div>
