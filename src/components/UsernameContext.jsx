@@ -6,12 +6,19 @@ export const UsernameContext = createContext()
 
 export const UsernameProvider =({children})=> {
 
-        const [username,setUserName] = useState(null)
+        const [username,setUserName] = useState(()=>{
+            const storedUsername = localStorage.getItem('username')
+            return storedUsername ? storedUsername : '';
+        })
 
         const updateUsername = (username)=>{
             setUserName(username)
        
         }
+
+        useEffect(() => {
+            localStorage.setItem('username', username);
+          }, [username]);
 
         const [avatar,setAvatar] = useState(null)
 

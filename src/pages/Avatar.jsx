@@ -7,7 +7,7 @@ import {UsernameContext} from '../components/UsernameContext'
 
 function Avatar() {
 
-    const {theme} = useContext(ThemeContext)
+    const {theme,updateTheme} = useContext(ThemeContext)
 
 
     const {username,updateAvatar,avatar,setAvatar,updateUsername} = useContext(UsernameContext)
@@ -27,7 +27,7 @@ function Avatar() {
 
   return (
     <>
-    <div className={`flex flex-col  h-screen w-full bg-gradient-to-br from-black to-teal-500 lg:flex-col items-center  `}
+    <div className={`flex flex-col  h-screen w-full ${theme.backgroundColor}  lg:flex-col items-center  `}
     >
         <div  className='text-white mt-[5rem] text-2xl'>
             {

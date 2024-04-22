@@ -44,6 +44,12 @@ const colorChange4 =()=>{
 }
 
 
+useEffect(() => {
+ localStorage.setItem('theme', JSON.stringify(theme))
+}, [theme])
+
+
+
 
 
     

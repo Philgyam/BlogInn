@@ -6,9 +6,13 @@ export const ThemeContext = createContext()
 
 
  export const ThemeProvider =({children})=>{
-  const [theme,setTheme]= useState({
-      backgroundColor:'bg-gradient-to-br from-black to-teal-500',
-      textColor:'text-white'
+  const [theme,setTheme]= useState(()=>{
+     const storedTheme = localStorage.getItem('theme');
+     return storedTheme ? JSON.parse(storedTheme): {
+          backgroundColor: 'bg-gradient-to-br from-black to-teal-500',
+          textColor: 'text-white'
+     }
+
   })
 
   const updateTheme = (newtheme)=>{
