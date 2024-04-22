@@ -1,8 +1,11 @@
 import React,{createContext,useState} from 'react'
+import { useAuth } from '../utils/AuthContext';
 
 
 
 export const ThemeContext = createContext()
+
+
 
 
  export const ThemeProvider =({children})=>{

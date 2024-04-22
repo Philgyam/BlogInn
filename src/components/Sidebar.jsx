@@ -2,6 +2,8 @@ import React,{useState,useContext,useEffect} from 'react'
 import {UsernameContext} from '../components/UsernameContext'
 import { ThemeContext } from '../components/ThemeProvider';
 import { CiMenuBurger } from "react-icons/ci";
+import { useAuth } from '../utils/AuthContext';
+import {Link} from 'react-router-dom'
 
 
 
@@ -9,6 +11,15 @@ import { CiMenuBurger } from "react-icons/ci";
 function Sidebar() {
 
     const {username,updateAvatar,avatar,setAvatar,updateUsername} = useContext(UsernameContext)
+
+    const {user,logoutUser} = useAuth()
+
+    const handleSubmit = (e)=>{
+        e.preventDefault()
+
+        logoutUser()
+    }
+    
 
     const {theme,updateTheme} = useContext(ThemeContext)
 
@@ -72,7 +83,7 @@ color: 'black',
 />
    </button>
    
-  <div className={`fixed top-[5rem] left-0 h-full w-[20rem] flex flex-col mt-3  bg-gray-900 text-white transition-all duration-300 ease-in-out ${isClicked?'translate-x-0':'-translate-x-full'}`}>
+  <div className={`fixed top-[5rem] left-0 h-full w-[20rem] flex flex-col mt-3 rounded-lg  bg-gray-900 text-white transition-all duration-300 ease-in-out ${isClicked?'translate-x-0':'-translate-x-full'}`}>
     <div className='flex flex-row justify-end gap-4 pt-4 pr-4'>
         <div onClick={colorChange1} className='w-7 h-7 bg-[#FFF3C7] rounded-full hover:cursor-pointer'>
 
@@ -133,11 +144,15 @@ color: 'black',
             className={`transition-all duration-[700ms] ease-in-out ${isClicked ? 'translate-x-0': '-translate-x-full' } `}
 
             >
+                <Link to='/'>
                 <button
                 className='bg-gray-700 py-2 px-4 rounded-full shadow-xl'
+                onClick={handleSubmit}
                 >
                Logout
                 </button>
+                </Link>
+
                 </li>
 
            

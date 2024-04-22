@@ -50,10 +50,10 @@ export const AuthProvider = ({children}) =>{
   
   }
 
-  const logoutUser = async (userInfo)=>{
+  const logoutUser = async ()=>{
     await account.deleteSession('current')
     setUser(null)
-    navigate('/welcome')
+    navigate('/')
 
     
 
