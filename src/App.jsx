@@ -13,7 +13,7 @@ import { BrowserRouter as Router,Route, Routes } from 'react-router-dom'
 import PrivateRoutes from './utils/PrivateRoutes'
 import { AuthProvider } from './utils/AuthContext'
 import { UsernameProvider } from './components/UsernameContext'
-
+import AddPost from './pages/AddPost'
 
 
 function App() {
@@ -36,6 +36,7 @@ function App() {
       <Route path='/categories' element={<Categories/>}/>
       <Route path='/Profile' element={<Profile/>}/>
       <Route path='/Home' element ={<Homepage/>}/>
+      <Route path='/addPost' element={<AddPost/>}/>
       </Route>
       </Routes>
       </AuthProvider>
