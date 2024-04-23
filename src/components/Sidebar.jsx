@@ -126,11 +126,14 @@ color: fontColor,
                 className={`transition-all duration-[500ms] ease-in-out ${isClicked ? 'translate-x-0': '-translate-x-full' } `}
 
             >
+                <Link to='/addPost'>
                 <button
                    className='bg-gray-700 py-2 px-4 rounded-full shadow-xl'
                 >
+
                 Add Post
                 </button>
+                </Link>
             </li>
 
             <li
