@@ -67,7 +67,7 @@ function Sidebar() {
 
   return (
    <>
-    <div className={`flex flex-col   w-full ${theme.backgroundColor} `}>
+    <div className={`flex flex-col   w-full ${theme.backgroundColor} z-[1000] `}>
    <button
    onClick={handleClick}
    className='ml-2   text-white'>

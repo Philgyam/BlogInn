@@ -25,7 +25,7 @@ function TextEditor({control}) {
       apiKey="3ydwmu1v69ysn5e4pu1oxwmrdp4a02oj5sear5jwqxk5qh3w"
       initialValue="<p>Please Enter you content here</p>"
       init={{
-        height: 500,
+        height:450,
         menubar: false,
         plugins: [
           'advlist autolink lists link image',
