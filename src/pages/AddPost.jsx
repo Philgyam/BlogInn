@@ -1,9 +1,12 @@
-import React from 'react'
-import {Editor} from 'react-draft-wysiwyg'
+import React from 'react';
+import TextEditor from '../components/TextEditor'
 
 function AddPost() {
   return (
-    <div>AddPost</div>
+   <>
+   hello
+   <TextEditor/>
+   </>
   )
 }
 
