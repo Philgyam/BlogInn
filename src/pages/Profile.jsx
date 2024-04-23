@@ -13,15 +13,31 @@ function Profile() {
   const {username,updateAvatar,avatar,setAvatar,updateUsername} = useContext(UsernameContext)
   const {theme,updateTheme} = useContext(ThemeContext)
 
+
+
   
   return (
     <>
     <div className={`h-screen w-full ${theme.backgroundColor} pt-3 `}>
+      <div className='flex gap-4 justify-around mt-3 '>
+        <div>
+        <Sidebar/>
+        </div>
+        <div >
+        <span className={`${theme.backgroundColor === 'bg-black' ? 'text-white':'text-black'} text-2xl`}>
+          hello
+        </span>
+            <span className='text-orange-500 font-bold text-3xl ml-3'>{username} </span>
+        </div>
+        <div>
+         <img className='rounded-full w-16 h-16' src={avatar} alt=""  />
+         
+        </div>
+       
+      
+      </div>
 
-    <div className='flex'>
-      <Sidebar/>
-      hello
-    </div>
+   
 
     </div>
     </>

@@ -58,7 +58,7 @@ function Sidebar() {
        }, [theme])
 
     const [isClicked, setIsClicked] = useState(false)
-    const fontColor = theme.backgroundColor === 'bg-black' ? 'black':'white'
+    const fontColor = theme.backgroundColor === 'bg-black' ? 'white':'black'
 
     
     const handleClick = () => {
@@ -77,8 +77,8 @@ style={{
   height:'2rem',
   width:'2rem',
   fontStyle:'bold',
-color: 'black',
-backgroundColor:'green'
+color: fontColor,
+
 
 
 }}
