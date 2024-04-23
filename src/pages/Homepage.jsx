@@ -3,6 +3,8 @@ import { ThemeContext } from '../components/ThemeProvider'
 import { CiMenuBurger } from "react-icons/ci";
 import { HiSearch } from 'react-icons/hi';
 import Sidebar from '../components/Sidebar'
+
+
 function Homepage() {
 
   const {theme,updateTheme} = useContext(ThemeContext)
@@ -39,13 +41,3 @@ function Homepage() {
 export default Homepage
 
 
-{/* <div className='h-[15] w-10 ml-3' 
-><CiMenuBurger 
-style={{
-  height:'2rem',
-  width:'2rem',
-  fontStyle:'bold',
-  color:fontColor
-
-}}
-/></div> */}

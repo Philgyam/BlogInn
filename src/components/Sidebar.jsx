@@ -8,6 +8,7 @@ import {Link} from 'react-router-dom'
 
 
 
+
 function Sidebar() {
 
     const {username,updateAvatar,avatar,setAvatar,updateUsername} = useContext(UsernameContext)
@@ -77,6 +78,7 @@ style={{
   width:'2rem',
   fontStyle:'bold',
 color: 'black',
+backgroundColor:'green'
 
 
 }}
@@ -111,11 +113,13 @@ color: 'black',
             <li
             className={`transition-all duration-[400ms] ease-in-out ${isClicked ? 'translate-x-0': '-translate-x-full' } `}
             >
+                <Link to='/Profile'>
                 <button 
                 className='bg-gray-700 py-2 px-4 rounded-full shadow-xl'
                  >
                    My Page
                 </button>
+                </Link>
             </li>
 
             <li 

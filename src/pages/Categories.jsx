@@ -1,5 +1,6 @@
 import React from 'react'
 import { TypeAnimation } from 'react-type-animation';
+import {Link} from 'react-router-dom'
 
 
 function Categories() {
@@ -27,9 +28,12 @@ function Categories() {
             </p>
         </button>
         <div className='mt-10 text-white text-center  py-2 px-5 rounded-xl'>
+
+        <Link to='/Home'>
             <button className='text-white py-2 px-5 rounded-xl  bg-orange-500'>
                 Next
             </button>
+            </Link>
         </div>
         
 

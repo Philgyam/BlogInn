@@ -34,7 +34,7 @@ function App() {
       <Route element={<PrivateRoutes />}>
       <Route path='/avatar' element={<Avatar/>}/>
       <Route path='/categories' element={<Categories/>}/>
-      <Route path='/user' element={<Profile/>}/>
+      <Route path='/Profile' element={<Profile/>}/>
       <Route path='/Home' element ={<Homepage/>}/>
       </Route>
       </Routes>

@@ -3,6 +3,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { ThemeContext } from '../components/ThemeProvider';
 import {useContext,useEffect} from 'react'
 import {UsernameContext} from '../components/UsernameContext'
+import {Link} from 'react-router-dom'
 
 
 function Avatar() {
@@ -80,14 +81,15 @@ function Avatar() {
         </form>
         </div>
         <div className='mt-10 text-white cursor-pointer bg-orange-500 py-2 px-5 rounded-xl'>
+            <Link to='/categories'>
+            
             <button className='cursor-pointer'>
                 Next
             </button>
+            </Link>
         </div>
         <div>
-        <button className='text-white mt-4 underline'>
-                Skip
-            </button>
+       
         </div>
         
     </div>
