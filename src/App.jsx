@@ -15,7 +15,6 @@ import { AuthProvider } from './utils/AuthContext'
 import { UsernameProvider } from './components/UsernameContext'
 import AddPost from './pages/AddPost'
 
-
 function App() {
 
   return (
@@ -37,6 +36,7 @@ function App() {
       <Route path='/Profile' element={<Profile/>}/>
       <Route path='/Home' element ={<Homepage/>}/>
       <Route path='/addPost' element={<AddPost/>}/>
+
       </Route>
       </Routes>
       </AuthProvider>
