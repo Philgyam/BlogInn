@@ -1,8 +1,9 @@
-import React,{useContext} from 'react'
+import React,{useContext,useState} from 'react'
 import { ThemeContext } from '../components/ThemeProvider'
 import { CiMenuBurger } from "react-icons/ci";
 import { HiSearch } from 'react-icons/hi';
 import Sidebar from '../components/Sidebar'
+import { Link } from 'react-router-dom';
 
 
 function Homepage() {
@@ -10,6 +11,14 @@ function Homepage() {
   const {theme,updateTheme} = useContext(ThemeContext)
 
   const fontColor = theme.backgroundColor === 'bg-black' ? 'text-white':''
+  const buttonLabels = ['For You','Recent', 'Trending']
+
+  const [active, setActive] =useState(null)
+
+  const clicked = (label)=>{
+ setActive(label)
+  }
+
 
 
   return (
@@ -32,6 +41,24 @@ function Homepage() {
           </form>
         </div>
         
+      </div>
+      <div className='pl-3 mt-10 '>
+        <div className='flex gap-10'>
+          <Link to='/addpost'> 
+          <button className='text-3xl bg-gray-400 w-10 h-10 rounded-full bg-opacity-30 '>
+            +
+          </button>
+          </Link>
+            {buttonLabels.map((label,index)=>(
+              <button 
+              onClick={()=>clicked(label)}
+              className={`text-white ${active === label ? 'underline transition-all duration-200':''}`}>
+                {label}
+              </button>
+            ))}
+          
+
+        </div>
       </div>
     </div>
     

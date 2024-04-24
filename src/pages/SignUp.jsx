@@ -14,7 +14,6 @@ function SignUp() {
   const {user,signUp} = useAuth()
   const navigate = useNavigate()
  
-
   
 
   const handleSubmit= (e)=>{
@@ -95,7 +94,7 @@ function SignUp() {
                   
                 </div>
                <div className='flex flex-row gap-3 mt-5  justify-center  text-white '>
-                <p className='underline'> 
+                <p className={`underline  ${theme.backgroundColor === 'bg-black' ? 'text-white' :'text-black' }`} > 
                 <button type='submit'>
                 SignUp with
                 </button>

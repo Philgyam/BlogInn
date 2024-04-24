@@ -23,7 +23,7 @@ const colorChange1 =()=>{
 
 const colorChange2 =()=>{
   updateTheme({
-    backgroundColor:'bg-[#068DA9]',
+    backgroundColor:'bg-[gradient-to-br from-black to-teal-500]',
     textColor:'text-white'
   })
 }
