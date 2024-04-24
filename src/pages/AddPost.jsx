@@ -4,22 +4,50 @@ import TextEditor from '../components/TextEditor'
 import Sidebar from '../components/Sidebar'
 import { ThemeContext } from '../components/ThemeProvider'
 import {UsernameContext} from '../components/UsernameContext'
+import service from '../appwrite/config'
+import { useNavigate } from 'react-router-dom'
 
 
 
 
 
-function AddPost() {
+function AddPost({post}) {
+  const {register,control,handleSubmit,getValues,setValue,watch} = useForm({
+    defaultValues:{
+      title: post?.title || '',
+      slug:post?.slug || '',
+      content: post?.content,
+      category: post?.category || 'general'
+    }
+  })
 
   const {username,updateAvatar,avatar,setAvatar,updateUsername} = useContext(UsernameContext)
 
   const {theme,updateTheme} = useContext(ThemeContext)
 
-  const {control,handleSubmit} = useForm()
 
-  const onSubmit =(data)=>{
+  const onSubmit = async (data)=>{
     console.log(data)
   }
+
+  const slugTransform = useCallback((value) => {
+    if(value && typeof value === "string") return value.trim().toLowerCase().replace(/[^a-zA-Z\d\s]+/g, '-')
+    .replace(/\s/g, "-")
+}, [])
+
+React.useEffect(()=>{
+
+  watch((value,{name})=>{
+    if(name ==='title'){
+      setValue('slug',slugTransform(value.title),{shouldValidate:true})
+    }
+  })
+
+},[watch,slugTransform,setValue])
+
+
+
+
   
   return (
     <div div className={`flex flex-col h-screen pt-3   w-full ${theme.backgroundColor} `}>
