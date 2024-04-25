@@ -1,4 +1,4 @@
-import React,{useContext} from 'react'
+import React,{useContext,useCallback} from 'react'
 import { useForm } from 'react-hook-form'
 import TextEditor from '../components/TextEditor'
 import Sidebar from '../components/Sidebar'
@@ -6,6 +6,7 @@ import { ThemeContext } from '../components/ThemeProvider'
 import {UsernameContext} from '../components/UsernameContext'
 import service from '../appwrite/config'
 import { useNavigate } from 'react-router-dom'
+import Input from '../components/Input'
 
 
 
@@ -56,10 +57,26 @@ React.useEffect(()=>{
    <img className='rounded-full w-16 h-16 mr-2' src={avatar} alt=""  />
 
       </div>
-     
+{/*      
       <div className='mb-5 text-gray-400 text-2xl text-center mt-5'>
         Add Post
-      </div>
+      </div> */}
+
+      <Input
+      label='Title'
+      placeholder = 'Title'
+      className = 'mb-4'
+      {...register('title',{required:true})}
+      />
+
+      
+<Input
+      label='Slug'
+      placeholder = 'Slug'
+      className = 'mb-4'
+      {...register('slug',{required:true})}
+      
+      />
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextEditor name='content' control={control} />
         <button
