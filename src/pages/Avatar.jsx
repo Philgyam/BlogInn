@@ -4,12 +4,15 @@ import { ThemeContext } from '../components/ThemeProvider';
 import {useContext} from 'react'
 import {UsernameContext} from '../components/UsernameContext'
 import {Link} from 'react-router-dom'
-import AppwriteService from '../appwrite/config';
-import conf from '../conf/conf';
 import { v4 as uuid } from 'uuid';
+import { bucket,BUCKET_ID } from '../appwrite/appwriteconfig';
+
 
 
 function Avatar() {
+
+
+   
 
     const {theme,updateTheme} = useContext(ThemeContext)
 
@@ -36,12 +39,12 @@ function Avatar() {
             if(!userImage) return;
             const fileId = uuid();
             console.log(fileId)
-         await AppwriteService.bucket.createFile(conf.appwriteBucketId,fileId,userImage)
-        
-
-            // const fileUrl =  AppwriteService.bucket.getFileDownload(fileId)
-            // updateAvatar(fileUrl)
-            // console.log('file saved')
+            await bucket.createFile(BUCKET_ID,fileId,userImage)
+            console.log('file uploaded')
+            const fileUrl = await bucket.getFileDownload(BUCKET_ID,fileId)
+            updateAvatar(fileUrl)
+            
+         
         } catch (error) {
             console.log(error,'fie upload error')
         }
