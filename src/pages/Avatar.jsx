@@ -1,10 +1,12 @@
 import React,{useState} from 'react'
 import { AiOutlinePlus } from "react-icons/ai";
 import { ThemeContext } from '../components/ThemeProvider';
-import {useContext,useEffect} from 'react'
+import {useContext} from 'react'
 import {UsernameContext} from '../components/UsernameContext'
 import {Link} from 'react-router-dom'
 import AppwriteService from '../appwrite/config';
+import conf from '../conf/conf';
+import { v4 as uuid } from 'uuid';
 
 
 function Avatar() {
@@ -32,11 +34,14 @@ function Avatar() {
     const handleUploaded = async ()=>{
         try {
             if(!userImage) return;
-            const fileId = 'avatars/'+userImage.name
-            await AppwriteService.bucket.createFile(fileId,userImage)
+            const fileId = uuid();
+            console.log(fileId)
+         await AppwriteService.bucket.createFile(conf.appwriteBucketId,fileId,userImage)
+        
 
-            const fileUrl =  AppwriteService.bucket.getFilePreview(fileId)
-            updateAvatar(fileUrl)
+            // const fileUrl =  AppwriteService.bucket.getFileDownload(fileId)
+            // updateAvatar(fileUrl)
+            // console.log('file saved')
         } catch (error) {
             console.log(error,'fie upload error')
         }
