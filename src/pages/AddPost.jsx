@@ -5,7 +5,7 @@ import Sidebar from '../components/Sidebar'
 import { ThemeContext } from '../components/ThemeProvider'
 import {UsernameContext} from '../components/UsernameContext'
 import { bucket,BUCKET_ID ,account,DATABASE_ID,COLLECTION_ID,databases} from '../appwrite/appwriteconfig';
-import {ID} from 'appwrite'
+import {ID,Permission,Role} from 'appwrite'
 
 
 
@@ -33,26 +33,53 @@ function AddPost() {
     const fileContent = data.content
     const fileTitle = data.Title
     const fileCategory = data.category
+    const fileId = ID.unique()
+
+    // FILE BLOB
+
+    const fileBlob = new File([
+      fileContent
+    ],{type:'text/plain'})
+
 
     // UPLOADING FILE TO DATABASE
+    console.log(fileBlob instanceof File); // Should output: true
+
 
     const fileUpload = await bucket.createFile(
       BUCKET_ID,
-      fileContent,
-      `posts/${userId.$id}-${Date.now()}.txt`,{
-        contentType:'text/plain'
+      fileBlob,
+      fileId,
+     
+      Permission.read(Role.any()),  
+      
+      `posts/${userId.$id}-${data.title}-${Date.now()}.txt`,{
+        contentType:'text/plain',
+        
+
       }
+
+    )
 
   // DOCUMENT IN DATABASE WITH METADATA
 
-      
+  const dataBaseUpload = await databases.createDocument(
+   DATABASE_ID,
+   COLLECTION_ID,
+   fileId,
+   {
+    title:fileTitle,
+    category:fileCategory,
+    authorId:userId.$id,
+    fileUrl:fileUpload.$id,
+    author : username,
+    createdAt:Date.now(),
+    updatedAt:Date.now(),
+    avatar:avatar
+   }
 
-
-
-
-    )
-      
-    
+  )
+    console.log('upload Succes')
     
       
     } catch (error) {
