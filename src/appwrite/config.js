@@ -108,5 +108,5 @@ export class Service {
     }
 }
 
-const service = new Service()
-export default service
+const AppwriteService = new Service()
+export default AppwriteService

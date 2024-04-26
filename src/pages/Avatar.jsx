@@ -1,9 +1,10 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { AiOutlinePlus } from "react-icons/ai";
 import { ThemeContext } from '../components/ThemeProvider';
 import {useContext,useEffect} from 'react'
 import {UsernameContext} from '../components/UsernameContext'
 import {Link} from 'react-router-dom'
+import AppwriteService from '../appwrite/config';
 
 
 function Avatar() {
@@ -20,6 +21,26 @@ function Avatar() {
     const avatar3 = "https://img.freepik.com/free-photo/3d-render-cartoon-asian-girl-with-hat-eyeglasses_1142-51305.jpg?t=st=1713290905~exp=1713294505~hmac=965477b80aaa17f414e8f47cb8296c59941f436e86479003a9d119ae7a00db1b&w=740"
     const avatar4 = "https://img.freepik.com/free-photo/portrait-young-student-education-day_23-2150980069.jpg?t=st=1713288534~exp=1713292134~hmac=11bb57674a785edf19986c8de3b85ee2675f70915e7a49571f375a01c5255efa&w=740"
 
+
+    const [userImage, setUserImage] = useState(null)
+
+    const handleFileChange = (e)=>{
+        const uploadedFile = e.target.files[0]
+        setUserImage(uploadedFile)
+    }
+
+    const handleUploaded = async ()=>{
+        try {
+            if(!userImage) return;
+            const fileId = 'avatars/'+userImage.name
+            await AppwriteService.bucket.createFile(fileId,userImage)
+
+            const fileUrl =  AppwriteService.bucket.getFilePreview(fileId)
+            updateAvatar(fileUrl)
+        } catch (error) {
+            console.log(error,'fie upload error')
+        }
+    }
  
 
  
@@ -30,7 +51,7 @@ function Avatar() {
     >
         <div  className='text-white mt-[5rem] text-2xl'>
             {
-            <h1>
+            <h1 className='text-black font-bold font-mono'>
                 Hello
                 <span className='text-orange-500 font-bold text-3xl ml-3'>{username} </span>
                 
@@ -64,11 +85,15 @@ function Avatar() {
             }} src="https://img.freepik.com/free-photo/portrait-young-student-education-day_23-2150980069.jpg?t=st=1713288534~exp=1713292134~hmac=11bb57674a785edf19986c8de3b85ee2675f70915e7a49571f375a01c5255efa&w=740" alt="" className="rounded-full  w-16 h-16" />
             </div>
         </div>
-        <div className='mt-10 text-white underline cursor-pointer'>
-            {/* <input type="file"
+        <div className='mt-10 text-black text-center underline cursor-pointer'>
+            <input type="file"
+            onChange={handleFileChange}
+            
          
-             /> */}
-       <p >Select an Image from Gallery</p>
+             />
+             <button  className='bg-blue-500 mt-4 px-4 py-2 rounded-lg' onClick={handleUploaded}>
+                Upload avatar
+             </button>
        </div>
        <div>
         <form action="Submit">
