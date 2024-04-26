@@ -4,6 +4,10 @@ import TextEditor from '../components/TextEditor'
 import Sidebar from '../components/Sidebar'
 import { ThemeContext } from '../components/ThemeProvider'
 import {UsernameContext} from '../components/UsernameContext'
+import { bucket,BUCKET_ID ,account,DATABASE_ID,COLLECTION_ID,databases} from '../appwrite/appwriteconfig';
+import {ID} from 'appwrite'
+
+
 
 
 
@@ -15,12 +19,48 @@ function AddPost() {
 
   const {theme,updateTheme} = useContext(ThemeContext)
 
-  const {control,handleSubmit} = useForm()
+  const {control,handleSubmit,register} = useForm()
 
   const Categories = ['Technology','DIY','Fashion','Education','Health','Relationship']
 
-  const onSubmit =(data)=>{
-    console.log(data)
+  const onSubmit = async (data)=>{
+
+    
+    try {
+
+    const userId = await account.get();
+    
+    const fileContent = data.content
+    const fileTitle = data.Title
+    const fileCategory = data.category
+
+    // UPLOADING FILE TO DATABASE
+
+    const fileUpload = await bucket.createFile(
+      BUCKET_ID,
+      fileContent,
+      `posts/${userId.$id}-${Date.now()}.txt`,{
+        contentType:'text/plain'
+      }
+
+  // DOCUMENT IN DATABASE WITH METADATA
+
+      
+
+
+
+
+    )
+      
+    
+    
+      
+    } catch (error) {
+      console.log(error, 'database related')
+    }
+  
+
+    
   }
   
   return (
@@ -32,19 +72,30 @@ function AddPost() {
 
       </div>
      
-      <div className='mb-5 text-gray-400 text-2xl text-center mt-5'>
-        Add Post
-      </div>
+      
       <form onSubmit={handleSubmit(onSubmit)}>
+        
+        
+        <input
+         type="text"
+         name='Title'
+         placeholder='Post Title'
+         className='w-full p-4 mb-2 text-center'
+         {...register('Title',{required:true})}
+                
+        />
+       
+
         <TextEditor name='content' control={control} />
         <div className='flex items-center justify-center gap-10'>
         <select
         name='Category'
         control = {control}
-       
+       className='h-10 mt-4 py-2 px-4 w-25 bg-cyan-950 text-white rounded-lg'
+
         >
           {Categories.map((category)=>(
-            <option value={category} key={category}>{category}</option>
+            <option  value={category} key={category}>{category}</option>
           ))}
 
         </select>
