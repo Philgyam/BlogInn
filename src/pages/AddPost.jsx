@@ -24,70 +24,51 @@ function AddPost() {
   const Categories = ['Technology','DIY','Fashion','Education','Health','Relationship']
 
   const onSubmit = async (data)=>{
-
     
+    const userDetails = await account.get()
+    const userId = userDetails.$id
+    console.log(userId)
+
+    const {Title,content,Category} = data;
+  
+    const [success,setSuccess ] = useState(null)
+    
+
     try {
 
-    const userId = await account.get();
-    
-    const fileContent = data.content
-    const fileTitle = data.Title
-    const fileCategory = data.category
-    const fileId = ID.unique()
-
-    // FILE BLOB
-
-    const fileBlob = new File([
-      fileContent
-    ],{type:'text/plain'})
 
 
-    // UPLOADING FILE TO DATABASE
-    console.log(fileBlob instanceof File); // Should output: true
-
-
-    const fileUpload = await bucket.createFile(
-      BUCKET_ID,
-      fileBlob,
-      fileId,
-     
-      Permission.read(Role.any()),  
+   
       
-      `posts/${userId.$id}-${data.title}-${Date.now()}.txt`,{
-        contentType:'text/plain',
+      const result = await databases.createDocument(
+        DATABASE_ID,
+        COLLECTION_ID,
+        ID.unique(),
+        {
+          Title,
+          content,
+          Category,
+          Author:username,
+          Avatar:avatar
+        },
+      [
+        Permission.read(Role.any()),
+        Permission.write(Role.user(userId)),
+        Permission.delete(Role.user(userId)),
+        Permission.update(Role.user(userId)),
+
+
+      ]
         
+      )
+        setSuccess('Post succesful')
+        console.log('done')
 
-      }
 
-    )
-
-  // DOCUMENT IN DATABASE WITH METADATA
-
-  const dataBaseUpload = await databases.createDocument(
-   DATABASE_ID,
-   COLLECTION_ID,
-   fileId,
-   {
-    title:fileTitle,
-    category:fileCategory,
-    authorId:userId.$id,
-    fileUrl:fileUpload.$id,
-    author : username,
-    createdAt:Date.now(),
-    updatedAt:Date.now(),
-    avatar:avatar
-   }
-
-  )
-    console.log('upload Succes')
-    
-      
     } catch (error) {
-      console.log(error, 'database related')
+      console.log(error)
     }
-  
 
-    
   }
   
   return (
@@ -119,6 +100,8 @@ function AddPost() {
         name='Category'
         control = {control}
        className='h-10 mt-4 py-2 px-4 w-25 bg-cyan-950 text-white rounded-lg'
+       {...register('Category', { required: true })}
+
 
         >
           {Categories.map((category)=>(
@@ -131,6 +114,13 @@ function AddPost() {
          type="submit">Submit</button>
          </div>
       </form>
+      {
+        success && (
+        <div>
+          {success}
+        </div>
+        )
+      }
     </div>
   )
 }
