@@ -29,6 +29,7 @@ function AddPost() {
 
   const {control,handleSubmit,register} = useForm()
   const [success,setSuccess ] = useState(null)
+  const [submitted, setSubmitted] = useState(false)
 
   const navigate = useNavigate()
 
@@ -71,12 +72,16 @@ function AddPost() {
       ]
         
       )
-       return setSuccess('Post succesful')
+       setSuccess('Post succesful')
+       setSubmitted(true)
         
 
 
     } catch (error) {
       console.log(error)
+    }
+    finally{
+      setSubmitted(false)
     }
 
   }
@@ -111,9 +116,7 @@ function AddPost() {
         control = {control}
        className='h-10 mt-4 py-2 px-4 w-25 bg-cyan-950 text-white rounded-lg'
        {...register('Category', { required: true })}
-
-
-        >
+       >
           {Categories.map((category)=>(
             <option  value={category} key={category}>{category}</option>
           ))}
@@ -124,7 +127,9 @@ function AddPost() {
          type="submit">Submit</button>
          </div>
       </form>
-      {success && (
+      {submitted ? (
+        <div className='text-white bg-green-200 py-10 px-10 rounded-xl'>Hello there</div>
+      ) : (success ? (
         <div className={`items-center  h-full absolute w-full transition duration-300 ease-in-out flex justify-center`}> 
         <div >
   
@@ -135,7 +140,7 @@ function AddPost() {
             style={{
               height:'1rem',
               color:'green'
-            }}
+            }} 
            
             />
              <AlertTitle
@@ -150,7 +155,11 @@ function AddPost() {
           </div>
         </div>
         
-      )}
+      ):null)}
+
+{success && setTimeout(() => {
+    navigate('/home'); // navigate to homepage after 3 seconds
+  }, 3000)}
       
       
     </div>
