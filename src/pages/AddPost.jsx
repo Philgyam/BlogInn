@@ -1,4 +1,4 @@
-import React,{useContext} from 'react'
+import React,{useContext,useState} from 'react'
 import { useForm } from 'react-hook-form'
 import TextEditor from '../components/TextEditor'
 import Sidebar from '../components/Sidebar'
@@ -6,6 +6,14 @@ import { ThemeContext } from '../components/ThemeProvider'
 import {UsernameContext} from '../components/UsernameContext'
 import { bucket,BUCKET_ID ,account,DATABASE_ID,COLLECTION_ID,databases} from '../appwrite/appwriteconfig';
 import {ID,Permission,Role} from 'appwrite'
+import { useNavigate } from 'react-router-dom'
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+} from '@chakra-ui/react'
+
 
 
 
@@ -20,6 +28,9 @@ function AddPost() {
   const {theme,updateTheme} = useContext(ThemeContext)
 
   const {control,handleSubmit,register} = useForm()
+  const [success,setSuccess ] = useState(null)
+
+  const navigate = useNavigate()
 
   const Categories = ['Technology','DIY','Fashion','Education','Health','Relationship']
 
@@ -31,7 +42,6 @@ function AddPost() {
 
     const {Title,content,Category} = data;
   
-    const [success,setSuccess ] = useState(null)
     
 
     try {
@@ -61,8 +71,8 @@ function AddPost() {
       ]
         
       )
-        setSuccess('Post succesful')
-        console.log('done')
+       return setSuccess('Post succesful')
+        
 
 
     } catch (error) {
@@ -72,7 +82,7 @@ function AddPost() {
   }
   
   return (
-    <div div className={`flex flex-col h-screen pt-3   w-full ${theme.backgroundColor} `}>
+    < div className={`flex flex-col h-screen pt-3 relative  w-full ${theme.backgroundColor} `}>
       <div className='flex '>
 
    <Sidebar/> 
@@ -80,10 +90,10 @@ function AddPost() {
 
       </div>
      
-      
-      <form onSubmit={handleSubmit(onSubmit)}>
-        
-        
+     
+      <form onSubmit={handleSubmit(onSubmit)} className={`${success ? 'opacity-50':''}`}>
+
+
         <input
          type="text"
          name='Title'
@@ -114,13 +124,35 @@ function AddPost() {
          type="submit">Submit</button>
          </div>
       </form>
-      {
-        success && (
-        <div>
-          {success}
+      {success && (
+        <div className={`items-center  h-full absolute w-full transition duration-300 ease-in-out flex justify-center`}> 
+        <div >
+  
+           <Alert 
+           className={`flex flex-col  gap-4 bg-green-200 py-10 px-10 rounded-xl`}
+           status='success'>
+            <AlertIcon
+            style={{
+              height:'1rem',
+              color:'green'
+            }}
+           
+            />
+             <AlertTitle
+             className='text-2xl font-bold'
+             >
+              Sucess
+            </AlertTitle>
+            <AlertDescription>Your Post is Up, Enjoy!</AlertDescription>
+  
+  
+           </Alert>
+          </div>
         </div>
-        )
-      }
+        
+      )}
+      
+      
     </div>
   )
 }
