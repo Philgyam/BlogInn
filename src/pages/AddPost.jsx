@@ -1,5 +1,5 @@
-import React,{useContext,useState} from 'react'
-import { useForm } from 'react-hook-form'
+import React,{useContext,useState,useRef} from 'react'
+import { useForm,Controller} from 'react-hook-form'
 import TextEditor from '../components/TextEditor'
 import Sidebar from '../components/Sidebar'
 import { ThemeContext } from '../components/ThemeProvider'
@@ -7,6 +7,8 @@ import {UsernameContext} from '../components/UsernameContext'
 import { bucket,BUCKET_ID ,account,DATABASE_ID,COLLECTION_ID,databases} from '../appwrite/appwriteconfig';
 import {ID,Permission,Role} from 'appwrite'
 import { useNavigate } from 'react-router-dom'
+import { Editor } from "@tinymce/tinymce-react";
+
 import {
   Alert,
   AlertIcon,
@@ -27,22 +29,29 @@ function AddPost() {
 
   const {theme,updateTheme} = useContext(ThemeContext)
 
-  const {control,handleSubmit,register} = useForm()
+  const {control,handleSubmit,register,watch,setValue,getValues} = useForm()
   const [success,setSuccess ] = useState(null)
   const [submitted, setSubmitted] = useState(false)
 
   const navigate = useNavigate()
 
+  const [Content,setContent] = useState('')
+
+ 
+  
+
   const Categories = ['Technology','DIY','Fashion','Education','Health','Relationship']
 
   const onSubmit = async (data)=>{
     
+    
     const userDetails = await account.get()
     const userId = userDetails.$id
-    console.log(userId)
+    
+    const {Title, Content, Category} = data
 
-    const {Title,content,Category} = data;
-  
+    console.log(Content)
+   
     
 
     try {
@@ -57,7 +66,7 @@ function AddPost() {
         ID.unique(),
         {
           Title,
-          content,
+          Content,
           Category,
           Author:username,
           Avatar:avatar
@@ -74,7 +83,7 @@ function AddPost() {
       )
        setSuccess('Post succesful')
        setSubmitted(true)
-        
+      
 
 
     } catch (error) {
@@ -96,7 +105,7 @@ function AddPost() {
       </div>
      
      
-      <form onSubmit={handleSubmit(onSubmit)} className={`${success ? 'opacity-50':''}`}>
+      <form onSubmit={handleSubmit(onSubmit)}  className={`${success ? 'opacity-50':''}`}>
 
 
         <input
@@ -107,9 +116,42 @@ function AddPost() {
          {...register('Title',{required:true})}
                 
         />
-       
 
-        <TextEditor name='content' control={control} />
+        
+
+           <Editor
+          name ='Content'
+          
+          apiKey="3ydwmu1v69ysn5e4pu1oxwmrdp4a02oj5sear5jwqxk5qh3w"
+          initialValue="<p>Please Enter you content here</p>"
+          init={{
+            height:450,
+            menubar: false,
+            plugins: [
+              'advlist autolink lists link image',
+              'charmap print preview anchor help',
+              'searchreplace visualblocks code',
+              'insertdatetime media table paste wordcount'
+            ],
+            toolbar:
+              'undo redo | formatselect | bold italic | \
+              alignleft aligncenter alignright | \
+              bullist numlist outdent indent | \
+              removeformat | help'
+          }}
+          onEditorChange={(content, editor) => {
+            setValue('Content', content)
+          }}
+          
+         
+         
+        />
+         
+         
+       
+          
+        
+        
         <div className='flex items-center justify-center gap-10'>
         <select
         name='Category'

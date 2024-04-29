@@ -5,6 +5,7 @@ import {UsernameContext} from '../components/UsernameContext'
 import { ThemeContext } from '../components/ThemeProvider';
 import Sidebar from '../components/Sidebar';
 import { HiSearch } from 'react-icons/hi';
+import AllUserPosts from './AllUserPosts';
 
 
 
@@ -37,6 +38,7 @@ function Profile() {
       
       </div>
 
+      <AllUserPosts/>
    
 
     </div>

@@ -50,7 +50,7 @@ function Homepage() {
           </button>
           </Link>
             {buttonLabels.map((label,index)=>(
-              <button 
+              <button  key={label}
               onClick={()=>clicked(label)}
               className={` ${active === label ? 'underline transition-all duration-200':''} ${theme.backgroundColor === 'bg-black' ? 'text-white' :'text-black'}`}>
                 {label}
