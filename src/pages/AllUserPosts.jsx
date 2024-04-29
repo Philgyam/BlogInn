@@ -24,14 +24,14 @@ function AllUserPosts() {
     
   return (
     <div>
-         <div className=' text-white'> 
+         <div className=' text-white flex flex-col items-center mt-5  ' > 
       {posts.map((post) => (
         <div key={post.$id}>
           <h2>{post.Title}</h2>
-          <p>{post.content}</p>
-          {/* {JSON.parse(post.content).text} */}
+          <p>{post.Content}</p>
+          
+          
           <p>Category: {post.Category}</p>
-          <p>Created at: {new Date(post.createdAt).toLocaleDateString()}</p>
         </div>
       ))}
     </div>

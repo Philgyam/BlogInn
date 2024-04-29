@@ -1,14 +1,13 @@
 import React,{useContext,useState,useRef} from 'react'
 import { useForm,Controller} from 'react-hook-form'
-import TextEditor from '../components/TextEditor'
 import Sidebar from '../components/Sidebar'
 import { ThemeContext } from '../components/ThemeProvider'
 import {UsernameContext} from '../components/UsernameContext'
 import { bucket,BUCKET_ID ,account,DATABASE_ID,COLLECTION_ID,databases} from '../appwrite/appwriteconfig';
 import {ID,Permission,Role} from 'appwrite'
 import { useNavigate } from 'react-router-dom'
-import { Editor } from "@tinymce/tinymce-react";
-
+import { Editor } from "@tinymce/tinymce-react"
+import DOMPurify from 'dompurify'
 import {
   Alert,
   AlertIcon,
@@ -140,7 +139,8 @@ function AddPost() {
               removeformat | help'
           }}
           onEditorChange={(content, editor) => {
-            setValue('Content', content)
+            const strippedContent = content.replace(/<[^>]+>/g, '');
+            setValue('Content', strippedContent)
           }}
           
          

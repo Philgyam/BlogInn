@@ -6,6 +6,7 @@ import { ThemeContext } from '../components/ThemeProvider';
 import Sidebar from '../components/Sidebar';
 import { HiSearch } from 'react-icons/hi';
 import AllUserPosts from './AllUserPosts';
+import { MdOutlineExplore } from "react-icons/md";
 
 
 
@@ -13,6 +14,15 @@ function Profile() {
   const {user,logout} = useAuth()
   const {username,updateAvatar,avatar,setAvatar,updateUsername} = useContext(UsernameContext)
   const {theme,updateTheme} = useContext(ThemeContext)
+
+  const buttonLabels = ['Your Posts','UserBio']
+
+  const [active, setActive] =useState(null)
+
+  const clicked = (label)=>{
+ setActive(label)
+  }
+
 
 
 
@@ -31,12 +41,35 @@ function Profile() {
             <span className='text-orange-500 font-bold text-3xl ml-3'>{username} </span>
         </div>
         <div>
-         <img className='rounded-full w-16 h-16' src={avatar} alt=""  />
+         <img className='rounded-full w-10 h-10' src={avatar} alt=""  />
          
         </div>
        
       
+      </div >
+
+      <div className='flex py-2 px-10 mt-10'>
+      <MdOutlineExplore 
+      style={{
+        height:'2rem',
+        width:'2rem',
+        color: theme.backgroundColor === 'bg-black' ? 'white':'black'
+      }}
+      className=''
+       />
+
+      <div className='flex gap-10 w-full justify-center '>
+      {buttonLabels.map((label,index)=>(
+              <button  key={label}
+              onClick={()=>clicked(label)}
+              className={` ${active === label ? 'underline transition-all duration-200':''} ${theme.backgroundColor === 'bg-black' ? 'text-white' :'text-black'}`}>
+                {label}
+              </button>
+            ))}
+</div>
+        
       </div>
+      
 
       <AllUserPosts/>
    
