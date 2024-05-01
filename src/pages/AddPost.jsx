@@ -35,6 +35,12 @@ function AddPost() {
   const navigate = useNavigate()
 
   const [Content,setContent] = useState('')
+  
+  const currentDate = new Date().toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
 
  
   
@@ -49,7 +55,7 @@ function AddPost() {
     
     const {Title, Content, Category} = data
 
-    console.log(Content)
+    
    
     
 
@@ -62,13 +68,14 @@ function AddPost() {
       const result = await databases.createDocument(
         DATABASE_ID,
         COLLECTION_ID,
-        ID.unique(),
+        userId,
         {
           Title,
           Content,
           Category,
           Author:username,
-          Avatar:avatar
+          Avatar:avatar,
+          dateCreated:currentDate
         },
       [
         Permission.read(Role.any()),

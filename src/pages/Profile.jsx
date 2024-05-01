@@ -12,7 +12,7 @@ import { MdOutlineExplore } from "react-icons/md";
 
 function Profile() {
   const {user,logout} = useAuth()
-  const {username,updateAvatar,avatar,setAvatar,updateUsername} = useContext(UsernameContext)
+  const {username,updateAvatar,avatar,setAvatar,setUserName} = useContext(UsernameContext)
   const {theme,updateTheme} = useContext(ThemeContext)
 
   const buttonLabels = ['Your Posts','UserBio']
@@ -22,6 +22,8 @@ function Profile() {
   const clicked = (label)=>{
  setActive(label)
   }
+
+
 
 
 
@@ -65,13 +67,14 @@ function Profile() {
               className={` ${active === label ? 'underline transition-all duration-200':''} ${theme.backgroundColor === 'bg-black' ? 'text-white' :'text-black'}`}>
                 {label}
               </button>
-            ))}
+              ))}
 </div>
         
       </div>
       
+      {active === 'Your Posts' && <AllUserPosts />}
 
-      <AllUserPosts/>
+     
    
 
     </div>

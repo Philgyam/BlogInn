@@ -1,20 +1,21 @@
 import React ,{useState,useEffect}from 'react'
-import { bucket,BUCKET_ID ,account,DATABASE_ID,COLLECTION_ID,databases} from '../appwrite/appwriteconfig';
+import { bucket,BUCKET_ID ,account,DATABASE_ID,COLLECTION_ID,COLLECTION_PROFILE_ID,databases} from '../appwrite/appwriteconfig';
 import {ID,Permission,Role} from 'appwrite'
 import { ThemeContext } from '../components/ThemeProvider'
-
 
 
 
 function AllUserPosts() {
 
     const [posts, setPosts] = useState([])
+    const [avatar, setAvatar] = useState('')
 const {theme,updateTheme} = React.useContext(ThemeContext)
 
     const postFetch = async ( ) => {
       try {
         const post = await databases.listDocuments(DATABASE_ID,COLLECTION_ID)
         setPosts(post.documents)
+        
 
         
       } catch (error) {
@@ -25,6 +26,27 @@ const {theme,updateTheme} = React.useContext(ThemeContext)
     useEffect(() => {
         postFetch()
     }, [])
+
+
+
+
+
+    useEffect(() => {
+      const fetchAvatar = async () => {
+        const userDetailes = await account.get();
+        const userProfile = await databases.getDocument(DATABASE_ID, COLLECTION_PROFILE_ID, userDetailes.$id);
+
+        const image = userProfile.UserAvatar
+        
+        setAvatar(image)
+     
+      };
+      fetchAvatar();
+    }, []);
+
+
+
+
     
   return (
 
@@ -33,10 +55,20 @@ const {theme,updateTheme} = React.useContext(ThemeContext)
      
          <div className={ `  flex flex-col gap-10 items-center mt-2` } > 
       {posts.map((post) => (
-        <div key={post.$id} className={`mt-5shadow-xl h-[12rem] w-[80%] py-2  flex flex-col justify-between bg-white rounded-xl px-10`}>
-          <div className='flex justify-end gap-3 text-orange-500'>
+        <div key={post.$id} className={`mt-5shadow-xl h-[12rem] w-[90%] py-2  flex flex-col justify-between bg-white rounded-xl px-5`}>
+          <div className='flex justify-between text-orange-500'>
+           
+            <div>
+            <p>{post.dateCreated}</p>
+            </div>
+            <div>
+              {''}
+            </div>
+            <div>
+              {''}
+            </div>
           <p>You</p>
-          <img className='h-8 w-8 rounded-full object-fit' src={post.Avatar} alt="" />
+          <img className='h-8 w-8 rounded-full object-fit' src={avatar} alt="" />
           
           </div>
           

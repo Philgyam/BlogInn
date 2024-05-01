@@ -4,7 +4,8 @@ import { ThemeContext } from '../components/ThemeProvider';
 import { CiMenuBurger } from "react-icons/ci";
 import { useAuth } from '../utils/AuthContext';
 import {Link} from 'react-router-dom'
-
+import { bucket,BUCKET_ID, databases,DATABASE_ID ,COLLECTION_PROFILE_ID} from '../appwrite/appwriteconfig';
+import { account } from '../appwrite/appwriteconfig'
 
 
 
@@ -12,6 +13,16 @@ import {Link} from 'react-router-dom'
 function Sidebar() {
 
     const {username,updateAvatar,avatar,setAvatar,updateUsername} = useContext(UsernameContext)
+
+
+    useEffect(() => {
+      const fetchAvatar = async () => {
+        const userDetailes = await account.get();
+        const userProfile = await databases.getDocument(DATABASE_ID, COLLECTION_PROFILE_ID, userDetailes.$id);
+        updateAvatar(userProfile.UserAvatar);
+      };
+      fetchAvatar();
+    }, []);
 
     const {user,logoutUser} = useAuth()
 

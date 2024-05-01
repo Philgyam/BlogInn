@@ -9,7 +9,7 @@ export const PROJECT_ID = '66201769ed5710073074'
 export const BUCKET_ID = '66292c86c05c5fc84f6b'
 export const COLLECTION_ID = '662ddd4700255a63f561'
 export const DATABASE_ID = '6629286d2a643c69418a'
-
+export const COLLECTION_PROFILE_ID = '66306678002b8f9057bc'
 const client = new Client()
 .setEndpoint(API_ENDPOINT)
 .setProject(PROJECT_ID);

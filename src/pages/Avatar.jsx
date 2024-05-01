@@ -1,12 +1,13 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import { AiOutlinePlus } from "react-icons/ai";
 import { ThemeContext } from '../components/ThemeProvider';
 import {useContext} from 'react'
 import {UsernameContext} from '../components/UsernameContext'
 import {Link} from 'react-router-dom'
 import { v4 as uuid } from 'uuid';
-import { bucket,BUCKET_ID } from '../appwrite/appwriteconfig';
-
+import { bucket,BUCKET_ID, databases,DATABASE_ID ,COLLECTION_PROFILE_ID} from '../appwrite/appwriteconfig';
+import { account } from '../appwrite/appwriteconfig'
+import {ID } from 'appwrite'
 
 
 function Avatar() {
@@ -15,19 +16,93 @@ function Avatar() {
    
 
     const {theme,updateTheme} = useContext(ThemeContext)
+    const [userBio, setUserBio] = useState('');
 
     
 
 
-    const {username,updateAvatar,avatar,setAvatar,updateUsername} = useContext(UsernameContext)
+    const {updateAvatar,avatar,setAvatar,updateUsername,username} = useContext(UsernameContext)
 
-    const avatar1 = "https://img.freepik.com/free-photo/view-3d-videographer-with-camera_23-2151067043.jpg?t=st=1713291206~exp=1713294806~hmac=35f1088b0e6622ea68370517aec1a6d77a554e1fc1e5ae9f271846dcb72be745&w=740"
-    const avatar2 = "https://img.freepik.com/free-photo/3d-illustration-cartoon-female-tourist-with-camera_1142-32317.jpg?t=st=1713258403~exp=1713262003~hmac=40049ffdfe6e43796fc517fe880d3bad4d055e48e00946120ef1431cc510c8f7&w=740"
-    const avatar3 = "https://img.freepik.com/free-photo/3d-render-cartoon-asian-girl-with-hat-eyeglasses_1142-51305.jpg?t=st=1713290905~exp=1713294505~hmac=965477b80aaa17f414e8f47cb8296c59941f436e86479003a9d119ae7a00db1b&w=740"
-    const avatar4 = "https://img.freepik.com/free-photo/portrait-young-student-education-day_23-2150980069.jpg?t=st=1713288534~exp=1713292134~hmac=11bb57674a785edf19986c8de3b85ee2675f70915e7a49571f375a01c5255efa&w=740"
+    const avatars =[
+        'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/6630602d00138cd2de78/view?project=66201769ed5710073074&mode=admin',
+        'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/66306152003a11058481/view?project=66201769ed5710073074&mode=admin',
+        'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/663061f5001d3867b651/view?project=66201769ed5710073074&mode=admin',
+        'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/66306257003b3ba6261b/view?project=66201769ed5710073074&mode=admin',
+    
+]
+
+    const handleAvatar = async (avatarClicked)=>{
+        updateAvatar(avatarClicked)
+
+         }
 
 
+    const onSubmit = async(data)=>{
+    
+
+        const userDetailes= await account.get()
+        
+
+        
+       
+
+        
+        
+            
+            try {
+
+
+                const userProfile = await databases.createDocument(DATABASE_ID,COLLECTION_PROFILE_ID, userDetailes.$id,{
+                    username:username,
+                    UserDescription:userBio,
+                    UserAvatar:avatar
+                    
+                    
+                  })
+
+                  const image =  userProfile.UserAvatar
+                  updateAvatar(image)
+                
+            } catch (error) {
+         
+                
+            }
+            
+        
+        
+
+            try {
+
+                const userProfile = await databases.updateDocument(DATABASE_ID,COLLECTION_PROFILE_ID, userDetailes.$id,{
+                    username:username,
+                    UserDescription:userBio,
+                    UserAvatar:avatar
+                    
+                  })
+
+                  const image =  userProfile.UserAvatar
+                  updateAvatar(image)
+
+                
+            } catch (error) {
+                console.log(error, 'its here')
+            }
+
+    }
+
+
+
+    useEffect(() => {
+        const fetchAvatar = async () => {
+          const userDetailes = await account.get();
+          const userProfile = await databases.getDocument(DATABASE_ID, COLLECTION_PROFILE_ID, userDetailes.$id);
+          updateAvatar(userProfile.UserAvatar);
+        };
+        fetchAvatar();
+      }, []);
+   
     const [userImage, setUserImage] = useState(null)
+    
 
     const handleFileChange = (e)=>{
         const uploadedFile = e.target.files[0]
@@ -41,25 +116,33 @@ function Avatar() {
             console.log(fileId)
             await bucket.createFile(BUCKET_ID,fileId,userImage)
             console.log('file uploaded')
-            const fileUrl = await bucket.getFileDownload(BUCKET_ID,fileId)
-            updateAvatar(fileUrl)
+            const fileUrl =  bucket.getFileDownload(BUCKET_ID,fileId)
+            
+    
             
          
         } catch (error) {
             console.log(error,'fie upload error')
         }
+
+        
     }
- 
 
- 
+   
+   
+          
+    
 
+  
+ 
+    
   return (
     <>
     <div className={`flex flex-col  h-screen w-full ${theme.backgroundColor}  lg:flex-col items-center  `}
     >
         <div  className='text-white mt-[5rem] text-2xl'>
             {
-            <h1 className='text-black font-bold font-mono'>
+            <h1 className={`${ theme.backgroundColor === 'bg-black'? 'text-white':'text-black'} font-bold font-mono`}>
                 Hello
                 <span className='text-orange-500 font-bold text-3xl ml-3'>{username} </span>
                 
@@ -72,26 +155,17 @@ function Avatar() {
 
             </div>
         <div className='flex mt-[1rem] gap-4 '>
-        <div className='mt-5 cursor-crosshair bg-white w-16 h-16 rounded-full text-center flex justify-center items-center bg-opacity-50'>
-            <img onClick={()=>{
-                updateAvatar(avatar1)
-            }} className='rounded-full w-16 h-16' src="https://img.freepik.com/free-photo/view-3d-videographer-with-camera_23-2151067043.jpg?t=st=1713291206~exp=1713294806~hmac=35f1088b0e6622ea68370517aec1a6d77a554e1fc1e5ae9f271846dcb72be745&w=740" alt="" />
-            </div>
-            <div className='mt-5 cursor-crosshair bg-white w-16 h-16 rounded-full text-center flex justify-center items-center bg-opacity-50'>
-            <img onClick={()=>{
-                updateAvatar(avatar2)
-            }}  className='rounded-full' src="https://img.freepik.com/free-photo/3d-illustration-cartoon-female-tourist-with-camera_1142-32317.jpg?t=st=1713258403~exp=1713262003~hmac=40049ffdfe6e43796fc517fe880d3bad4d055e48e00946120ef1431cc510c8f7&w=740" alt="" />
-            </div>
-            <div className='mt-5 cursor-crosshair bg-white w-16 h-16 rounded-full text-center flex justify-center items-center bg-opacity-50'>
-             <img onClick={()=>{
-                updateAvatar(avatar3)
-            }}   className='rounded-full w-16 h-16' src="https://img.freepik.com/free-photo/3d-render-cartoon-asian-girl-with-hat-eyeglasses_1142-51305.jpg?t=st=1713290905~exp=1713294505~hmac=965477b80aaa17f414e8f47cb8296c59941f436e86479003a9d119ae7a00db1b&w=740" alt="" />
-            </div>
-            <div className='mt-5 cursor-crosshair bg-white w-16 h-16 rounded-full text-center flex justify-center items-center bg-opacity-50'>
-            <img onClick={()=>{
-                updateAvatar(avatar4)
-            }} src="https://img.freepik.com/free-photo/portrait-young-student-education-day_23-2150980069.jpg?t=st=1713288534~exp=1713292134~hmac=11bb57674a785edf19986c8de3b85ee2675f70915e7a49571f375a01c5255efa&w=740" alt="" className="rounded-full  w-16 h-16" />
-            </div>
+
+            {
+                avatars.map((avatarImage,index)=>(
+                    <div  key={index} className='mt-5 cursor-crosshair bg-white w-16 h-16 rounded-full text-center flex justify-center items-center bg-opacity-50'>
+                    <img onClick={()=>{handleAvatar(avatarImage)}} className='rounded-full w-16 h-16' src={avatarImage} alt=""  />
+                    </div>
+                    
+                ))
+            }
+        
+            
         </div>
         <div className='mt-10 text-black text-center underline cursor-pointer'>
             <input type="file"
@@ -104,8 +178,11 @@ function Avatar() {
              </button>
        </div>
        <div>
-        <form action="Submit">
+        <form action='submit'>
             <input type="text"
+            name='UserBio'
+            value={userBio}
+            onChange={(e)=> setUserBio(e.target.value)}
             placeholder='Say Something nice about yourself 😊'
         className='h-20 w-[20rem] pl-1 font-mono mt-10 bg-black bg-opacity-50 rounded-md shadow-md text-white'
 
@@ -116,7 +193,7 @@ function Avatar() {
         <div className='mt-10 text-white cursor-pointer bg-orange-500 py-2 px-5 rounded-xl'>
             <Link to='/categories'>
             
-            <button className='cursor-pointer'>
+            <button onClick={onSubmit} className='cursor-pointer'>
                 Next
             </button>
             </Link>
