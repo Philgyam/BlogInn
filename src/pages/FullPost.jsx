@@ -6,6 +6,8 @@ import { ThemeContext } from '../components/ThemeProvider'
 import { BsBookmarkStar } from "react-icons/bs";
 import { IoShareSocialOutline } from "react-icons/io5";
 import { IoIosMore } from "react-icons/io";
+import { FaRegComment } from "react-icons/fa";
+
 
 
 
@@ -94,10 +96,18 @@ userPost()
 
     <div className='mt-10'>
         <button className='shadow-md bg-gray-200 opacity-60 rounded-xl  px-2 py-2'>{post.Category}</button>
+        <div>
+    
+        </div>
     </div>
+
+    <div class="mt-20 border-b-2 border-b-gray-300 h-0 w-full"></div>
+
 
 
    </div>
+
+
 
    </>
   )

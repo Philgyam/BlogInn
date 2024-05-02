@@ -3,6 +3,11 @@ import { bucket,BUCKET_ID ,account,DATABASE_ID,COLLECTION_ID,COLLECTION_PROFILE_
 import {ID,Permission,Role} from 'appwrite'
 import { ThemeContext } from '../components/ThemeProvider'
 import {Link} from 'react-router-dom'
+import { FaRegComment } from "react-icons/fa";
+import { SlLike } from "react-icons/sl";
+import { SlDislike } from "react-icons/sl";
+
+
 
 
 
@@ -56,13 +61,13 @@ function AllUserPosts() {
   return (
 
   
-    <div className='h-full w-full'>
+    <div className='h-full w-[100%]'>
      
-         <div className={ `  flex flex-col gap-10 items-center mt-2` } > 
+         <div className={ ` h-full w-[100%] flex flex-col gap-10 px-5 ` } > 
       {posts.map((post) => (
 
             <Link to={`/${user}/${post.Category}/${post.$id}`}>
-        <div key={post.$id} className={`mt-5shadow-xl h-[12rem] w-[90%] py-2  flex flex-col justify-between bg-white rounded-xl px-5`}>
+        <div key={post.$id} className={`mt-2 shadow-xl h-[12rem] w-[100%] py-2  flex flex-col justify-between bg-white rounded-xl px-5`}>
           <div className='flex justify-between text-orange-500'>
            
             <div>
@@ -82,12 +87,29 @@ function AllUserPosts() {
           <h1 className='text-[1.5rem]'>{post.Title}</h1>
           <p>{post.Content}</p>
           
-          <div className='flex justify-end ' >
+          <div className='flex justify-between ' >
+          
+          <div className='flex gap-5 items-center'>
+            <p className='flex items-center gap-2 bg-gray-200 px-2 rounded-xl py-1'>
+            <FaRegComment />
+            <span>10</span>
+              </p>
+              <div className='flex  items-center  gap-2 bg-gray-200 px-2 rounded-xl py-1'>
+              <div>
+              <SlLike />
+              </div>
+              <div>
+              <p>10</p>
+              </div>
+              |
+          <SlDislike />
+              </div>
+          
+          </div>
           <button className=' bg-slate-100 text-gray-500 py-1 px-2 rounded-2xl '> {post.Category}</button>
 
           </div>
-         
- 
+
         </div>
         </Link>
       ))}
