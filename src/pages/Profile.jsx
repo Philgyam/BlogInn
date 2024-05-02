@@ -17,13 +17,17 @@ function Profile() {
 
   const buttonLabels = ['Your Posts','UserBio']
 
-  const [active, setActive] =useState(null)
+  const [active, setActive] =useState('')
 
   const clicked = (label)=>{
  setActive(label)
   }
 
 
+
+  useEffect(()=>{
+    setActive('Your Posts')
+  })
 
 
 

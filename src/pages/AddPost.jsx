@@ -68,7 +68,7 @@ function AddPost() {
       const result = await databases.createDocument(
         DATABASE_ID,
         COLLECTION_ID,
-        userId,
+        ID.unique(),
         {
           Title,
           Content,

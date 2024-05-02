@@ -14,6 +14,7 @@ import PrivateRoutes from './utils/PrivateRoutes'
 import { AuthProvider } from './utils/AuthContext'
 import { UsernameProvider } from './components/UsernameContext'
 import AddPost from './pages/AddPost'
+import FullPost from './pages/FullPost'
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
       <Route path='/Profile' element={<Profile/>}/>
       <Route path='/Home' element ={<Homepage/>}/>
       <Route path='/addPost' element={<AddPost/>}/>
+      <Route path='/:user/:Category/:id' element = {<FullPost/>} />
 
       </Route>
       </Routes>

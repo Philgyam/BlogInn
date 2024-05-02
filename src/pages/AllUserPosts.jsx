@@ -2,6 +2,7 @@ import React ,{useState,useEffect}from 'react'
 import { bucket,BUCKET_ID ,account,DATABASE_ID,COLLECTION_ID,COLLECTION_PROFILE_ID,databases} from '../appwrite/appwriteconfig';
 import {ID,Permission,Role} from 'appwrite'
 import { ThemeContext } from '../components/ThemeProvider'
+import {Link} from 'react-router-dom'
 
 
 
@@ -9,7 +10,8 @@ function AllUserPosts() {
 
     const [posts, setPosts] = useState([])
     const [avatar, setAvatar] = useState('')
-const {theme,updateTheme} = React.useContext(ThemeContext)
+    const [user,setUser] =  useState('')
+    const {theme,updateTheme} = React.useContext(ThemeContext)
 
     const postFetch = async ( ) => {
       try {
@@ -37,8 +39,11 @@ const {theme,updateTheme} = React.useContext(ThemeContext)
         const userProfile = await databases.getDocument(DATABASE_ID, COLLECTION_PROFILE_ID, userDetailes.$id);
 
         const image = userProfile.UserAvatar
+        const user = userProfile.username
         
         setAvatar(image)
+        setUser(user)
+        
      
       };
       fetchAvatar();
@@ -55,6 +60,8 @@ const {theme,updateTheme} = React.useContext(ThemeContext)
      
          <div className={ `  flex flex-col gap-10 items-center mt-2` } > 
       {posts.map((post) => (
+
+            <Link to={`/${user}/${post.Category}/${post.$id}`}>
         <div key={post.$id} className={`mt-5shadow-xl h-[12rem] w-[90%] py-2  flex flex-col justify-between bg-white rounded-xl px-5`}>
           <div className='flex justify-between text-orange-500'>
            
@@ -64,7 +71,7 @@ const {theme,updateTheme} = React.useContext(ThemeContext)
             <div>
               {''}
             </div>
-            <div>
+             <div>
               {''}
             </div>
           <p>You</p>
@@ -82,6 +89,7 @@ const {theme,updateTheme} = React.useContext(ThemeContext)
          
  
         </div>
+        </Link>
       ))}
     </div>
     </div>
