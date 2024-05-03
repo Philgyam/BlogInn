@@ -79,7 +79,7 @@ function AllUserPosts() {
   
     <div className='h-full w-[100%]'>
      
-         <div className={ ` h-full w-[100%] flex flex-col gap-10 px-5 ` } > 
+         <div className={ ` h-screen w-[100%] flex flex-col gap-10 px-5 ` } > 
       {posts.map((post,index) => (
 
             <Link to={`/${user}/${post.Category}/${post.$id}`}>

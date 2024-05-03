@@ -7,6 +7,8 @@ import { BsBookmarkStar } from "react-icons/bs";
 import { IoShareSocialOutline } from "react-icons/io5";
 import { IoIosMore } from "react-icons/io";
 import { FaRegComment } from "react-icons/fa";
+import { SlLike } from "react-icons/sl";
+import { SlDislike } from "react-icons/sl";
 
 
 
@@ -21,6 +23,9 @@ function FullPost() {
     const {theme,updateTheme} = useContext(ThemeContext)
 
     const fontColor = theme.backgroundColor === 'bg-black' ? 'text-white':''
+    const [showComments, setShowComments] = useState(false)
+    const [comment, setComment] = useState('');
+
 
    useEffect(()=>{
 
@@ -49,10 +54,25 @@ userPost()
    },[id])
 
 
+   let lastScrollY = 0;
+   window.addEventListener('scroll', () => {
+       const currentScrollY = window.scrollY;
+       if (showComments) {
+           // Scrolling up
+           document.querySelector('.sticky-bottom').classList.remove('hidden');
+       } else if (currentScrollY > lastScrollY && !showComments)  {
+           // Scrolling down
+           document.querySelector('.sticky-bottom').classList.add('hidden');
+       }
+       lastScrollY = currentScrollY;
+   });
+
+
+
 
   return (
    <>
-   <div className={`flex h-screen flex-col px-5   w-full ${theme.backgroundColor} `}>
+   <div className={`flex m-h-screen flex-col px-5   w-full ${theme.backgroundColor} `}>
    <h1 className='text-2xl text-orange-500 mb-2 ml-2 mt-3 font-mono  ' >BlogInn</h1>
 
     <div>
@@ -65,6 +85,9 @@ userPost()
               Author:  {post.Author}
             </p>
             <p>{post.dateCreated}</p>
+        </div>
+        <div className='w-full  mt-5 mb-10 '>
+            <img className='' src={post.postImage} alt="" />
         </div>
         <div className='flex justify-end gap-5'>
         <p className='flex gap-1 items-center shadow-md bg-gray-200 bg-opacity-50 px-3 py-3 rounded-full'>
@@ -106,6 +129,66 @@ userPost()
 
 
    </div>
+
+   <div className={`w-[90%] h-[4rem] fixed bottom-0  mx-5 flex items-center justify-center bg-gray-400 py-5 items transition shadow-xl duration-1000ms ease-out sticky-bottom rounded-t-2xl ${showComments ? 'sticky':'hidden'}`}>
+    <div>
+
+    <div className='flex flex-row gap-[5rem] items-center'>
+            <p 
+            onClick={() => {
+                setShowComments(!showComments)
+              }}
+            className='flex items-center gap-2 bg-gray-200 px-2 rounded-xl py-1'>
+            <FaRegComment />
+            <span>10</span>
+              </p>
+              <div className='flex  items-center  gap-2 bg-gray-200 px-2 rounded-xl py-1'>
+              <div>
+              <SlLike />
+              </div>
+              <div>
+              <p>10</p>
+              </div>
+              |
+          <SlDislike />
+              </div>
+          
+          </div>
+
+    </div>
+</div>
+
+{
+    showComments && (
+        <div className='w-[90%] h-[12rem]  fixed bottom-0 mx-5 flex   bg-white    rounded-t-2xl mb-[-8.1rem] transition duration-500 ease-in-out transform -translate-y-full'>
+            <div className='relative w-full h-full'>
+                
+            <p className='text-[1.1rem] w-full flex justify-center'>
+            Comments
+            </p>
+            
+
+            <div className=' w-full px-2 flex absolute bottom-0'>
+                <input type="text"
+                className='w-full border rounded-sm'
+                value={comment}
+                placeholder='type comment here'
+                onChange={(e) => {
+                    setComment(e.target.value)
+                }}
+
+                
+                
+                />
+
+                <button
+                className='bg-blue-400 py-2 px-6'
+                >Post</button>
+            </div>
+            </div>
+        </div>
+    )
+}
 
 
 

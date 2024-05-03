@@ -36,8 +36,8 @@ function Profile() {
   
   return (
     <>
-    <div className={`h-screen w-full ${theme.backgroundColor} pt-3 pb-10 `}>
-      <div className='flex gap-4 justify-around mt-3 '>
+    <div className={`min-h-screen w-full ${theme.backgroundColor}`}>
+      <div className='flex gap-4 justify-around pt-6'>
         <div>
         <Sidebar/>
         </div>
