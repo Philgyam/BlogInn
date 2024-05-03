@@ -7,6 +7,8 @@ import { bucket,BUCKET_ID ,account,DATABASE_ID,COLLECTION_ID,databases} from '..
 import {ID,Permission,Role} from 'appwrite'
 import { useNavigate } from 'react-router-dom'
 import { Editor } from "@tinymce/tinymce-react"
+import { v4 as uuidv4 } from 'uuid';
+
 import DOMPurify from 'dompurify'
 import {
   Alert,
@@ -14,6 +16,7 @@ import {
   AlertTitle,
   AlertDescription,
 } from '@chakra-ui/react'
+import { progress } from 'framer-motion'
 
 
 
@@ -27,15 +30,19 @@ function AddPost() {
   const {username,updateAvatar,avatar,setAvatar,updateUsername} = useContext(UsernameContext)
 
   const {theme,updateTheme} = useContext(ThemeContext)
+  const [url,setUrl] = useState('')
+
 
   const {control,handleSubmit,register,watch,setValue,getValues} = useForm()
   const [success,setSuccess ] = useState(null)
   const [submitted, setSubmitted] = useState(false)
+  const [userPrevImage, setUserPrevImage] = useState(null)
+  const [progress, setProgress] = useState(0);
+
 
   const navigate = useNavigate()
 
   const [Content,setContent] = useState('')
-  
   const currentDate = new Date().toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
@@ -53,7 +60,7 @@ function AddPost() {
     const userDetails = await account.get()
     const userId = userDetails.$id
     
-    const {Title, Content, Category} = data
+    const {Title, Content, Category,postDescribe} = data
 
     
    
@@ -75,7 +82,10 @@ function AddPost() {
           Category,
           Author:username,
           Avatar:avatar,
-          dateCreated:currentDate
+          dateCreated:currentDate,
+          postDescribe,
+          postImage:url
+
         },
       [
         Permission.read(Role.any()),
@@ -90,6 +100,8 @@ function AddPost() {
        setSuccess('Post succesful')
        setSubmitted(true)
       
+       setUserPrevImage(null) 
+       
 
 
     } catch (error) {
@@ -97,13 +109,61 @@ function AddPost() {
     }
     finally{
       setSubmitted(false)
+
     }
 
   }
+
+
+
+
+  // /////// IMAGE UPLOAD //////
+
+
+
+
+  const handleFileChange = (e)=>{
+      const uploadedFile = e.target.files[0]
+      setUrl (URL.createObjectURL(uploadedFile))
+      
+      setUserPrevImage(uploadedFile)
+      
+  }
+
+
+
+  const handleUploaded = async ()=>{
+    try {
+        if(!userPrevImage) return;
+        const fileId  = uuidv4();
+         await bucket.createFile(BUCKET_ID,fileId,userPrevImage,{
+          onProgess:(progress)=>{
+            setProgress(Math.round((progress.loaded/progress.total)*100))
+          }
+         })
+        console.log('file uploaded')
+        const fileUrl =  bucket.getFileView(BUCKET_ID,fileId)
+        setUrl(fileUrl)
+
+        console.log(fileUrl)
+        
+
+        
+     
+    } catch (error) {
+        console.log(error,'fie upload error')
+    }
+
+    
+}
+
+
+
+
   
   return (
-    < div className={`flex flex-col h-screen pt-3 relative  w-full ${theme.backgroundColor} `}>
-      <div className='flex '>
+    < div className={`flex flex-col h-full pt-3 relative  w-full ${theme.backgroundColor} `}>
+      <div className='flex  mt-2'>
 
    <Sidebar/> 
    <img className='rounded-full w-10 h-10 mr-2' src={avatar} alt=""  />
@@ -118,8 +178,17 @@ function AddPost() {
          type="text"
          name='Title'
          placeholder='Post Title'
-         className='w-full p-4 mb-2 text-center'
+         className='w-full p-4 mb-2 mt-2 text-center'
          {...register('Title',{required:true})}
+                
+        />
+
+<input
+         type="text"
+         name='postDescribe'
+         placeholder='A short Description for preview'
+         className='w-full h-[5rem] p-4 mb-2 text-center'
+         {...register('postDescribe', {  defaultValue: '' })}
                 
         />
 
@@ -154,12 +223,45 @@ function AddPost() {
          
         />
          
-         
+         <div className='mb-10'>
+
+         <div className='py-5 text-[1.1rem]  text-center'>
+        Please upload a preview Image for your Post
+       </div>
+
+       <div className='flex px-4 items-center'>
+        
+
+       <input type="file"
+       name='postImage'
+      
+        className='ml-4'
+        onChange={handleFileChange}
+
        
-          
+       />
+
+       <div className='bg-gray-200 h-[5rem] w-[9rem]'>
+        <img className='h-[5rem] w-[9rem] object-contain' src={url} alt="" />
+     
+       </div>
+
+       </div>
+
+       <button
+       className='ml-8 text-[1.2rem] bg-blue-600 px-5 py-1 rounded-sm '
+       onClick={handleUploaded}
+       type='button'
+       >Upload</button>
+
+       
+
+
+         </div>
+       
         
+        <div className='flex items-center justify-center  mb-4 gap-10'>
         
-        <div className='flex items-center justify-center gap-10'>
         <select
         name='Category'
         control = {control}
@@ -195,7 +297,7 @@ function AddPost() {
              <AlertTitle
              className='text-2xl font-bold'
              >
-              Sucess
+              Success
             </AlertTitle>
             <AlertDescription>Your Post is Up, Enjoy!</AlertDescription>
   

@@ -17,11 +17,22 @@ function AllUserPosts() {
     const [avatar, setAvatar] = useState('')
     const [user,setUser] =  useState('')
     const {theme,updateTheme} = React.useContext(ThemeContext)
+    const [image,setImage] = useState('')
 
     const postFetch = async ( ) => {
       try {
         const post = await databases.listDocuments(DATABASE_ID,COLLECTION_ID)
         setPosts(post.documents)
+       
+      console.log(post)
+
+    
+      
+
+        
+        // setImage(userImage)
+       
+    
         
 
         
@@ -45,9 +56,14 @@ function AllUserPosts() {
 
         const image = userProfile.UserAvatar
         const user = userProfile.username
+        // console.log(userDetailes)
+
+      
         
         setAvatar(image)
         setUser(user)
+        
+        
         
      
       };
@@ -64,13 +80,13 @@ function AllUserPosts() {
     <div className='h-full w-[100%]'>
      
          <div className={ ` h-full w-[100%] flex flex-col gap-10 px-5 ` } > 
-      {posts.map((post) => (
+      {posts.map((post,index) => (
 
             <Link to={`/${user}/${post.Category}/${post.$id}`}>
-        <div key={post.$id} className={`mt-2 shadow-xl h-[12rem] w-[100%] py-2  flex flex-col justify-between bg-white rounded-xl px-5`}>
+        <div key={index} className={`mt-2 shadow-xl h-[15rem] w-[100%] py-2  flex flex-col  bg-white rounded-xl px-5`}>
           <div className='flex justify-between text-orange-500'>
            
-            <div>
+            <div className='mb-4'>
             <p>{post.dateCreated}</p>
             </div>
             <div>
@@ -84,8 +100,14 @@ function AllUserPosts() {
           
           </div>
           
-          <h1 className='text-[1.5rem]'>{post.Title}</h1>
+          <h1 className='text-[1.5rem] mb-2'>{post.Title}</h1>
+          <div className='flex h-[6rem] items-center mb-4'>
           <p>{post.Content}</p>
+          <div className='w-[50%] h-full '>
+            <img className='w-[100%] h-full' src={post.postImage} alt="" />
+          </div>
+          </div>
+          
           
           <div className='flex justify-between ' >
           
