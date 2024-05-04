@@ -57,12 +57,12 @@ userPost()
    let lastScrollY = 0;
    window.addEventListener('scroll', () => {
        const currentScrollY = window.scrollY;
-       if (showComments) {
+       if (currentScrollY < lastScrollY) {
            // Scrolling up
-           document.querySelector('.sticky-bottom').classList.remove('hidden');
-       } else if (currentScrollY > lastScrollY && !showComments)  {
+           setShowComments(true);
+       } else {
            // Scrolling down
-           document.querySelector('.sticky-bottom').classList.add('hidden');
+           setShowComments(false);
        }
        lastScrollY = currentScrollY;
    });
@@ -130,7 +130,7 @@ userPost()
 
    </div>
 
-   <div className={`w-[90%] h-[4rem] fixed bottom-0  mx-5 flex items-center justify-center bg-gray-400 py-5 items transition shadow-xl duration-1000ms ease-out sticky-bottom rounded-t-2xl ${showComments ? 'sticky':'hidden'}`}>
+   <div className={`w-[90%] h-[4rem] fixed bottom-0  mx-5 flex items-center justify-center bg-gray-400 py-5 items transition shadow-xl duration-1000ms ease-out sticky-bottom rounded-t-2xl `}>
     <div>
 
     <div className='flex flex-row gap-[5rem] items-center'>
