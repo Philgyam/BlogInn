@@ -117,6 +117,7 @@ function Avatar() {
             await bucket.createFile(BUCKET_ID,fileId,userImage)
             console.log('file uploaded')
             const fileUrl =  bucket.getFileDownload(BUCKET_ID,fileId)
+            updateAvatar(fileUrl)
             
     
             

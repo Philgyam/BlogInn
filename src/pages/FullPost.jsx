@@ -23,8 +23,6 @@ function FullPost() {
     const {theme,updateTheme} = useContext(ThemeContext)
 
     const fontColor = theme.backgroundColor === 'bg-black' ? 'text-white':''
-    const [showComments, setShowComments] = useState(false)
-    const [comment, setComment] = useState('');
 
 
    useEffect(()=>{
@@ -67,6 +65,16 @@ userPost()
        lastScrollY = currentScrollY;
    });
 
+
+   useEffect(() => {
+    const handleScroll = () => {
+      // your scrolling logic here
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
 
 
@@ -135,9 +143,9 @@ userPost()
 
     <div className='flex flex-row gap-[5rem] items-center'>
             <p 
-            onClick={() => {
+            onClick={() => 
                 setShowComments(!showComments)
-              }}
+              }
             className='flex items-center gap-2 bg-gray-200 px-2 rounded-xl py-1'>
             <FaRegComment />
             <span>10</span>
@@ -158,37 +166,7 @@ userPost()
     </div>
 </div>
 
-{
-    showComments && (
-        <div className='w-[90%] h-[12rem]  fixed bottom-0 mx-5 flex   bg-white    rounded-t-2xl mb-[-8.1rem] transition duration-500 ease-in-out transform -translate-y-full'>
-            <div className='relative w-full h-full'>
-                
-            <p className='text-[1.1rem] w-full flex justify-center'>
-            Comments
-            </p>
-            
 
-            <div className=' w-full px-2 flex absolute bottom-0'>
-                <input type="text"
-                className='w-full border rounded-sm'
-                value={comment}
-                placeholder='type comment here'
-                onChange={(e) => {
-                    setComment(e.target.value)
-                }}
-
-                
-                
-                />
-
-                <button
-                className='bg-blue-400 py-2 px-6'
-                >Post</button>
-            </div>
-            </div>
-        </div>
-    )
-}
 
 
 

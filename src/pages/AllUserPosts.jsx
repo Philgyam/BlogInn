@@ -23,17 +23,10 @@ function AllUserPosts() {
       try {
         const post = await databases.listDocuments(DATABASE_ID,COLLECTION_ID)
         setPosts(post.documents)
+        console.log(post)
        
-      console.log(post)
 
     
-      
-
-        
-        // setImage(userImage)
-       
-    
-        
 
         
       } catch (error) {
@@ -56,7 +49,6 @@ function AllUserPosts() {
 
         const image = userProfile.UserAvatar
         const user = userProfile.username
-        // console.log(userDetailes)
 
       
         

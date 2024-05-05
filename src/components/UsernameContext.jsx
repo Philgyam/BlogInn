@@ -29,21 +29,12 @@ export const UsernameProvider =({children})=> {
         }
 
         getUser()
-        
-
-
     
-
-
         
 
         
 
-        
-
-        
-
-        const [avatar,setAvatar] = useState('')
+        const [avatar,setAvatar] = useState('https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/66306257003b3ba6261b/view?project=66201769ed5710073074&mode=admin')
 
         const updateAvatar = (avatar)=>{
             setAvatar(avatar)
