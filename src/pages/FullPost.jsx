@@ -1,5 +1,6 @@
 import React, { useEffect,useState,useContext } from 'react'
 import { useParams } from 'react-router-dom'
+import CommentSection from '../components/CommentSection';
 import { bucket,BUCKET_ID ,account,DATABASE_ID,COLLECTION_ID,COLLECTION_PROFILE_ID,databases} from '../appwrite/appwriteconfig';
 import {ID,Permission,Role} from 'appwrite'
 import { ThemeContext } from '../components/ThemeProvider'
@@ -23,6 +24,8 @@ function FullPost() {
     const {theme,updateTheme} = useContext(ThemeContext)
 
     const fontColor = theme.backgroundColor === 'bg-black' ? 'text-white':''
+    const [showComments, setShowComments] = useState(false);
+
 
 
    useEffect(()=>{
@@ -51,30 +54,27 @@ userPost()
 
    },[id])
 
-
    let lastScrollY = 0;
-   window.addEventListener('scroll', () => {
-       const currentScrollY = window.scrollY;
-       if (currentScrollY < lastScrollY) {
-           // Scrolling up
-           setShowComments(true);
-       } else {
-           // Scrolling down
-           setShowComments(false);
-       }
-       lastScrollY = currentScrollY;
-   });
 
 
    useEffect(() => {
     const handleScroll = () => {
-      // your scrolling logic here
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY) {
+        // Scrolling down
+        setShowComments(false);
+      } else {
+        // Scrolling up
+        setShowComments(true);
+      }
+      lastScrollY = currentScrollY;
     };
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [lastScrollY]);
+
 
 
 
@@ -138,33 +138,41 @@ userPost()
 
    </div>
 
-   <div className={`w-[90%] h-[4rem] fixed bottom-0  mx-5 flex items-center justify-center bg-gray-400 py-5 items transition shadow-xl duration-1000ms ease-out sticky-bottom rounded-t-2xl `}>
-    <div>
+        
 
-    <div className='flex flex-row gap-[5rem] items-center'>
-            <p 
-            onClick={() => 
-                setShowComments(!showComments)
-              }
-            className='flex items-center gap-2 bg-gray-200 px-2 rounded-xl py-1'>
-            <FaRegComment />
-            <span>10</span>
-              </p>
-              <div className='flex  items-center  gap-2 bg-gray-200 px-2 rounded-xl py-1'>
-              <div>
-              <SlLike />
-              </div>
-              <div>
-              <p>10</p>
-              </div>
-              |
-          <SlDislike />
-              </div>
-          
-          </div>
+   {
+    showComments &&
+  <div className={`w-[90%] h-[4rem] fixed bottom-0  mx-5 flex items-center justify-center bg-gray-400 py-5 items transition shadow-xl duration-1000ms ease-out sticky-bottom rounded-t-2xl `}>
+  <div>
 
-    </div>
+  <div className='flex flex-row gap-[5rem] items-center'>
+          <p 
+          onClick={() => 
+              setShowComments(!showComments)
+            }
+          className='flex items-center gap-2 bg-gray-200 px-2 rounded-xl py-1'>
+          <FaRegComment />
+          <span>10</span>
+            </p>
+            <div className='flex  items-center  gap-2 bg-gray-200 px-2 rounded-xl py-1'>
+            <div>
+            <SlLike />
+            </div>
+            <div>
+            <p>10</p>
+            </div>
+            |
+        <SlDislike />
+            </div>
+        
+        </div>
+
+  </div>
 </div>
+
+   }
+
+ 
 
 
 
