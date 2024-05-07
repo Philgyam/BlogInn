@@ -125,7 +125,16 @@ userPost()
           date_commented:currentDate,
           postId:post.$id,
           userAvatar:userImage,
-}
+},
+[
+  Permission.read(Role.any()),
+  Permission.write(Role.user(userId)),
+  Permission.delete(Role.user(userId)),
+  Permission.update(Role.user(userId)),
+
+
+]
+  
 
 )
 
@@ -252,10 +261,9 @@ userPost()
                  borderStyle: 'solid'
                }}
                  type="text" />
+
                  <button
-                 onClick={()=>{
-                  submitPost
-                 }}
+                 onClick={()=>submitPost()}
                  
                  className='w-[20%] bg-black text-white'>post</button>
                 </div>
