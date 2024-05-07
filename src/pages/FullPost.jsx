@@ -2,7 +2,6 @@ import React, { useEffect,useState,useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import CommentSection from '../components/CommentSection';
 import { bucket,BUCKET_ID ,account,DATABASE_ID,COLLECTION_ID,COLLECTION_PROFILE_ID,databases} from '../appwrite/appwriteconfig';
-import {ID,Permission,Role} from 'appwrite'
 import { ThemeContext } from '../components/ThemeProvider'
 import { BsBookmarkStar } from "react-icons/bs";
 import { IoShareSocialOutline } from "react-icons/io5";
@@ -141,19 +140,23 @@ userPost()
         
 
    {
-    showComments &&
+    showComments &&(
+    
   <div className={`w-[90%] h-[4rem] fixed bottom-0  mx-5 flex items-center justify-center bg-gray-400 py-5 items transition shadow-xl duration-1000ms ease-out sticky-bottom rounded-t-2xl `}>
+  
   <div>
+   
 
   <div className='flex flex-row gap-[5rem] items-center'>
-          <p 
+    
+          <button
           onClick={() => 
               setShowComments(!showComments)
             }
           className='flex items-center gap-2 bg-gray-200 px-2 rounded-xl py-1'>
           <FaRegComment />
           <span>10</span>
-            </p>
+            </button>
             <div className='flex  items-center  gap-2 bg-gray-200 px-2 rounded-xl py-1'>
             <div>
             <SlLike />
@@ -166,11 +169,23 @@ userPost()
             </div>
         
         </div>
+        <div className='absolute bottom-[4rem] h-[20rem]  left-0 h-20 bg-red-500 w-full'>
+        <p className='text-center'>Comments</p>
+        <div className=' w-full absolute bottom-0'>
+           <div className='w-[100%] flex'>
+           <input type="text" />
+            <button>post</button>
+           </div>
+        </div>
+  </div>
 
   </div>
 </div>
-
+    )
    }
+
+
+
 
  
 

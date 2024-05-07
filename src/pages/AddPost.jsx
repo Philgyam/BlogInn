@@ -136,11 +136,7 @@ function AddPost() {
     try {
         if(!userPrevImage) return;
         const fileId  = uuidv4();
-         await bucket.createFile(BUCKET_ID,fileId,userPrevImage,{
-          onProgess:(progress)=>{
-            setProgress(Math.round((progress.loaded/progress.total)*100))
-          }
-         })
+         await bucket.createFile(BUCKET_ID,fileId,userPrevImage)
         console.log('file uploaded')
         const fileUrl =  bucket.getFileView(BUCKET_ID,fileId)
         setUrl(fileUrl)
