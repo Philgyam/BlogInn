@@ -2,7 +2,7 @@ import React ,{useState,useEffect}from 'react'
 import { bucket,BUCKET_ID ,account,DATABASE_ID,COLLECTION_ID,COLLECTION_PROFILE_ID,databases} from '../appwrite/appwriteconfig';
 import {ID,Permission,Role} from 'appwrite'
 import { ThemeContext } from '../components/ThemeProvider'
-import {Link} from 'react-router-dom'
+import {Link,useNavigate} from 'react-router-dom'
 import { FaRegComment } from "react-icons/fa";
 import { SlLike } from "react-icons/sl";
 import { SlDislike } from "react-icons/sl";
@@ -11,7 +11,10 @@ import { SlDislike } from "react-icons/sl";
 
 
 
+
 function AllUserPosts() {
+
+  const navigate =  useNavigate()
 
     const [posts, setPosts] = useState([])
     const [avatar, setAvatar] = useState('')
@@ -23,14 +26,12 @@ function AllUserPosts() {
       try {
         const post = await databases.listDocuments(DATABASE_ID,COLLECTION_ID)
         setPosts(post.documents)
-        console.log(post)
        
 
     
 
         
       } catch (error) {
-        console.log(error)
       }
     }
 
@@ -74,8 +75,11 @@ function AllUserPosts() {
          <div className={ ` h-screen w-[100%] flex flex-col gap-10 px-5 ` } > 
       {posts.map((post,index) => (
 
-            <Link to={`/${user}/${post.Category}/${post.$id}`}>
-        <div key={index} className={`mt-2 shadow-xl h-[15rem] w-[100%] py-2  flex flex-col  bg-white rounded-xl px-5`}>
+        <div key={index}
+        onClick={()=>{
+          navigate(`/${user}/${post.Category}/${post.$id}`,{ replace: false })
+        }}
+         className={`mt-2 shadow-xl h-[15rem] w-[100%] py-2  flex flex-col  bg-white rounded-xl px-5`}>
           <div className='flex justify-between text-orange-500'>
            
             <div className='mb-4'>
@@ -88,7 +92,7 @@ function AllUserPosts() {
               {''}
             </div>
           <p>You</p>
-          <img className='h-8 w-8 rounded-full object-fit' src={avatar} alt="" />
+          <img className='h-8 w-8 rounded-full object-fit' src={post.Avatar} alt="" />
           
           </div>
           
@@ -125,7 +129,6 @@ function AllUserPosts() {
           </div>
 
         </div>
-        </Link>
       ))}
     </div>
     </div>

@@ -9,14 +9,12 @@ import { useNavigate } from 'react-router-dom'
 import { Editor } from "@tinymce/tinymce-react"
 import { v4 as uuidv4 } from 'uuid';
 
-import DOMPurify from 'dompurify'
 import {
   Alert,
   AlertIcon,
   AlertTitle,
   AlertDescription,
 } from '@chakra-ui/react'
-import { progress } from 'framer-motion'
 
 
 
@@ -37,7 +35,6 @@ function AddPost() {
   const [success,setSuccess ] = useState(null)
   const [submitted, setSubmitted] = useState(false)
   const [userPrevImage, setUserPrevImage] = useState(null)
-  const [progress, setProgress] = useState(0);
 
 
   const navigate = useNavigate()
@@ -58,10 +55,12 @@ function AddPost() {
     
     
     const userDetails = await account.get()
+    console.log(userDetails)
     const userId = userDetails.$id
     
     const {Title, Content, Category,postDescribe} = data
 
+  
     
    
     

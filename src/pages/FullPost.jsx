@@ -41,6 +41,8 @@ function FullPost() {
 
             setPost(post)
             console.log(post)
+           
+
 
         } catch (error) {
             console.log(error,'its here')
@@ -171,8 +173,8 @@ userPost()
         </div>
         <div className='absolute bottom-[4rem] h-[20rem]  left-0 h-20 bg-red-500 w-full'>
         <p className='text-center'>Comments</p>
-        <div className=' w-full absolute bottom-0'>
-           <div className='w-[100%] flex'>
+        <div className=' w-full  bottom-0'>
+           <div className='w-[100%] h-10 flex'>
            <input type="text" />
             <button>post</button>
            </div>

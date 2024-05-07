@@ -16,12 +16,15 @@ import { UsernameProvider } from './components/UsernameContext'
 import AddPost from './pages/AddPost'
 import FullPost from './pages/FullPost'
 
+
 function App() {
+
+
 
   return (
     <>
+   <Router>
     <UsernameProvider>
-    <Router>
    
         <AuthProvider>
       <Routes>  
@@ -42,8 +45,9 @@ function App() {
       </Route>
       </Routes>
       </AuthProvider>
-      </Router>
       </UsernameProvider>
+      </Router>
+      
   
       </>
       
