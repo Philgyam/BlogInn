@@ -77,7 +77,7 @@ function AllUserPosts() {
 
         <div key={index}
         onClick={()=>{
-          navigate(`/${user}/${post.Category}/${post.$id}`,{ replace: false })
+          navigate(`/Profile/${user}/${post.Category}/${post.$id}`,{ replace: false })
         }}
          className={`mt-2 shadow-xl h-[15rem] w-[100%] py-2  flex flex-col  bg-white rounded-xl px-5`}>
           <div className='flex justify-between text-orange-500'>

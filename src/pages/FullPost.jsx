@@ -82,7 +82,7 @@ userPost()
   return (
    <>
    <div className={`flex m-h-screen flex-col px-5   w-full ${theme.backgroundColor} `}>
-   <h1 className='text-2xl text-orange-500 mb-2 ml-2 mt-3 font-mono  ' >BlogInn</h1>
+   <h1 className='text-2xl text-orange-500 mb-2 ml-2 mt-3 font-mono' >BlogInn</h1>
 
     <div>
         <div className='w-10 h-10 flex mt-10 mb-5  '>
@@ -173,7 +173,7 @@ userPost()
         </div>
         <div className='absolute bottom-[4rem] h-[20rem]  left-0 h-20 bg-red-500 w-full'>
         <p className='text-center'>Comments</p>
-        <div className=' w-full  bottom-0'>
+        <div className=' w-full absolute bottom-0'>
            <div className='w-[100%] h-10 flex'>
            <input type="text" />
             <button>post</button>
