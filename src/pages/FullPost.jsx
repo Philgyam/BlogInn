@@ -1,7 +1,7 @@
 import React, { useEffect,useState,useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import CommentSection from '../components/CommentSection';
-import { bucket,BUCKET_ID ,account,DATABASE_ID,COLLECTION_ID,COLLECTION_PROFILE_ID,databases} from '../appwrite/appwriteconfig';
+import { bucket,BUCKET_ID ,account,DATABASE_ID,COLLECTION_ID,COLLECTION_PROFILE_ID,databases,COLLECTION_COMMENT_ID} from '../appwrite/appwriteconfig';
 import { ThemeContext } from '../components/ThemeProvider'
 import { BsBookmarkStar } from "react-icons/bs";
 import { IoShareSocialOutline } from "react-icons/io5";
@@ -24,6 +24,19 @@ function FullPost() {
 
     const fontColor = theme.backgroundColor === 'bg-black' ? 'text-white':''
     const [showComments, setShowComments] = useState(false);
+    const [commentBox, setCommentBox] = useState(false)
+    const [commentContent,setCommentContent] = useState()
+    const [userImage, setUserImage] = useState('')
+    const [username,setUsername] = useState('')
+
+    const currentDate = new Date().toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+        
+
+
 
 
 
@@ -40,7 +53,7 @@ function FullPost() {
             )
 
             setPost(post)
-            console.log(post)
+            console.log(post.$id)
            
 
 
@@ -75,6 +88,55 @@ userPost()
       window.removeEventListener('scroll', handleScroll);
     };
   }, [lastScrollY]);
+
+
+
+
+  useEffect(() => {
+    const fetchAvatar = async () => {
+      const userDetailes = await account.get();
+      const userProfile = await databases.getDocument(DATABASE_ID, COLLECTION_PROFILE_ID, userDetailes.$id);
+
+      const image = userProfile.UserAvatar
+      setUserImage(image)
+      const user = userProfile.username
+      setUsername(user)
+
+ 
+      
+   
+    };
+    fetchAvatar();
+  }, []);
+
+
+  const submitPost = async () =>{
+
+
+
+    try {
+      if(!commentContent) return
+
+      const post = await databases.createDocument(
+        DATABASE_ID,
+        COLLECTION_COMMENT_ID,
+        post.$id,{
+          author:username,
+          date_commented:currentDate,
+          postId:post.$id,
+          userAvatar:userImage,
+}
+
+)
+
+  console.log('it worked')
+      
+      
+    } catch (error) {
+      
+    }
+
+  }
 
 
 
@@ -143,17 +205,18 @@ userPost()
 
    {
     showComments &&(
+      <div className=''>
     
-  <div className={`w-[90%] h-[4rem] fixed bottom-0  mx-5 flex items-center justify-center bg-gray-400 py-5 items transition shadow-xl duration-1000ms ease-out sticky-bottom rounded-t-2xl `}>
+  <div  className={`bg-[#31363F]  w-[90%] h-[4rem] fixed bottom-0 z-5 mx-5 flex items-center justify-center  py-5 items transition shadow-xl duration-1000ms ease-out sticky-bottom rounded-t-2xl `}>
   
-  <div>
+  <div className='' >
    
 
-  <div className='flex flex-row gap-[5rem] items-center'>
+  <div className='flex flex-row gap-[5rem] items-center '>
     
           <button
           onClick={() => 
-              setShowComments(!showComments)
+              setCommentBox(!commentBox)
             }
           className='flex items-center gap-2 bg-gray-200 px-2 rounded-xl py-1'>
           <FaRegComment />
@@ -171,17 +234,38 @@ userPost()
             </div>
         
         </div>
-        <div className='absolute bottom-[4rem] h-[20rem]  left-0 h-20 bg-red-500 w-full'>
-        <p className='text-center'>Comments</p>
-        <div className=' w-full absolute bottom-0'>
-           <div className='w-[100%] h-10 flex'>
-           <input type="text" />
-            <button>post</button>
-           </div>
-        </div>
-  </div>
+        {
+          commentBox &&
+             <div className={`absolute bottom-[3.5rem] h-[20rem]  left-0  rounded-t-2xl bg-white   w-full`}>
+             <p className='text-center'>Comments</p>
+             <div className=' w-full absolute bottom-0'>
+                <div className='w-full px-1 h-10 flex mb-2'>
+                <input
+                name='comment'
+                onChange={(e)=>{
+                  setCommentContent(e.target.value)
+                }}
+                className='w-[80%] '
+                style={{
+                 borderColor: 'gray',
+                 borderWidth: '2px',
+                 borderStyle: 'solid'
+               }}
+                 type="text" />
+                 <button
+                 onClick={()=>{
+                  submitPost
+                 }}
+                 
+                 className='w-[20%] bg-black text-white'>post</button>
+                </div>
+             </div>
+       </div>
+        }
+       
 
   </div>
+</div>
 </div>
     )
    }
