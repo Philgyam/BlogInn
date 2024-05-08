@@ -115,15 +115,20 @@ userPost()
 
 
   const submitPost = async (event) =>{
-    event.preventDefault()
+
+    event.preventDefault() 
 
 
 
     try {
-      if(!commentContent) return
+
+      
+  
+      
+//       if(!commentContent) return
 
       const post = await databases.createDocument(
-        DATABASE_ID,
+        // DATABASE_ID,
         COLLECTION_COMMENT_ID,
         post.$id,{
           author:username,
@@ -133,18 +138,16 @@ userPost()
 },
 [
   Permission.read(Role.any()),
-  Permission.write(Role.user(userId)),
-  Permission.delete(Role.user(userId)),
-  Permission.update(Role.user(userId)),
 
 
 ]
+
+
   
 
 )
+console.log('it worked')
 
-  console.log('it worked')
-      
       
     } catch (error) {
       
@@ -253,7 +256,7 @@ userPost()
              <div className={`absolute bottom-[3.5rem] h-[20rem]  left-0  rounded-t-2xl bg-white   w-full`}>
              <p className='text-center'>Comments</p>
              <div className=' w-full absolute bottom-0'>
-             <form onSubmit={submitPost}>
+             <form onSubmit={(event) => submitPost(event)}>
 
                 <div className='w-full px-1 h-10 flex mb-2'>
                 <input
