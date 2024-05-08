@@ -9,7 +9,7 @@ import { FaRegComment } from "react-icons/fa";
 import { SlLike } from "react-icons/sl";
 import { SlDislike } from "react-icons/sl";
 import { v4 as uuidv4 } from 'uuid';
-import { Permission,Role } from 'appwrite';
+import { Permission,Query,Role } from 'appwrite';
 
 
 
@@ -32,6 +32,7 @@ function FullPost() {
     const [postId,setPostId] = useState('')
     const [userId, setUserId] = useState('')
     const [comments, setComments] = useState([]); 
+    const  [ commentNum, setCommentNum ] = useState()
 
 
     const currentDate = new Date().toLocaleDateString('en-US', {
@@ -100,7 +101,7 @@ userPost()
   }, [lastScrollY]);
 
 
-  //////////// THE FETCH FOR USERDETAILS /////////////////////
+  //////////// THE FETCH FOR USER DETAILS /////////////////////
 
   useEffect(() => {
     const fetchAvatar = async () => {
@@ -140,9 +141,10 @@ userPost()
 
       
       author:username,
-      date_commented:commentContent,
+      date_commented:currentDate,
       post_id:postId,
-      userAvatar:userImage
+      userAvatar:userImage,
+      content:commentContent
 
     },
      [
@@ -156,6 +158,7 @@ userPost()
    
 console.log('its done')
 
+
       
     } catch (error) {
       console.log(error,'its here')
@@ -166,6 +169,30 @@ console.log('its done')
 
   // //////////////// FETCHING THE COMMENTS PECULIAR TO POSTS/////////////////
 
+
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const comments = await databases.listDocuments(
+          DATABASE_ID,
+          COLLECTION_COMMENT_ID,
+          [
+            Query.equal('post_id',[`${postId}`])
+          ]
+         
+        );
+        setComments(comments);
+        console.log(comments)
+        setCommentNum(comments.documents.length)
+
+        console.log(comments.documents.length)
+      } catch (error) {
+        console.log(error, 'its here');
+      }
+    };
+    fetchComments();
+  }, [postId, userId]);
 
 
 
@@ -248,7 +275,7 @@ console.log('its done')
             }
           className='flex items-center gap-2 bg-gray-200 px-2 rounded-xl py-1'>
           <FaRegComment />
-          <span>10</span>
+          <span>{commentNum}</span>
             </button>
             <div className='flex  items-center  gap-2 bg-gray-200 px-2 rounded-xl py-1'>
             <div>
@@ -267,6 +294,7 @@ console.log('its done')
              <div className={`absolute bottom-[3.5rem] h-[20rem]  left-0  rounded-t-2xl bg-white   w-full`}>
              <p className='text-center'>Comments</p>
              <div className=' w-full absolute bottom-0'>
+
              
 
                 <div className='w-full px-1 h-10 flex mb-2'>

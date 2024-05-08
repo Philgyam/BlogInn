@@ -1,6 +1,6 @@
 import React ,{useState,useEffect}from 'react'
 import { bucket,BUCKET_ID ,account,DATABASE_ID,COLLECTION_ID,COLLECTION_PROFILE_ID,databases} from '../appwrite/appwriteconfig';
-import {ID,Permission,Role} from 'appwrite'
+import {ID,Permission,Role,Query} from 'appwrite'
 import { ThemeContext } from '../components/ThemeProvider'
 import {Link,useNavigate} from 'react-router-dom'
 import { FaRegComment } from "react-icons/fa";
@@ -20,18 +20,25 @@ function AllUserPosts() {
     const [avatar, setAvatar] = useState('')
     const [user,setUser] =  useState('')
     const {theme,updateTheme} = React.useContext(ThemeContext)
-    const [image,setImage] = useState('')
+    const [userId, setUserId] = useState('')
+
+
 
     const postFetch = async ( ) => {
       try {
-        const post = await databases.listDocuments(DATABASE_ID,COLLECTION_ID)
+        const post = await databases.listDocuments(DATABASE_ID,COLLECTION_ID,[
+          Query.equal('postID',[`${userId}`])
+        ])
         setPosts(post.documents)
+
+     
        
 
     
 
         
       } catch (error) {
+        console.log(error)
       }
     }
 
@@ -51,10 +58,11 @@ function AllUserPosts() {
         const image = userProfile.UserAvatar
         const user = userProfile.username
 
+
       
-        
-        setAvatar(image)
+        // console.log(userDetailes)
         setUser(user)
+        setUserId(userDetailes.$id)
         
         
         
@@ -63,7 +71,9 @@ function AllUserPosts() {
       fetchAvatar();
     }, []);
 
-
+useEffect(()=>{
+console.log(userId)
+},[])
 
 
     

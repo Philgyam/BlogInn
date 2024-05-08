@@ -35,6 +35,7 @@ function AddPost() {
   const [success,setSuccess ] = useState(null)
   const [submitted, setSubmitted] = useState(false)
   const [userPrevImage, setUserPrevImage] = useState(null)
+  const [userId,setUserId] = useState('')
 
 
   const navigate = useNavigate()
@@ -46,9 +47,7 @@ function AddPost() {
     day: 'numeric'
   });
 
-  const postId = uuidv4()
  
-  
 
   const Categories = ['Technology','DIY','Fashion','Education','Health','Relationship']
 
@@ -58,6 +57,7 @@ function AddPost() {
     const userDetails = await account.get()
     console.log(userDetails)
     const userId = userDetails.$id
+    setUserId(userId)
     
     const {Title, Content, Category,postDescribe} = data
 
@@ -84,7 +84,9 @@ function AddPost() {
           Avatar:avatar,
           dateCreated:currentDate,
           postDescribe,
-          postImage:url
+          postImage:url,
+          postID:userId
+
 
         },
       [
