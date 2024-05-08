@@ -66,9 +66,9 @@ function AllUserPosts() {
         setUser(user)
         setUserId(userDetailes.$id)
 
-        useEffect(() => {
-          window.location.reload(); // reload the page when posts change
-        }, [posts]);
+        // useEffect(() => {
+        //   window.location.reload(); // reload the page when posts change
+        // }, [posts]);
       
         
         
