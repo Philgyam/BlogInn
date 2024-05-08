@@ -7,6 +7,8 @@ import Sidebar from '../components/Sidebar';
 import { HiSearch } from 'react-icons/hi';
 import AllUserPosts from './AllUserPosts';
 import { MdOutlineExplore } from "react-icons/md";
+import { bucket,BUCKET_ID ,account,DATABASE_ID,COLLECTION_ID,COLLECTION_PROFILE_ID,databases} from '../appwrite/appwriteconfig';
+
 
 
 
@@ -29,13 +31,20 @@ function Profile() {
     setActive('Your Posts')
   })
 
+  const user= async()=>{
+    userdets = await account.get()
+  }
+  useEffect(()=>{
+    user()
+  })
+  
 
 
 
   
   return (
-    <>
-    <div className={`min-h-screen w-full ${theme.backgroundColor}`}>
+    
+    <div className={`min-h-screen h-screen w-full ${theme.backgroundColor}`}>
       <div className='flex gap-4 justify-around pt-6'>
         <div>
         <Sidebar/>
@@ -82,17 +91,11 @@ function Profile() {
    
 
     </div>
-    </>
+    
   )
 }
 
 export default Profile
 
-  {/* <img className='rounded-full w-16 h-16' src={avatar} alt=""  />
-
-            <div className='text-2xl' >
-              Hello
-            <span className='text-orange-500 font-bold text-3xl ml-3'>{username} </span>
-
-            </div> */}
+ 
           

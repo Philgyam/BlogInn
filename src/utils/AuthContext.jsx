@@ -3,6 +3,7 @@ import { account } from '../appwrite/appwriteconfig'
 import { useNavigate } from 'react-router-dom'
 import {ID} from 'appwrite'
 import {UsernameContext} from '../components/UsernameContext'
+import '../components/style.css'
 
 
 
@@ -105,10 +106,15 @@ export const AuthProvider = ({children}) =>{
   }
 
   return (
-    <AuthContext.Provider value={contextData}>
-      {loading?<p>Page Loading</p>:children}
-
-    </AuthContext.Provider>
+  <AuthContext.Provider value={contextData}>
+  {loading ? (
+    <div className="flex h-screen justify-center items-center bg-black">
+     <span class="loader"></span>
+    </div>
+  ) : (
+    children
+  )}
+</AuthContext.Provider>
   )
 
 
