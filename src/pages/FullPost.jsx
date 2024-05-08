@@ -159,6 +159,7 @@ userPost()
 console.log('its done')
 
 
+
       
     } catch (error) {
       console.log(error,'its here')
@@ -182,8 +183,9 @@ console.log('its done')
           ]
          
         );
-        setComments(comments);
-        console.log(comments)
+        setComments(comments.documents[0]);
+
+   
         setCommentNum(comments.documents.length)
 
         console.log(comments.documents.length)
@@ -280,7 +282,7 @@ console.log('its done')
             <div className='flex  items-center  gap-2 bg-gray-200 px-2 rounded-xl py-1'>
             <div>
             <SlLike />
-            </div>
+            </div> 
             <div>
             <p>10</p>
             </div>
@@ -293,8 +295,16 @@ console.log('its done')
           commentBox &&
              <div className={`absolute bottom-[3.5rem] h-[20rem]  left-0  rounded-t-2xl bg-white   w-full`}>
              <p className='text-center'>Comments</p>
+             <div>
+              {
+                comments.map((comment,index)=>(
+                  <div>hello</div>
+                ))
+              }
+             </div>
              <div className=' w-full absolute bottom-0'>
 
+             
              
 
                 <div className='w-full px-1 h-10 flex mb-2'>
