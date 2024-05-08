@@ -8,7 +8,8 @@ import { IoIosMore } from "react-icons/io";
 import { FaRegComment } from "react-icons/fa";
 import { SlLike } from "react-icons/sl";
 import { SlDislike } from "react-icons/sl";
-
+import { v4 as uuidv4 } from 'uuid';
+import { Permission,Role } from 'appwrite';
 
 
 
@@ -28,6 +29,9 @@ function FullPost() {
     const [commentContent,setCommentContent] = useState()
     const [userImage, setUserImage] = useState('')
     const [username,setUsername] = useState('')
+    const [postId,setPostId] = useState('')
+    const [userId, setUserId] = useState('')
+    const [comments, setComments] = useState([]); 
 
 
     const currentDate = new Date().toLocaleDateString('en-US', {
@@ -39,7 +43,7 @@ function FullPost() {
 
 
 
-
+// ///////// THE USE EFFECT FOR FETCHING THE POST /////////////////////////
 
    useEffect(()=>{
 
@@ -54,7 +58,9 @@ function FullPost() {
             )
 
             setPost(post)
-            // console.log(post.$id)
+            setUserImage(post.Avatar)
+            console.log(post.$id)
+            setPostId(post.$id)
            
 
 
@@ -68,6 +74,9 @@ userPost()
 
 
    },[id])
+
+
+   ////////// THE SCROLL  UP AND DOWN EFFECT///////////////////////////
 
    let lastScrollY = 0;
 
@@ -91,7 +100,7 @@ userPost()
   }, [lastScrollY]);
 
 
-
+  //////////// THE FETCH FOR USERDETAILS /////////////////////
 
   useEffect(() => {
     const fetchAvatar = async () => {
@@ -102,6 +111,9 @@ userPost()
       setUserImage(image)
       const user = userProfile.username
       setUsername(user)
+      setUserId(userDetailes.$id)
+      console.log(userId)
+
 
  
       
@@ -110,50 +122,49 @@ userPost()
     fetchAvatar();
   }, []);
 
+ 
 
 
+/////////// THE SUBMIT COMMENT FUNCTION ////////////////////
 
+  const submitPost = async () =>{
 
-  const submitPost = async (event) =>{
-
-    event.preventDefault() 
 
 
 
     try {
+      if(!commentContent) return
 
       
-  
+    const commentPost = await databases.createDocument(DATABASE_ID,COLLECTION_COMMENT_ID,uuidv4(),{
+
       
-//       if(!commentContent) return
+      author:username,
+      date_commented:commentContent,
+      post_id:postId,
+      userAvatar:userImage
 
-      const post = await databases.createDocument(
-        // DATABASE_ID,
-        COLLECTION_COMMENT_ID,
-        post.$id,{
-          author:username,
-          date_commented:currentDate,
-          postId:post.$id,
-          userAvatar:userImage,
-},
-[
-  Permission.read(Role.any()),
+    },
+     [
+      Permission.read(Role.any()),
+      Permission.write(Role.user(userId)),
+      Permission.delete(Role.user(userId)),
+      Permission.update(Role.user(userId)),
+    ]
+  )
 
-
-]
-
-
-  
-
-)
-console.log('it worked')
+   
+console.log('its done')
 
       
     } catch (error) {
-      
+      console.log(error,'its here')
     }
 
   }
+
+
+  // //////////////// FETCHING THE COMMENTS PECULIAR TO POSTS/////////////////
 
 
 
@@ -256,7 +267,7 @@ console.log('it worked')
              <div className={`absolute bottom-[3.5rem] h-[20rem]  left-0  rounded-t-2xl bg-white   w-full`}>
              <p className='text-center'>Comments</p>
              <div className=' w-full absolute bottom-0'>
-             <form onSubmit={(event) => submitPost(event)}>
+             
 
                 <div className='w-full px-1 h-10 flex mb-2'>
                 <input
@@ -273,11 +284,13 @@ console.log('it worked')
                  type="text" />
 
                  <button
-                type='submit'
+                onClick={()=>{
+                  console.log('hjello')
+                  submitPost()
+                }}
                  
                  className='w-[20%] bg-black text-white'>post</button>
                 </div>
-                </form>
              </div>
        </div>
         }
