@@ -46,7 +46,7 @@ function AddPost() {
     day: 'numeric'
   });
 
-
+  const postId = uuidv4()
  
   
 

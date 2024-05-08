@@ -1,6 +1,5 @@
 import React, { useEffect,useState,useContext } from 'react'
 import { useParams } from 'react-router-dom'
-import CommentSection from '../components/CommentSection';
 import { bucket,BUCKET_ID ,account,DATABASE_ID,COLLECTION_ID,COLLECTION_PROFILE_ID,databases,COLLECTION_COMMENT_ID} from '../appwrite/appwriteconfig';
 import { ThemeContext } from '../components/ThemeProvider'
 import { BsBookmarkStar } from "react-icons/bs";
@@ -9,6 +8,7 @@ import { IoIosMore } from "react-icons/io";
 import { FaRegComment } from "react-icons/fa";
 import { SlLike } from "react-icons/sl";
 import { SlDislike } from "react-icons/sl";
+
 
 
 
@@ -28,6 +28,7 @@ function FullPost() {
     const [commentContent,setCommentContent] = useState()
     const [userImage, setUserImage] = useState('')
     const [username,setUsername] = useState('')
+
 
     const currentDate = new Date().toLocaleDateString('en-US', {
       year: 'numeric',
@@ -53,7 +54,7 @@ function FullPost() {
             )
 
             setPost(post)
-            console.log(post.$id)
+            // console.log(post.$id)
            
 
 
@@ -110,7 +111,11 @@ userPost()
   }, []);
 
 
-  const submitPost = async () =>{
+
+
+
+  const submitPost = async (event) =>{
+    event.preventDefault()
 
 
 
@@ -204,7 +209,7 @@ userPost()
         </div>
     </div>
 
-    <div class="mt-20 border-b-2 border-b-gray-300 h-0 w-full"></div>
+    <div className="mt-20 border-b-2 border-b-gray-300 h-0 w-full"></div>
 
 
 
@@ -248,6 +253,8 @@ userPost()
              <div className={`absolute bottom-[3.5rem] h-[20rem]  left-0  rounded-t-2xl bg-white   w-full`}>
              <p className='text-center'>Comments</p>
              <div className=' w-full absolute bottom-0'>
+             <form onSubmit={submitPost}>
+
                 <div className='w-full px-1 h-10 flex mb-2'>
                 <input
                 name='comment'
@@ -263,10 +270,11 @@ userPost()
                  type="text" />
 
                  <button
-                 onClick={()=>submitPost()}
+                type='submit'
                  
                  className='w-[20%] bg-black text-white'>post</button>
                 </div>
+                </form>
              </div>
        </div>
         }
