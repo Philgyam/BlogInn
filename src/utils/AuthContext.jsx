@@ -71,9 +71,9 @@ export const AuthProvider = ({children}) =>{
     
 
       setUser(accountDetails)
-      updateUsername(accountDetails.name)
-    
+      
       navigate('/avatar')
+      updateUsername(accountDetails.name)
     
       
     } catch (error) {

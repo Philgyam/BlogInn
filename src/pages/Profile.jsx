@@ -29,14 +29,21 @@ function Profile() {
 
   useEffect(()=>{
     setActive('Your Posts')
-  })
+  },[])
 
   const user= async()=>{
-    userdets = await account.get()
+  try {
+    const userDetails = await account.get()
+    
+  } catch (error) {
+    console.log('failed to get user details')
   }
+  }
+
+
   useEffect(()=>{
     user()
-  })
+  },[])
   
 
 

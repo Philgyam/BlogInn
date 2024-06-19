@@ -24,10 +24,12 @@ function Avatar() {
     const {updateAvatar,avatar,setAvatar,updateUsername,username} = useContext(UsernameContext)
 
     const avatars =[
-        'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/6630602d00138cd2de78/view?project=66201769ed5710073074&mode=admin',
-        'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/66306152003a11058481/view?project=66201769ed5710073074&mode=admin',
+        'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/66306257003b3ba6261b/view?project=66201769ed5710073074&mode=admin',
+
         'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/663061f5001d3867b651/view?project=66201769ed5710073074&mode=admin',
         'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/66306257003b3ba6261b/view?project=66201769ed5710073074&mode=admin',
+        'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/66306257003b3ba6261b/view?project=66201769ed5710073074&mode=admin',
+
     
 ]
 
@@ -41,12 +43,6 @@ function Avatar() {
     
 
         const userDetailes= await account.get()
-        
-
-        
-       
-
-        
         
             
             try {
