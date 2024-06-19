@@ -4,6 +4,7 @@ import { CiMenuBurger } from "react-icons/ci";
 import { HiSearch } from 'react-icons/hi';
 import Sidebar from '../components/Sidebar'
 import { Link } from 'react-router-dom';
+import AllPosts from './AllPosts';
 
 
 function Homepage() {
@@ -59,6 +60,9 @@ function Homepage() {
           
 
         </div>
+      </div>
+      <div className=''>
+        <AllPosts/>
       </div>
     </div>
     
