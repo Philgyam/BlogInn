@@ -23,7 +23,7 @@ function Homepage() {
 
 
   return (
-    <div className={`flex flex-col h-screen   w-full ${theme.backgroundColor} `}>
+    <div className={`flex flex-col h-full   w-full ${theme.backgroundColor} `}>
         <h1 className='text-2xl text-orange-500 mb-2 ml-1 font-mono text-center mt-1' >BlogInn</h1>
       <div className='flex gap-8'>
        
@@ -61,7 +61,7 @@ function Homepage() {
 
         </div>
       </div>
-      <div className=''>
+      <div className='bg-black h-full'>
         <AllPosts/>
       </div>
     </div>
