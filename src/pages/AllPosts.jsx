@@ -20,6 +20,7 @@ function AllPosts() {
     try {
       const post = await databases.listDocuments(DATABASE_ID, COLLECTION_ID);
       setPosts(post.documents);
+      console.log(post)
     } catch (error) {
       console.log(error);
     } finally {
@@ -101,7 +102,7 @@ function AllPosts() {
             </div>
           </div>
         ) : (
-          <div className={`h-screen w-[100%] flex flex-col gap-10 px-5`}>
+          <div className={`mb-4 w-[100%] flex flex-col gap-10 px-5`}>
             {posts.length === 0 ? (
               <div className="text-center mt-5">
                 <p>No posts by user</p>
@@ -120,7 +121,7 @@ function AllPosts() {
                     </div>
                     <div></div>
                     <div></div>
-                    <p>{}</p>
+                    <p className='text-'>{post.Author}</p>
                     <img className='h-8 w-8 rounded-full object-fit' src={post.Avatar} alt="" />
                   </div>
                   <h1 className='text-[1.5rem] mb-2'>{post.Title}</h1>

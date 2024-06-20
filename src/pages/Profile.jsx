@@ -43,6 +43,7 @@ function Profile() {
 
   useEffect(()=>{
     user()
+    
   },[])
   
 

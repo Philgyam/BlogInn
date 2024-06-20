@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import AllPosts from './AllPosts';
 
 
+
 function Homepage() {
 
   const {theme,updateTheme} = useContext(ThemeContext)
@@ -19,6 +20,9 @@ function Homepage() {
   const clicked = (label)=>{
  setActive(label)
   }
+
+
+
 
 
 
@@ -43,10 +47,10 @@ function Homepage() {
         </div>
         
       </div>
-      <div className='pl-3 mt-10 '>
+      <div className='pl-3 mt-10 mb-5 '>
         <div className='flex gap-10'>
           <Link to='/addpost'> 
-          <button className='text-3xl bg-gray-400 w-10 h-10 rounded-full bg-opacity-30 '>
+          <button className='text-3xl bg-gray-400 w-10 h-10 rounded-full bg-opacity-30 flex justify-center  '>
             +
           </button>
           </Link>
@@ -61,8 +65,8 @@ function Homepage() {
 
         </div>
       </div>
-      <div className='bg-black h-full'>
-        <AllPosts/>
+      <div className=' h-full'>
+        <AllPosts />
       </div>
     </div>
     

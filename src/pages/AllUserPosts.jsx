@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { bucket, BUCKET_ID, account, DATABASE_ID, COLLECTION_ID, COLLECTION_PROFILE_ID, databases } from '../appwrite/appwriteconfig';
+import { bucket, BUCKET_ID, account, DATABASE_ID, COLLECTION_ID, COLLECTION_PROFILE_ID, databases,COLLECTION_COMMENT_ID } from '../appwrite/appwriteconfig';
 import { ID, Permission, Role, Query } from 'appwrite';
 import { ThemeContext } from '../components/ThemeProvider';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaRegComment } from "react-icons/fa";
 import { SlLike } from "react-icons/sl";
 import { SlDislike } from "react-icons/sl";
+import { useParams } from 'react-router-dom';
 
 function AllUserPosts() {
   const navigate = useNavigate();
@@ -15,6 +16,10 @@ function AllUserPosts() {
   const { theme, updateTheme } = React.useContext(ThemeContext);
   const [userId, setUserId] = useState('');
   const [loading, setLoading] = useState(true);
+  const [commentNum, setCommentNum] = useState(0);
+  const [post, setPost] = useState({});
+  const [postId, setPostId] = useState('');
+
 
   const postFetch = async () => {
     try {
@@ -22,6 +27,20 @@ function AllUserPosts() {
         Query.equal('postID', [`${userId}`])
       ]);
       setPosts(post.documents);
+      const documents = [...post.documents]
+      
+
+      documents.forEach((el,i)=>{
+        console.log(el.postID)
+        const commentsCounts = async()=>{
+          const comment = await databases.listDocuments(DATABASE_ID,COLLECTION_COMMENT_ID,[
+            Query.equal('postID', [])
+          ])
+        }
+
+      })
+      
+      
     } catch (error) {
       console.log(error);
     } finally {
@@ -47,6 +66,7 @@ function AllUserPosts() {
         setUser(username);
         setUserId(userDetailes.$id);
         setAvatar(image);
+      
       } catch (error) {
         console.log(error);
       }
@@ -54,6 +74,34 @@ function AllUserPosts() {
     fetchAvatar();
   }, []);
 
+
+
+//   const fetchComments = async () => {
+//     try {
+//         const comments = await databases.listDocuments(
+//             DATABASE_ID,
+//             COLLECTION_COMMENT_ID,
+          
+//         );
+//        comments.documents.map((el,i)=>{
+//         console.log(el.post_id)
+//        })
+
+
+       
+        
+        
+//     } catch (error) {
+//         console.log(error, 'its here');
+//     }
+// };
+
+// useEffect(() => {
+//    {
+//       fetchComments();
+      
+//   }
+// }, [postId]);
   return (
     <div className=' '>
       {loading ? (
@@ -105,7 +153,7 @@ function AllUserPosts() {
                   <div className='flex gap-5 items-center'>
                     <p className='flex items-center gap-2 bg-gray-200 px-2 rounded-xl py-1'>
                       <FaRegComment />
-                      <span>10</span>
+                      <span>{commentNum}</span>
                     </p>
                     <div className='flex items-center gap-2 bg-gray-200 px-2 rounded-xl py-1'>
                       <div>
