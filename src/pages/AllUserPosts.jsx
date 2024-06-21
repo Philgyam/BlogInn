@@ -139,8 +139,13 @@ function AllUserPosts() {
       ) : (
         <div className={`h-screen w-[100%] flex flex-col gap-10 px-5`}>
           {posts.length === 0 ? (
-            <div className="text-center mt-5">
-              <p>No posts by user</p>
+            <div className="text-center text-white mt-5">
+              <p>Hey Blogger, you haven't made any post yet </p>
+              <div>
+                <button className='px-1 py-1 mt-10 rounded bg-orange-500'>
+                  Add first Post
+                </button>
+              </div>
             </div>
           ) : (
             posts.map((post, index) => (

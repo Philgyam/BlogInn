@@ -15,11 +15,11 @@ function Avatar() {
     const [userBio, setUserBio] = useState('');
     const [userId, setUserId] = useState('');
     const [loading, setLoading] = useState(false)
-     
+    const [username, setUsername] = useState('')
     const [fileName, setFileName] = useState('Choose Image');
 
 
-    const { updateAvatar, avatar, updateUsername, username } = useContext(UsernameContext);
+    const { updateAvatar, avatar, updateUsername } = useContext(UsernameContext);
 
     const avatars = [
         'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/66306257003b3ba6261b/view?project=66201769ed5710073074&mode=admin',
@@ -35,9 +35,11 @@ function Avatar() {
     useEffect(() => {
         const fetchAvatar = async () => {
             const userDetailes = await account.get();
-            const userProfile = await databases.getDocument(DATABASE_ID, COLLECTION_PROFILE_ID, userDetailes.$id);
-            updateAvatar(userProfile.UserAvatar);
+            // const userProfile = await databases.getDocument(DATABASE_ID, COLLECTION_PROFILE_ID, userDetailes.$id);
+            // updateAvatar(userProfile.UserAvatar);
             setUserId(userDetailes.$id);
+            console.log(userDetailes)
+            setUsername(userDetailes.name)
             console.log(userId);
         };
         fetchAvatar();
