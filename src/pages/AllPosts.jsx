@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { bucket, BUCKET_ID, account, DATABASE_ID, COLLECTION_ID, COLLECTION_PROFILE_ID, databases } from '../appwrite/appwriteconfig';
+import { bucket, BUCKET_ID, account, DATABASE_ID, COLLECTION_ID, COLLECTION_PROFILE_ID, databases, COLLECTION_COMMENT_ID } from '../appwrite/appwriteconfig';
 import { ID, Permission, Role, Query } from 'appwrite';
 import { ThemeContext } from '../components/ThemeProvider';
 import { Link, useNavigate } from 'react-router-dom';
@@ -14,13 +14,26 @@ function AllPosts() {
   const { theme } = useContext(ThemeContext);
   const [userId, setUserId] = useState('');
   const [loading, setLoading] = useState(true);
+  const [commentCounts, setCommentCounts] = useState({});
   const navigate = useNavigate();
 
   const postFetch = async () => {
     try {
       const post = await databases.listDocuments(DATABASE_ID, COLLECTION_ID);
       setPosts(post.documents);
-      console.log(post)
+
+      const comments = await databases.listDocuments(DATABASE_ID, COLLECTION_COMMENT_ID);
+      const commentCounts = {};
+
+      comments.documents.forEach((comment) => {
+        const postId = comment.post_id;
+        if (!commentCounts[postId]) {
+          commentCounts[postId] = 0;
+        }
+        commentCounts[postId]++;
+      });
+
+      setCommentCounts(commentCounts);
     } catch (error) {
       console.log(error);
     } finally {
@@ -110,11 +123,10 @@ function AllPosts() {
             ) : (
               posts.map((post, index) => (
                 <div key={index}
-                
                   onClick={() => {
                     navigate(`/Profile/${user}/${post.Category}/${post.$id}`, { replace: false });
                   }}
-                  className={`mt-2  shadow-xl h-[15rem] w-[100%] py-2 flex flex-col transition duration-[5000ms] bg-white rounded-xl px-5`}>
+                  className={`mt-2 shadow-xl h-[15rem] w-[100%] py-2 flex flex-col transition duration-[5000ms] bg-white rounded-xl px-5`}>
                   <div className='flex justify-between text-orange-500'>
                     <div className='mb-4'>
                       <p>{new Date(post.dateCreated).toLocaleDateString()}</p>
@@ -135,7 +147,7 @@ function AllPosts() {
                     <div className='flex gap-5 items-center'>
                       <p className='flex items-center gap-2 bg-gray-200 px-2 rounded-xl py-1'>
                         <FaRegComment />
-                        <span>10</span>
+                        <span>{commentCounts[post.$id] || 0}</span>
                       </p>
                       <div className='flex items-center gap-2 bg-gray-200 px-2 rounded-xl py-1'>
                         <div>

@@ -76,7 +76,8 @@ function AllUserPosts() {
   return (
     <div className=' h-screen '>
       {loading ? (
-        <div className=" shadow rounded-md p-4 max-w-sm w-full mx-auto">
+        <div >
+        <div className=" shadow rounded-md mb-[3rem] p-4 max-w-sm w-full mx-auto">
           <div className="animate-pulse flex space-x-4">
             <div className="rounded-full bg-slate-700 h-10 w-10"></div>
             <div className="flex-1 space-y-6 py-1">
@@ -90,7 +91,45 @@ function AllUserPosts() {
               </div>
             </div>
           </div>
+
+          </div>
+
+          <div className=" shadow rounded-md mb-[3rem] p-4 max-w-sm w-full mx-auto">
+          <div className="animate-pulse flex space-x-4">
+            <div className="rounded-full bg-slate-700 h-10 w-10"></div>
+            <div className="flex-1 space-y-6 py-1">
+              <div className="h-2 bg-slate-700 rounded"></div>
+              <div className="space-y-3">
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="h-2 bg-slate-700 rounded col-span-2"></div>
+                  <div className="h-2 bg-slate-700 rounded col-span-1"></div>
+                </div>
+                <div className="h-2 bg-slate-700 rounded"></div>
+              </div>
+            </div>
+          </div>
+
+          </div>
+
+          <div className=" shadow rounded-md mb-[3rem] p-4 max-w-sm w-full mx-auto">
+          <div className="animate-pulse flex space-x-4">
+            <div className="rounded-full bg-slate-700 h-10 w-10"></div>
+            <div className="flex-1 space-y-6 py-1">
+              <div className="h-2 bg-slate-700 rounded"></div>
+              <div className="space-y-3">
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="h-2 bg-slate-700 rounded col-span-2"></div>
+                  <div className="h-2 bg-slate-700 rounded col-span-1"></div>
+                </div>
+                <div className="h-2 bg-slate-700 rounded"></div>
+              </div>
+            </div>
+          </div>
+
+          </div>
+          
         </div>
+        
       ) : (
         <div className={`h-screen w-[100%] flex flex-col gap-10 px-5`}>
           {posts.length === 0 ? (
@@ -101,7 +140,7 @@ function AllUserPosts() {
             posts.map((post, index) => (
               <div key={index}
                 onClick={() => {
-                  navigate(`/Profile/${user}/${post.Category}/${post.$id}`, { replace: false });
+                  navigate(`/Profile/${user}/${post.Category}/${post.$id}`, { replace: true });
                 }}
                 className={`mt-2 shadow-xl h-[15rem] w-[100%] py-2 flex flex-col transition duration-[5000ms] bg-white rounded-xl px-5`}>
                 <div className='flex justify-between text-orange-500'>

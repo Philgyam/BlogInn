@@ -124,6 +124,17 @@ color: fontColor,
             <li
             className={`transition-all duration-[400ms] ease-in-out ${isClicked ? 'translate-x-0': '-translate-x-full' } `}
             >
+                <Link to='/Home'>
+                <button 
+                className='bg-gray-700 py-2 px-4 rounded-full shadow-xl'
+                 >
+                  Home
+                </button>
+                </Link>
+            </li>
+            <li
+            className={`transition-all duration-[400ms] ease-in-out ${isClicked ? 'translate-x-0': '-translate-x-full' } `}
+            >
                 <Link to='/Profile'>
                 <button 
                 className='bg-gray-700 py-2 px-4 rounded-full shadow-xl'
@@ -147,16 +158,7 @@ color: fontColor,
                 </Link>
             </li>
 
-            <li
-              className={`transition-all duration-[600ms] ease-in-out ${isClicked ? 'translate-x-0': '-translate-x-full' } `}
-              >
-                <button className='bg-gray-700 py-2 px-4 rounded-full shadow-xl'>
-    Archives
-                </button>
-               
-                
-                </li>
-
+         
             <li
             
             className={`transition-all duration-[700ms] ease-in-out ${isClicked ? 'translate-x-0': '-translate-x-full' } `}

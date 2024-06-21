@@ -1,11 +1,13 @@
 import React from 'react'
 
-function Archives() {
+function UserBio() {
+
+    
   return (
     <div className='text-white'>
-      <div></div>
+        UserBio
     </div>
   )
 }
 
-export default Archives
+export default UserBio
