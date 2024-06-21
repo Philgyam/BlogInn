@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { bucket, BUCKET_ID, account, DATABASE_ID, COLLECTION_ID, COLLECTION_PROFILE_ID, databases,COLLECTION_COMMENT_ID } from '../appwrite/appwriteconfig';
+import { bucket, BUCKET_ID, account, DATABASE_ID, COLLECTION_ID, COLLECTION_PROFILE_ID, databases, COLLECTION_COMMENT_ID } from '../appwrite/appwriteconfig';
 import { ID, Permission, Role, Query } from 'appwrite';
 import { ThemeContext } from '../components/ThemeProvider';
 import { Link, useNavigate } from 'react-router-dom';
@@ -16,31 +16,31 @@ function AllUserPosts() {
   const { theme, updateTheme } = React.useContext(ThemeContext);
   const [userId, setUserId] = useState('');
   const [loading, setLoading] = useState(true);
-  const [commentNum, setCommentNum] = useState(0);
-  const [post, setPost] = useState({});
-  const [postId, setPostId] = useState('');
+  const [commentCounts, setCommentCounts] = useState({});
 
-
-  const postFetch = async () => {
+  // Fetch posts and comments
+  const fetchPostsAndComments = async () => {
     try {
-      const post = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
+      // Fetch posts
+      const postResponse = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
         Query.equal('postID', [`${userId}`])
       ]);
-      setPosts(post.documents);
-      const documents = [...post.documents]
-      
 
-      documents.forEach((el,i)=>{
-        console.log(el.postID)
-        const commentsCounts = async()=>{
-          const comment = await databases.listDocuments(DATABASE_ID,COLLECTION_COMMENT_ID,[
-            Query.equal('postID', [])
-          ])
+      // Fetch comments
+      const commentResponse = await databases.listDocuments(DATABASE_ID, COLLECTION_COMMENT_ID);
+
+      // Count comments for each post
+      const commentCounts = {};
+      commentResponse.documents.forEach(comment => {
+        const postId = comment.post_id;
+        if (!commentCounts[postId]) {
+          commentCounts[postId] = 0;
         }
+        commentCounts[postId]++;
+      });
 
-      })
-      
-      
+      setPosts(postResponse.documents);
+      setCommentCounts(commentCounts);
     } catch (error) {
       console.log(error);
     } finally {
@@ -50,7 +50,7 @@ function AllUserPosts() {
 
   useEffect(() => {
     if (userId) {
-      postFetch();
+      fetchPostsAndComments();
     }
   }, [userId]);
 
@@ -66,7 +66,6 @@ function AllUserPosts() {
         setUser(username);
         setUserId(userDetailes.$id);
         setAvatar(image);
-      
       } catch (error) {
         console.log(error);
       }
@@ -74,38 +73,10 @@ function AllUserPosts() {
     fetchAvatar();
   }, []);
 
-
-
-//   const fetchComments = async () => {
-//     try {
-//         const comments = await databases.listDocuments(
-//             DATABASE_ID,
-//             COLLECTION_COMMENT_ID,
-          
-//         );
-//        comments.documents.map((el,i)=>{
-//         console.log(el.post_id)
-//        })
-
-
-       
-        
-        
-//     } catch (error) {
-//         console.log(error, 'its here');
-//     }
-// };
-
-// useEffect(() => {
-//    {
-//       fetchComments();
-      
-//   }
-// }, [postId]);
   return (
-    <div className=' '>
+    <div className=' h-screen '>
       {loading ? (
-        <div className="h-[10rem] shadow rounded-md p-4 max-w-sm w-full mx-auto">
+        <div className=" shadow rounded-md p-4 max-w-sm w-full mx-auto">
           <div className="animate-pulse flex space-x-4">
             <div className="rounded-full bg-slate-700 h-10 w-10"></div>
             <div className="flex-1 space-y-6 py-1">
@@ -153,7 +124,7 @@ function AllUserPosts() {
                   <div className='flex gap-5 items-center'>
                     <p className='flex items-center gap-2 bg-gray-200 px-2 rounded-xl py-1'>
                       <FaRegComment />
-                      <span>{commentNum}</span>
+                      <span>{commentCounts[post.$id] || 0}</span>
                     </p>
                     <div className='flex items-center gap-2 bg-gray-200 px-2 rounded-xl py-1'>
                       <div>
