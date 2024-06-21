@@ -17,7 +17,7 @@ function AllUserPosts() {
   const [userId, setUserId] = useState('');
   const [loading, setLoading] = useState(true);
   const [commentCounts, setCommentCounts] = useState({});
-
+  
   // Fetch posts and comments
   const fetchPostsAndComments = async () => {
     try {
@@ -28,6 +28,10 @@ function AllUserPosts() {
 
       // Fetch comments
       const commentResponse = await databases.listDocuments(DATABASE_ID, COLLECTION_COMMENT_ID);
+
+      // Fetching Posts Avatar 
+
+      
 
       // Count comments for each post
       const commentCounts = {};
@@ -63,11 +67,13 @@ function AllUserPosts() {
         const image = userProfile.UserAvatar;
         const username = userProfile.username;
 
+        console.log(image)
+
         setUser(username);
         setUserId(userDetailes.$id);
         setAvatar(image);
       } catch (error) {
-        console.log(error);
+        console.log('its here');
       }
     };
     fetchAvatar();
@@ -150,7 +156,7 @@ function AllUserPosts() {
                   <div></div>
                   <div></div>
                   <p>You</p>
-                  <img className='h-8 w-8 rounded-full object-fit' src={post.Avatar} alt="" />
+                  <img className='h-8 w-8 rounded-full object-fit' src={avatar} alt="" />
                 </div>
                 <h1 className='text-[1.5rem] mb-2'>{post.Title}</h1>
                 <div className='flex h-[6rem] items-center mb-4'>

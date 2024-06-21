@@ -1,21 +1,31 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { bucket, BUCKET_ID, account, DATABASE_ID, COLLECTION_ID, COLLECTION_PROFILE_ID, databases, COLLECTION_COMMENT_ID } from '../appwrite/appwriteconfig';
-import { ID, Permission, Role, Query } from 'appwrite';
+import { account, databases, DATABASE_ID, COLLECTION_ID, COLLECTION_PROFILE_ID, COLLECTION_COMMENT_ID } from '../appwrite/appwriteconfig';
 import { ThemeContext } from '../components/ThemeProvider';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FaRegComment } from "react-icons/fa";
-import { SlLike } from "react-icons/sl";
-import { SlDislike } from "react-icons/sl";
+import { SlLike, SlDislike } from "react-icons/sl";
 
 function AllPosts() {
   const [posts, setPosts] = useState([]);
-  const [avatar, setAvatar] = useState('');
-  const [user, setUser] = useState('');
+  const [userAvatars, setUserAvatars] = useState({});
   const { theme } = useContext(ThemeContext);
   const [userId, setUserId] = useState('');
   const [loading, setLoading] = useState(true);
   const [commentCounts, setCommentCounts] = useState({});
   const navigate = useNavigate();
+
+  const fetchUserAvatars = async () => {
+    try {
+      const userProfile = await databases.listDocuments(DATABASE_ID, COLLECTION_PROFILE_ID);
+      const avatars = {};
+      userProfile.documents.forEach((profile) => {
+        avatars[profile.profile_id] = profile.UserAvatar;
+      });
+      setUserAvatars(avatars);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const postFetch = async () => {
     try {
@@ -46,9 +56,7 @@ function AllPosts() {
       try {
         const userDetails = await account.get();
         setUserId(userDetails.$id);
-        const userProfile = await databases.getDocument(DATABASE_ID, COLLECTION_PROFILE_ID, userDetails.$id);
-        setAvatar(userProfile.UserAvatar);
-        setUser(userProfile.username);
+        await fetchUserAvatars();
       } catch (error) {
         console.log(error);
       }
@@ -124,7 +132,7 @@ function AllPosts() {
               posts.map((post, index) => (
                 <div key={index}
                   onClick={() => {
-                    navigate(`/Profile/${user}/${post.Category}/${post.$id}`, { replace: false });
+                    navigate(`/Profile/${post.Author}/${post.Category}/${post.$id}`, { replace: false });
                   }}
                   className={`mt-2 shadow-xl h-[15rem] w-[100%] py-2 flex flex-col transition duration-[5000ms] bg-white rounded-xl px-5`}>
                   <div className='flex justify-between text-orange-500'>
@@ -133,8 +141,8 @@ function AllPosts() {
                     </div>
                     <div></div>
                     <div></div>
-                    <p className='text-'>{post.Author}</p>
-                    <img className='h-8 w-8 rounded-full object-fit' src={post.Avatar} alt="" />
+                    <p>{post.Author}</p>
+                    <img className='h-8 w-8 rounded-full object-fit' src={userAvatars[post.postID]} alt="" />
                   </div>
                   <h1 className='text-[1.5rem] mb-2'>{post.Title}</h1>
                   <div className='flex h-[6rem] items-center mb-4'>

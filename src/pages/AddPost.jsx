@@ -61,6 +61,8 @@ function AddPost() {
     
     const {Title, Content, Category,postDescribe} = data
 
+    
+
   
     
    

@@ -1,10 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { AiOutlineMenu } from "react-icons/ai";
-import { useAuth } from '../utils/AuthContext';
 import { UsernameContext } from '../components/UsernameContext';
 import { ThemeContext } from '../components/ThemeProvider';
 import Sidebar from '../components/Sidebar';
-import { HiSearch } from 'react-icons/hi';
 import AllUserPosts from './AllUserPosts';
 import { MdOutlineExplore } from "react-icons/md";
 import UserBio from './UserBio';
