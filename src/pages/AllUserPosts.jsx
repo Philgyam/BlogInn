@@ -158,8 +158,7 @@ function AllUserPosts() {
                   <div className='mb-4'>
                     <p>{post.dateCreated}</p>
                   </div>
-                  <div></div>
-                  <div></div>
+                  
                   <p>You</p>
                   <img className='h-8 w-8 rounded-full object-fit' src={avatar} alt="" />
                 </div>
