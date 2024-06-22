@@ -13,6 +13,7 @@ function AllPosts() {
   const [userId, setUserId] = useState('');
   const [loading, setLoading] = useState(true);
   const [commentCounts, setCommentCounts] = useState({});
+  const [dailyDigestPosts, setDailyDigestPosts] = useState([]);
   const navigate = useNavigate();
 
   const fetchUserAvatars = async () => {
@@ -32,6 +33,7 @@ function AllPosts() {
     try {
       const post = await databases.listDocuments(DATABASE_ID, COLLECTION_ID);
       setPosts(post.documents);
+      selectRandomDailyDigestPosts(post.documents);
 
       const comments = await databases.listDocuments(DATABASE_ID, COLLECTION_COMMENT_ID);
       const commentCounts = {};
@@ -50,6 +52,11 @@ function AllPosts() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const selectRandomDailyDigestPosts = (posts) => {
+    const shuffled = [...posts].sort(() => 0.5 - Math.random());
+    setDailyDigestPosts(shuffled.slice(0, 5));
   };
 
   useEffect(() => {
@@ -97,7 +104,7 @@ function AllPosts() {
   return (
     <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'} py-10`}>
       <div className="container mx-auto px-4 flex flex-col lg:flex-row">
-        <div className="w-full lg:w-2/3">
+        <div className="w-full lg:w-3/5">
           {loading ? (
             <div className="flex justify-center items-center h-screen">
               <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
@@ -115,7 +122,7 @@ function AllPosts() {
                     onClick={() => {
                       navigate(`/profile/${post.Author}/${post.Category}/${post.$id}`, { replace: false });
                     }}
-                    className={`bg-white shadow-lg rounded-lg overflow-hidden transition transform hover:scale-105 cursor-pointer flex`}
+                    className={`bg-white shadow-lg rounded-lg overflow-hidden transition transform hover:scale-105 cursor-pointer flex border-b border-gray-300`}
                   >
                     <div className="p-4 flex-grow">
                       <div className="flex justify-between items-center mb-4">
@@ -155,10 +162,20 @@ function AllPosts() {
             </div>
           )}
         </div>
-        <div className="hidden lg:block lg:w-1/3 lg:pl-6 mt-10 lg:mt-0">
+        <div className="hidden lg:block lg:w-1.5/5 lg:pl-6 mt-10 lg:mt-0">
           <div className="bg-white shadow-lg rounded-lg p-6">
             <h2 className="text-2xl font-bold mb-4">Daily Digest</h2>
-            <p className="text-gray-700">This section can be used to display daily updates, important notices, or featured content. You can populate it with dynamic or static content as needed.</p>
+            {dailyDigestPosts.map((post, index) => (
+              <div key={index} className="mb-4 border-b border-gray-300 pb-2">
+                <div className="flex items-center space-x-4">
+                  <img className="h-8 w-8 rounded-full object-cover" src={userAvatars[post.postID]} alt="" />
+                  <div>
+                    <p className="text-gray-700 font-semibold">{post.Title}</p>
+                    <p className="text-gray-400 text-sm">{post.Author} - {formatDate(post.dateCreated)}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
