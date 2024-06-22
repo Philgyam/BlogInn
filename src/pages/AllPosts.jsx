@@ -4,6 +4,7 @@ import { ThemeContext } from '../components/ThemeProvider';
 import { useNavigate } from 'react-router-dom';
 import { FaRegComment } from "react-icons/fa";
 import { SlLike, SlDislike } from "react-icons/sl";
+import dayjs from 'dayjs';
 
 function AllPosts() {
   const [posts, setPosts] = useState([]);
@@ -79,6 +80,20 @@ function AllPosts() {
     return content;
   };
 
+  const formatDate = (date) => {
+    const postDate = dayjs(date);
+    const today = dayjs();
+    const yesterday = today.subtract(1, 'day');
+
+    if (postDate.isSame(today, 'day')) {
+      return 'Today';
+    } else if (postDate.isSame(yesterday, 'day')) {
+      return 'Yesterday';
+    } else {
+      return postDate.format('MMM D, YYYY');
+    }
+  };
+
   return (
     <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'} py-10`}>
       <div className="container mx-auto px-4 flex flex-col lg:flex-row">
@@ -108,7 +123,7 @@ function AllPosts() {
                           <img className="h-10 w-10 rounded-full object-cover" src={userAvatars[post.postID]} alt="" />
                           <div>
                             <p className="text-gray-700 font-semibold">{post.Author}</p>
-                            <p className="text-gray-400 text-sm">{new Date(post.dateCreated).toLocaleDateString()}</p>
+                            <p className="text-gray-400 text-sm">{formatDate(post.dateCreated)}</p>
                           </div>
                         </div>
                         <button className="bg-gray-200 text-gray-700 py-1 px-3 rounded-full text-sm">{post.Category}</button>
