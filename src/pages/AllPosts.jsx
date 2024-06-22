@@ -98,7 +98,7 @@ function AllPosts() {
                   <div 
                     key={index}
                     onClick={() => {
-                      navigate(`/${post.Author}/${post.Category}/${post.$id}`, { replace: false });
+                      navigate(`/profile/${post.Author}/${post.Category}/${post.$id}`, { replace: false });
                     }}
                     className={`bg-white shadow-lg rounded-lg overflow-hidden transition transform hover:scale-105 cursor-pointer flex`}
                   >
