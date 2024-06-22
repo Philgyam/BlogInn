@@ -7,6 +7,7 @@ import { FaRegComment } from "react-icons/fa";
 import { SlLike } from "react-icons/sl";
 import { SlDislike } from "react-icons/sl";
 import { useParams } from 'react-router-dom';
+import { RiDeleteBin6Fill } from "react-icons/ri";
 
 function AllUserPosts() {
   const navigate = useNavigate();
@@ -142,9 +143,11 @@ function AllUserPosts() {
             <div className="text-center text-white mt-5">
               <p>Hey Blogger, you haven't made any post yet </p>
               <div>
+                <Link to='/addPost' >
                 <button className='px-1 py-1 mt-10 rounded bg-orange-500'>
                   Add first Post
                 </button>
+                </Link>
               </div>
             </div>
           ) : (
@@ -184,6 +187,7 @@ function AllUserPosts() {
                       </div>
                       |
                       <SlDislike />
+                      <RiDeleteBin6Fill />
                     </div>
                   </div>
                   <button className='bg-slate-100 text-gray-500 py-1 px-2 rounded-2xl'>{post.Category}</button>
