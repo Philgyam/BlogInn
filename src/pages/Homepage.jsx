@@ -36,9 +36,9 @@ function Homepage() {
         </div>
       </div>
       <div className='pl-3 mt-10 mb-5'>
-        <div className='flex gap-10'>
+        <div className='flex gap-10 w-full justify-start'>
           <Link to='/addpost'>
-            <button className='text-3xl bg-gray-400 w-10 h-10 rounded-full bg-opacity-30 flex justify-center'>
+            <button className='text-3xl bg-gray-400 w-10 h-10 rounded-full bg-opacity-30 flex justify-center items-center'>
               +
             </button>
           </Link>
@@ -46,7 +46,7 @@ function Homepage() {
             <button
               key={label}
               onClick={() => clicked(label)}
-              className={`px-1 py-1 rounded transition-all duration-200 
+              className={`px-3 py-2 rounded transition-all duration-200 
                 ${active === label ? 'bg-orange-500 text-white' : theme.backgroundColor === 'bg-black' ? 'text-white' : 'text-black'}`}
             >
               {label}

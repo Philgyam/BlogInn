@@ -8,6 +8,7 @@ import {ID,Permission,Role} from 'appwrite'
 import { useNavigate } from 'react-router-dom'
 import { Editor } from "@tinymce/tinymce-react"
 import { v4 as uuidv4 } from 'uuid';
+import { Spinner } from '@chakra-ui/react'
 
 import {
   Alert,
@@ -36,6 +37,8 @@ function AddPost() {
   const [submitted, setSubmitted] = useState(false)
   const [userPrevImage, setUserPrevImage] = useState(null)
   const [userId,setUserId] = useState('')
+  const [upload,setUpload] = useState (false)
+  
 
 
   const navigate = useNavigate()
@@ -138,14 +141,16 @@ function AddPost() {
 
   const handleUploaded = async ()=>{
     try {
+      setUpload(true)
         if(!userPrevImage) return;
         const fileId  = uuidv4();
          await bucket.createFile(BUCKET_ID,fileId,userPrevImage)
         console.log('file uploaded')
+        setUpload(false)
         const fileUrl =  bucket.getFileView(BUCKET_ID,fileId)
         setUrl(fileUrl)
 
-        console.log(fileUrl)
+    
         
 
         
@@ -241,18 +246,35 @@ function AddPost() {
        
        />
 
-       <div className='bg-gray-200 h-[5rem] w-[9rem]'>
-        <img className='h-[5rem] w-[9rem] object-contain' src={url} alt="" />
+       <div className='bg-gray-200 h-[5rem]  w-[9rem]'>
+       {url && <img className='h-full w-full object-cover' src={url} alt="Preview" />}
+       
      
        </div>
+       
 
        </div>
 
        <button
-       className='ml-8 text-[1.2rem] bg-blue-600 px-5 py-1 rounded-sm '
+       className='ml-8 text-[1rem] flex items-center w-[7rem] h-10 bg-blue-600 px-5 rounded-sm '
        onClick={handleUploaded}
        type='button'
-       >Upload</button>
+       >
+       <div>Upload</div>
+              {upload && (
+                <Spinner
+                  thickness='3px'
+                  style={{
+                    height: '1rem',
+                    width: "1rem",
+                    color: '#FC4100',
+                    fontWeight: 'bold',
+                    marginLeft: '0.5rem'
+                  }}
+                />
+              )}
+       </button>
+    
 
        
 

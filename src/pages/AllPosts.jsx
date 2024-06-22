@@ -71,110 +71,81 @@ function AllPosts() {
     }
   }, [userId]);
 
+  const truncateContent = (content) => {
+    const words = content.split(' ');
+    if (words.length > 10) {
+      return words.slice(0, 10).join(' ') + '...';
+    }
+    return content;
+  };
+
   return (
-    <div>
-      <div>
-        {loading ? (
-          <div>
-            <div className="h-[10rem] shadow rounded-md p-4 max-w-sm w-full mx-auto">
-              <div className="animate-pulse flex space-x-4">
-                <div className="rounded-full bg-slate-700 h-10 w-10"></div>
-                <div className="flex-1 space-y-6 py-1">
-                  <div className="h-2 bg-slate-700 rounded"></div>
-                  <div className="space-y-3">
-                    <div className="grid grid-cols-3 gap-4">
-                      <div className="h-2 bg-slate-700 rounded col-span-2"></div>
-                      <div className="h-2 bg-slate-700 rounded col-span-1"></div>
-                    </div>
-                    <div className="h-2 bg-slate-700 rounded"></div>
-                  </div>
-                </div>
-              </div>
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'} py-10`}>
+      <div className="container mx-auto px-4 flex flex-col lg:flex-row">
+        <div className="w-full lg:w-2/3">
+          {loading ? (
+            <div className="flex justify-center items-center h-screen">
+              <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
             </div>
-            <div className="h-[10rem] shadow rounded-md p-4 max-w-sm w-full mx-auto">
-              <div className="animate-pulse flex space-x-4">
-                <div className="rounded-full bg-slate-700 h-10 w-10"></div>
-                <div className="flex-1 space-y-6 py-1">
-                  <div className="h-2 bg-slate-700 rounded"></div>
-                  <div className="space-y-3">
-                    <div className="grid grid-cols-3 gap-4">
-                      <div className="h-2 bg-slate-700 rounded col-span-2"></div>
-                      <div className="h-2 bg-slate-700 rounded col-span-1"></div>
-                    </div>
-                    <div className="h-2 bg-slate-700 rounded"></div>
-                  </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {posts.length === 0 ? (
+                <div className="col-span-full text-center text-gray-500">
+                  <p>No posts by user</p>
                 </div>
-              </div>
-            </div>
-            <div className="h-[10rem] shadow rounded-md p-4 max-w-sm w-full mx-auto">
-              <div className="animate-pulse flex space-x-4">
-                <div className="rounded-full bg-vcslate-700 h-10 w-10"></div>
-                <div className="flex-1 space-y-6 py-1">
-                  <div className="h-2 bg-slate-700 rounded"></div>
-                  <div className="space-y-3">
-                    <div className="grid grid-cols-3 gap-4">
-                      <div className="h-2 bg-slate-700 rounded col-span-2"></div>
-                      <div className="h-2 bg-slate-700 rounded col-span-1"></div>
-                    </div>
-                    <div className="h-2 bg-slate-700 rounded"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className={`mb-4 w-[100%] flex flex-col gap-10 px-5`}>
-            {posts.length === 0 ? (
-              <div className="text-center mt-5">
-                <p>No posts by user</p>
-              </div>
-            ) : (
-              posts.map((post, index) => (
-                <div key={index}
-                  onClick={() => {
-                    navigate(`/Profile/${post.Author}/${post.Category}/${post.$id}`, { replace: false });
-                  }}
-                  className={`mt-2 shadow-xl h-[15rem] w-[100%] py-2 flex flex-col transition duration-[5000ms] bg-white rounded-xl px-5`}>
-                  <div className='flex justify-between text-orange-500'>
-                    <div className='mb-4'>
-                      <p>{new Date(post.dateCreated).toLocaleDateString()}</p>
-                    </div>
-                    <div></div>
-                    <div></div>
-                    <p>{post.Author}</p>
-                    <img className='h-8 w-8 rounded-full object-fit' src={userAvatars[post.postID]} alt="" />
-                  </div>
-                  <h1 className='text-[1.5rem] mb-2'>{post.Title}</h1>
-                  <div className='flex h-[6rem] items-center mb-4'>
-                    <p>{post.Content}</p>
-                    <div className='w-[50%] h-full'>
-                      <img className='w-[100%] h-full' src={post.postImage} alt="" />
-                    </div>
-                  </div>
-                  <div className='flex justify-between'>
-                    <div className='flex gap-5 items-center'>
-                      <p className='flex items-center gap-2 bg-gray-200 px-2 rounded-xl py-1'>
-                        <FaRegComment />
-                        <span>{commentCounts[post.$id] || 0}</span>
-                      </p>
-                      <div className='flex items-center gap-2 bg-gray-200 px-2 rounded-xl py-1'>
-                        <div>
-                          <SlLike />
+              ) : (
+                posts.map((post, index) => (
+                  <div 
+                    key={index}
+                    onClick={() => {
+                      navigate(`/${post.Author}/${post.Category}/${post.$id}`, { replace: false });
+                    }}
+                    className={`bg-white shadow-lg rounded-lg overflow-hidden transition transform hover:scale-105 cursor-pointer flex`}
+                  >
+                    <div className="p-4 flex-grow">
+                      <div className="flex justify-between items-center mb-4">
+                        <div className="flex items-center space-x-4">
+                          <img className="h-10 w-10 rounded-full object-cover" src={userAvatars[post.postID]} alt="" />
+                          <div>
+                            <p className="text-gray-700 font-semibold">{post.Author}</p>
+                            <p className="text-gray-400 text-sm">{new Date(post.dateCreated).toLocaleDateString()}</p>
+                          </div>
                         </div>
-                        <div>
-                          <p>10</p>
+                        <button className="bg-gray-200 text-gray-700 py-1 px-3 rounded-full text-sm">{post.Category}</button>
+                      </div>
+                      <h1 className="text-xl font-bold text-gray-900 mb-2">{post.Title}</h1>
+                      <p className="text-gray-700 mb-4">{truncateContent(post.Content)}</p>
+                      <div className="flex justify-between items-center">
+                        <div className="flex space-x-4">
+                          <div className="flex items-center space-x-2 text-gray-600">
+                            <FaRegComment />
+                            <span>{commentCounts[post.$id] || 0}</span>
+                          </div>
+                          <div className="flex items-center space-x-2 text-gray-600">
+                            <SlLike />
+                            <span>10</span>
+                          </div>
+                          <div className="flex items-center space-x-2 text-gray-600">
+                            <SlDislike />
+                          </div>
                         </div>
-                        |
-                        <SlDislike />
                       </div>
                     </div>
-                    <button className='bg-slate-100 text-gray-500 py-1 px-2 rounded-2xl'>{post.Category}</button>
+                    <div className="w-24 h-24 bg-gray-200">
+                      <img className="w-full h-full object-cover" src={post.postImage} alt="" />
+                    </div>
                   </div>
-                </div>
-              ))
-            )}
+                ))
+              )}
+            </div>
+          )}
+        </div>
+        <div className="hidden lg:block lg:w-1/3 lg:pl-6 mt-10 lg:mt-0">
+          <div className="bg-white shadow-lg rounded-lg p-6">
+            <h2 className="text-2xl font-bold mb-4">Daily Digest</h2>
+            <p className="text-gray-700">This section can be used to display daily updates, important notices, or featured content. You can populate it with dynamic or static content as needed.</p>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
