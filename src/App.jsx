@@ -17,6 +17,7 @@ import FullPost from './pages/FullPost'
 
 
 
+
 function App() {
 
 
@@ -31,6 +32,7 @@ function App() {
         <Route path='/' element={<Welcome/>}/>
         <Route path='/signIn' element={<SignIn/>}/>
         <Route path='/signUp' element={<SignUp/>}/>
+        
 
       {/* Protected Pages with Private Routes component */}
 

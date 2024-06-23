@@ -162,7 +162,7 @@ function AllPosts() {
             </div>
           )}
         </div>
-        <div className="hidden lg:block lg:w-1.5/5 lg:pl-6 mt-10 lg:mt-0">
+        <div className="hidden lg:block lg:w-2/5 lg:pl-12 mt-10 lg:mt-0">
           <div className="bg-white shadow-lg rounded-lg p-6">
             <h2 className="text-2xl font-bold mb-4">Daily Digest</h2>
             {dailyDigestPosts.map((post, index) => (

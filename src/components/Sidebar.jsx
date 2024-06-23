@@ -6,6 +6,8 @@ import { useAuth } from '../utils/AuthContext';
 import {Link} from 'react-router-dom'
 import { bucket,BUCKET_ID, databases,DATABASE_ID ,COLLECTION_PROFILE_ID} from '../appwrite/appwriteconfig';
 import { account } from '../appwrite/appwriteconfig'
+import { IoHome } from "react-icons/io5";
+
 
 
 
@@ -126,9 +128,10 @@ color: fontColor,
             >
                 <Link to='/Home'>
                 <button 
-                className='bg-gray-700 py-2 px-4 rounded-full shadow-xl'
+                className='bg-gray-700  py-2 px-4 rounded-full shadow-xl'
                  >
                   Home
+                  <IoHome />
                 </button>
                 </Link>
             </li>
