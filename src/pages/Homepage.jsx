@@ -19,33 +19,33 @@ function Homepage() {
   return (
     <div className={`flex flex-col h-screen ${theme.backgroundColor}`}>
       {/* Header */}
-      <div className="sticky top-0 z-50 bg-inherit">
+      <div className="sticky top-0 z-50 bg-inherit shadow-md">
         <h1 className='text-2xl text-orange-500 mb-2 ml-1 font-mono text-center mt-1'>BlogInn</h1>
-        <div className='flex gap-8'>
-          <div className='flex gap-[2rem]'>
-            <div className='z-[1000] lg:hidden'>
+        <div className='flex gap-8 items-center justify-center p-4'>
+          <div className='flex gap-8 items-center'>
+            <div className='lg:hidden '>
               <Sidebar />
             </div>
-            <form action="" className='relative flex'>
+            <form action="" className='relative flex items-center'>
               <input
                 type="text"
-                className='h-10 w-[15rem] pl-1 font-mono bg-black bg-opacity-50 rounded-full shadow-md text-white flex-1'
+                className='h-10 w-[15rem] pl-4 pr-10 font-mono bg-black bg-opacity-50 rounded-full shadow-md text-white focus:outline-none focus:ring-2 focus:ring-orange-500'
                 required
-                placeholder='search....'
+                placeholder='Search...'
               />
-              <button className="absolute right-5 top-3">
+              <button className="absolute right-3 top-2">
                 <HiSearch className="text-white" />
               </button>
             </form>
           </div>
         </div>
-        <div className='pl-3 mt-10 mb-5'>
-          <div className='flex gap-10 w-full justify-start'>
-            <Link to='/addpost'>
-              <button className='text-3xl bg-gray-400 w-10 h-10 rounded-full bg-opacity-30 flex justify-center items-center'>
-                +
-              </button>
-            </Link>
+        <div className='flex lg:ml-[9rem] pl-3 pb-2'>
+          {/* <Link to='/addpost'>
+            <button className='text-3xl bg-gray-400 w-10 h-10 rounded-full bg-opacity-30 flex justify-center items-center'>
+              +
+            </button>
+          </Link> */}
+          <div className='flex gap-4'>
             {buttonLabels.map((label) => (
               <button
                 key={label}
