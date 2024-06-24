@@ -41,7 +41,7 @@ function Profile() {
             </form>
           </div>
         </div>
-        <div className='flex lg:ml-[9rem] pl-3 pb-2'>
+        <div className='flex lg:ml-[9.2rem] pl-3 pb-2'>
           <div className='flex gap-4'>
             {buttonLabels.map((label) => (
               <button
@@ -75,7 +75,7 @@ function Profile() {
         </div>
 
         {/* Content Section */}
-        <div className="flex-grow overflow-y-auto p-4 ">
+        <div className="flex-grow overflow-y-auto  ">
           {active === 'Your Posts' && <AllUserPosts />}
           {active === 'User Bio' && <UserBio />}
           {active === 'Archive' && <Archives />}

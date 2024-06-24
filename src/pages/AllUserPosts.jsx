@@ -1,23 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { bucket, BUCKET_ID, account, DATABASE_ID, COLLECTION_ID, COLLECTION_PROFILE_ID, databases, COLLECTION_COMMENT_ID } from '../appwrite/appwriteconfig';
-import { ID, Permission, Role, Query } from 'appwrite';
+import { Query } from 'appwrite';
 import { ThemeContext } from '../components/ThemeProvider';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaRegComment } from "react-icons/fa";
 import { SlLike, SlDislike } from "react-icons/sl";
-import { useParams } from 'react-router-dom';
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import { IoMdArchive } from "react-icons/io";
+import dayjs from 'dayjs';
 
 function AllUserPosts() {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [avatar, setAvatar] = useState('');
   const [user, setUser] = useState('');
-  const { theme, updateTheme } = React.useContext(ThemeContext);
+  const { theme, updateTheme } = useContext(ThemeContext);
   const [userId, setUserId] = useState('');
   const [loading, setLoading] = useState(true);
   const [commentCounts, setCommentCounts] = useState({});
+  const [showModal, setShowModal] = useState(false);
+  const [selectedPostId, setSelectedPostId] = useState(null);
 
   // Fetch posts and comments
   const fetchPostsAndComments = async () => {
@@ -49,6 +51,17 @@ function AllUserPosts() {
     }
   };
 
+  const deletePost = async (postId) => {
+    try {
+      await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, postId);
+      setPosts(posts.filter(post => post.$id !== postId));
+    } catch (error) {
+      console.log('Error deleting post:', error);
+    } finally {
+      setShowModal(false);
+    }
+  };
+
   useEffect(() => {
     if (userId) {
       fetchPostsAndComments();
@@ -73,6 +86,27 @@ function AllUserPosts() {
     };
     fetchAvatar();
   }, []);
+
+  const truncateContent = (content, maxLength) => {
+    if (content.length > maxLength) {
+      return content.slice(0, maxLength) + '...';
+    }
+    return content;
+  };
+
+  const formatDate = (date) => {
+    const postDate = dayjs(date);
+    const today = dayjs();
+    const yesterday = today.subtract(1, 'day');
+
+    if (postDate.isSame(today, 'day')) {
+      return 'Today';
+    } else if (postDate.isSame(yesterday, 'day')) {
+      return 'Yesterday';
+    } else {
+      return postDate.format('MMM D, YYYY');
+    }
+  };
 
   return (
     <div className="h-screen bg-gray-100 p-4">
@@ -109,40 +143,60 @@ function AllUserPosts() {
                 onClick={() => {
                   navigate(`/Profile/${user}/${post.Category}/${post.$id}`, { replace: true });
                 }}
-                className="mt-2 shadow-lg h-auto w-full max-w-md py-4 px-6 flex flex-col bg-white rounded-xl transition-transform hover:scale-105">
-                <div className="flex justify-between items-center mb-2 text-gray-600">
-                  <p>{post.dateCreated}</p>
-                  <p>You</p>
-                  <img className="h-8 w-8 rounded-full object-cover" src={avatar} alt="Avatar" />
-                </div>
-                <h1 className="text-lg font-bold mb-2">{post.Title}</h1>
-                <div className="flex h-auto items-center mb-2">
-                  <p className="flex-1 text-gray-700">{post.Content}</p>
-                  <div className="w-24 h-24 ml-4">
-                    <img className="w-full h-full object-cover rounded-lg shadow-sm" src={post.postImage} alt="Post" />
+                className="bg-white shadow-lg rounded-lg overflow-hidden transition transform hover:scale-105 cursor-pointer flex border-b border-gray-300"
+              >
+                <div className="p-4 flex-grow">
+                  <div className="flex justify-between items-center mb-4">
+                    <div className="flex items-center space-x-4">
+                      <img className="h-10 w-10 rounded-full object-cover" src={avatar} alt="Avatar" />
+                      <div>
+                        <p className="text-gray-700 font-semibold">You</p>
+                        <p className="text-gray-400 text-sm">{formatDate(post.dateCreated)}</p>
+                      </div>
+                    </div>
+                    <button className="bg-gray-200 text-gray-700 py-1 px-3 rounded-full text-sm">{post.Category}</button>
+                  </div>
+                  <h1 className="text-xl font-bold text-gray-900 mb-2">{truncateContent(post.Title, 20)}</h1>
+                  <p className="text-gray-700 mb-4">{truncateContent(post.Content, 30)}</p>
+                  <div className="flex justify-between items-center">
+                    <div className="flex space-x-4">
+                      <div className="flex items-center space-x-2 text-gray-600">
+                        <FaRegComment />
+                        <span>{commentCounts[post.$id] || 0}</span>
+                      </div>
+                      <div className="flex items-center space-x-2 text-gray-600">
+                        <SlLike />
+                        <span>10</span>
+                      </div>
+                      <div className="flex items-center space-x-2 text-gray-600">
+                        <SlDislike />
+                      </div>
+                    </div>
+                    <div className="flex gap-4 ml-auto">
+                      <RiDeleteBin6Fill style={{color:'red'}} onClick={(e) => { e.stopPropagation(); setSelectedPostId(post.$id); setShowModal(true); }} />
+                      <IoMdArchive style={{color:'blueviolet'}} />
+                    </div>
                   </div>
                 </div>
-                <div className="flex justify-between items-center">
-                  <div className="flex gap-2 items-center text-gray-500">
-                    <p className="flex items-center gap-1 bg-gray-200 px-2 py-1 rounded-full">
-                      <FaRegComment />
-                      <span>{commentCounts[post.$id] || 0}</span>
-                    </p>
-                    <div className="flex items-center gap-1 bg-gray-200 px-2 py-1 rounded-full">
-                      <SlLike />
-                      <p>10</p>
-                      <SlDislike />
-                    </div>
-                    <div className='flex gap-2 ml-10'>
-                    <RiDeleteBin6Fill />
-                    <IoMdArchive />
-                    </div>
-                  </div>
-                  <button className="bg-gray-200 text-gray-700 py-1 px-3 rounded-full">{post.Category}</button>
+                <div className="w-24 h-24 bg-gray-200">
+                  <img className="w-full h-full object-cover" src={post.postImage} alt="Post" />
                 </div>
               </div>
             ))
           )}
+        </div>
+      )}
+
+      {showModal && (
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
+          <div className="bg-white p-6 rounded shadow-lg">
+            <h2 className="text-lg font-bold mb-4">Confirm Deletion</h2>
+            <p className="mb-4">Are you sure you want to delete this post?</p>
+            <div className="flex justify-end gap-4">
+              <button className="px-4 py-2 rounded bg-gray-300 text-gray-700 hover:bg-gray-400 transition" onClick={() => setShowModal(false)}>Cancel</button>
+              <button className="px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600 transition" onClick={() => deletePost(selectedPostId)}>Delete</button>
+            </div>
+          </div>
         </div>
       )}
     </div>
