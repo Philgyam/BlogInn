@@ -102,15 +102,15 @@ function AllPosts() {
   };
 
   return (
-    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'} py-10`}>
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'} py-6`}>
       <div className="container mx-auto px-4 flex flex-col lg:flex-row">
         <div className="w-full lg:w-3/5">
           {loading ? (
             <div className="flex justify-center items-center h-screen">
-              <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+              <div className="animate-spin rounded-full h-24 w-24 border-t-2 border-b-2 border-blue-500"></div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {posts.length === 0 ? (
                 <div className="col-span-full text-center text-gray-500">
                   <p>No posts by user</p>
@@ -124,36 +124,36 @@ function AllPosts() {
                     }}
                     className={`bg-white shadow-lg rounded-lg overflow-hidden transition transform hover:scale-105 cursor-pointer flex border-b border-gray-300`}
                   >
-                    <div className="p-4 flex-grow">
-                      <div className="flex justify-between items-center mb-4">
-                        <div className="flex items-center space-x-4">
-                          <img className="h-10 w-10 rounded-full object-cover" src={userAvatars[post.postID]} alt="" />
+                    <div className="p-3 flex-grow">
+                      <div className="flex justify-between items-center mb-2">
+                        <div className="flex items-center space-x-3">
+                          <img className="h-8 w-8 rounded-full object-cover" src={userAvatars[post.postID]} alt="" />
                           <div>
-                            <p className="text-gray-700 font-semibold">{post.Author}</p>
-                            <p className="text-gray-400 text-sm">{formatDate(post.dateCreated)}</p>
+                            <p className="text-gray-700 font-semibold text-sm">{post.Author}</p>
+                            <p className="text-gray-400 text-xs">{formatDate(post.dateCreated)}</p>
                           </div>
                         </div>
-                        <button className="bg-gray-200 text-gray-700 py-1 px-3 rounded-full text-sm">{post.Category}</button>
+                        <button className="bg-gray-200 text-gray-700 py-1 px-2 rounded-full text-xs">{post.Category}</button>
                       </div>
-                      <h1 className="text-xl font-bold text-gray-900 mb-2">{post.Title}</h1>
-                      <p className="text-gray-700 mb-4">{truncateContent(post.Content)}</p>
+                      <h1 className="text-lg font-bold text-gray-900 mb-1">{post.Title}</h1>
+                      <p className="text-gray-700 text-sm mb-2">{truncateContent(post.Content)}</p>
                       <div className="flex justify-between items-center">
-                        <div className="flex space-x-4 ">
-                          <div className="flex items-center space-x-2 text-gray-600">
+                        <div className="flex space-x-3 text-xs">
+                          <div className="flex items-center space-x-1 text-gray-600">
                             <FaRegComment />
                             <span>{commentCounts[post.$id] || 0}</span>
                           </div>
-                          <div className="flex items-center space-x-2 text-gray-600">
+                          <div className="flex items-center space-x-1 text-gray-600">
                             <SlLike />
                             <span>10</span>
                           </div>
-                          <div className="flex items-center space-x-2 text-gray-600">
+                          <div className="flex items-center space-x-1 text-gray-600">
                             <SlDislike />
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="w-24 h-24 bg-gray-200">
+                    <div className="w-20 h-20 bg-gray-200">
                       <img className="w-full h-full object-cover" src={post.postImage} alt="" />
                     </div>
                   </div>
@@ -162,16 +162,16 @@ function AllPosts() {
             </div>
           )}
         </div>
-        <div className="lg:pl-12 mt-10 lg:mt-0">
-          <div className="bg-white shadow-lg rounded-lg p-6">
-            <h2 className="text-2xl font-bold mb-4">Daily Digest</h2>
+        <div className="lg:pl-8 mt-6 lg:mt-0">
+          <div className="bg-white shadow-lg rounded-lg p-4">
+            <h2 className="text-xl font-bold mb-4">Daily Digest</h2>
             {dailyDigestPosts.map((post, index) => (
-              <div key={index} className="mb-4 border-b border-gray-300 pb-2">
-                <div className="flex items-center space-x-4">
-                  <img className="h-8 w-8 rounded-full object-cover" src={userAvatars[post.postID]} alt="" />
+              <div key={index} className="mb-3 border-b border-gray-300 pb-2">
+                <div className="flex items-center space-x-3">
+                  <img className="h-6 w-6 rounded-full object-cover" src={userAvatars[post.postID]} alt="" />
                   <div>
-                    <p className="text-gray-700 font-semibold">{post.Title}</p>
-                    <p className="text-gray-400 text-sm">{post.Author} - {formatDate(post.dateCreated)}</p>
+                    <p className="text-gray-700 font-semibold text-sm">{post.Title}</p>
+                    <p className="text-gray-400 text-xs">{post.Author} - {formatDate(post.dateCreated)}</p>
                   </div>
                 </div>
               </div>
@@ -179,8 +179,8 @@ function AllPosts() {
           </div>
 
           {/* Follow Persons Section */}
-          <div className="mt-10">
-            <h2 className="text-2xl font-bold mb-4">Follow Persons</h2>
+          <div className="mt-6">
+            <h2 className="text-xl font-bold mb-4">Follow Persons</h2>
             {/* Add your follow persons content here */}
           </div>
         </div>
