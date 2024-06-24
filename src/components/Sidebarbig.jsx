@@ -76,8 +76,8 @@ function Sidebarbig() {
         <li className="hover:bg-gray-700 p-1 md:p-2 rounded">
           <Link to='/Home'>
             <button
-              className='bg-gray-700 py-1 px-2 md:py-2 md:px-4 rounded-full shadow-xl'
-            >
+              className=' py-1 px-2 md:py-2 md:px-4 rounded-full  lg:text-[1rem] md:text-[.5rem]'
+              >
               Home
             </button>
           </Link>
@@ -85,8 +85,8 @@ function Sidebarbig() {
         <li className="hover:bg-gray-700 p-1 md:p-2 rounded">
           <Link to='/Profile'>
             <button
-              className='bg-gray-700 py-1 px-2 md:py-2 md:px-4 rounded-full shadow-xl'
-            >
+              className=' py-1 px-2 md:py-2 md:px-4 rounded-full  lg:text-[1rem] md:text-[.5rem]'
+              >
               My Page
             </button>
           </Link>
@@ -94,7 +94,7 @@ function Sidebarbig() {
         <li className="hover:bg-gray-700 p-1 md:p-2 rounded">
           <Link to='/addPost'>
             <button
-              className='bg-gray-700 py-1 px-2 md:py-2 md:px-4 rounded-full shadow-xl'
+              className=' py-1 px-2 md:py-2 md:px-4 rounded-full  lg:text-[1rem] md:text-[.5rem]'
             >
               Add Post
             </button>
@@ -103,14 +103,20 @@ function Sidebarbig() {
         <li className="hover:bg-gray-700 p-1 md:p-2 rounded">
           <Link to='/'>
             <button
-              className='bg-gray-700 py-1 px-2 md:py-2 md:px-4 rounded-full shadow-xl'
+              className=' py-1 px-2 md:py-2 md:px-4 rounded-full  lg:text-[1rem] md:text-[.5rem]'
               onClick={handleSubmit}
             >
               Logout
             </button>
           </Link>
         </li>
-        <li className="hover:bg-gray-700 p-1 md:p-2 rounded">Community</li>
+        <button>
+
+        
+        <li className="hover:bg-gray-700 p-1 md:p-2 rounded">
+          Community
+          </li>
+          </button>
       </ul>
       <div className='flex flex-row justify-end gap-2 md:gap-4 pt-4 pr-4'>
         <div onClick={colorChange1} className='w-4 h-4 md:w-5 md:h-5 bg-[#FFF3C7] rounded-full hover:cursor-pointer'></div>
