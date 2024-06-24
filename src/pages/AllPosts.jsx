@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaRegComment } from "react-icons/fa";
 import { SlLike, SlDislike } from "react-icons/sl";
 import dayjs from 'dayjs';
+import { Query } from 'appwrite';
 
 function AllPosts() {
   const [posts, setPosts] = useState([]);
@@ -18,9 +19,7 @@ function AllPosts() {
 
   const fetchUserAvatars = async () => {
     try {
-      const userProfile = await databases.listDocuments(DATABASE_ID, COLLECTION_PROFILE_ID,[
-        Query.equal('isArchived', [false])
-      ]);
+      const userProfile = await databases.listDocuments(DATABASE_ID, COLLECTION_PROFILE_ID);
       const avatars = {};
       userProfile.documents.forEach((profile) => {
         avatars[profile.profile_id] = profile.UserAvatar;
@@ -33,7 +32,11 @@ function AllPosts() {
 
   const postFetch = async () => {
     try {
-      const post = await databases.listDocuments(DATABASE_ID, COLLECTION_ID);
+      const post = await databases.listDocuments(DATABASE_ID, COLLECTION_ID,
+        [
+        Query.equal('isArchived', [false])
+      ]
+      );
       setPosts(post.documents);
       selectRandomDailyDigestPosts(post.documents);
 
