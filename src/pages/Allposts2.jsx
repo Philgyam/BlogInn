@@ -122,15 +122,8 @@ function AllPosts() {
                     onClick={() => {
                       navigate(`/profile/${post.Author}/${post.Category}/${post.$id}`, { replace: false });
                     }}
-                    className={`bg-white shadow-lg rounded-lg overflow-hidden transition transform hover:scale-105 cursor-pointer flex flex-col border-b border-gray-300`}
+                    className={`bg-white shadow-lg rounded-lg overflow-hidden transition transform hover:scale-105 cursor-pointer flex border-b border-gray-300`}
                   >
-                    {/* {Th is where ot starts} */}
-                    <div className="relative">
-                      <img className="w-full h-48 object-cover" src={post.postImage} alt="" />
-                      <div className="absolute bottom-0 right-0 p-2 bg-gray-800 bg-opacity-75 text-white">
-                        {post.Category}
-                      </div>
-                    </div>
                     <div className="p-4 flex-grow">
                       <div className="flex justify-between items-center mb-4">
                         <div className="flex items-center space-x-4">
@@ -140,33 +133,36 @@ function AllPosts() {
                             <p className="text-gray-400 text-sm">{formatDate(post.dateCreated)}</p>
                           </div>
                         </div>
+                        <button className="bg-gray-200 text-gray-700 py-1 px-3 rounded-full text-sm">{post.Category}</button>
                       </div>
                       <h1 className="text-xl font-bold text-gray-900 mb-2">{post.Title}</h1>
                       <p className="text-gray-700 mb-4">{truncateContent(post.Content)}</p>
-                    </div>
-                    <div className="mt-auto p-4 bg-white border-t border-gray-300 flex justify-between items-center">
-                      <div className="flex space-x-4">
-                        <div className="flex items-center space-x-2 text-gray-600">
-                          <FaRegComment />
-                          <span>{commentCounts[post.$id] || 0}</span>
-                        </div>
-                        <div className="flex items-center space-x-2 text-gray-600">
-                          <SlLike />
-                          <span>10</span>
-                        </div>
-                        <div className="flex items-center space-x-2 text-gray-600">
-                          <SlDislike />
+                      <div className="flex justify-between items-center">
+                        <div className="flex space-x-4 ">
+                          <div className="flex items-center space-x-2 text-gray-600">
+                            <FaRegComment />
+                            <span>{commentCounts[post.$id] || 0}</span>
+                          </div>
+                          <div className="flex items-center space-x-2 text-gray-600">
+                            <SlLike />
+                            <span>10</span>
+                          </div>
+                          <div className="flex items-center space-x-2 text-gray-600">
+                            <SlDislike />
+                          </div>
                         </div>
                       </div>
                     </div>
-                    {/* {Ends here} */}
+                    <div className="w-24 h-24 bg-gray-200">
+                      <img className="w-full h-full object-cover" src={post.postImage} alt="" />
+                    </div>
                   </div>
                 ))
               )}
             </div>
           )}
         </div>
-        <div className="hidden lg:block lg:w-2/5 lg:pl-12 mt-10 lg:mt-0">
+        <div className="lg:pl-12 mt-10 lg:mt-0">
           <div className="bg-white shadow-lg rounded-lg p-6">
             <h2 className="text-2xl font-bold mb-4">Daily Digest</h2>
             {dailyDigestPosts.map((post, index) => (
@@ -180,6 +176,12 @@ function AllPosts() {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Follow Persons Section */}
+          <div className="mt-10">
+            <h2 className="text-2xl font-bold mb-4">Follow Persons</h2>
+            {/* Add your follow persons content here */}
           </div>
         </div>
       </div>

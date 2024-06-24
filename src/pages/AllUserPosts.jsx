@@ -7,6 +7,7 @@ import { FaRegComment } from "react-icons/fa";
 import { SlLike, SlDislike } from "react-icons/sl";
 import { useParams } from 'react-router-dom';
 import { RiDeleteBin6Fill } from "react-icons/ri";
+import { IoMdArchive } from "react-icons/io";
 
 function AllUserPosts() {
   const navigate = useNavigate();
@@ -67,7 +68,7 @@ function AllUserPosts() {
         setUserId(userDetailes.$id);
         setAvatar(image);
       } catch (error) {
-        console.log('its here');
+        console.log('Error fetching avatar:', error);
       }
     };
     fetchAvatar();
@@ -94,7 +95,7 @@ function AllUserPosts() {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col items-center gap-8">
+        <div className="flex flex-col lg:flex-row items-center gap-8">
           {posts.length === 0 ? (
             <div className="text-center text-gray-700 mt-5">
               <p className="text-lg">Hey Blogger, you haven't made any post yet</p>
@@ -108,33 +109,36 @@ function AllUserPosts() {
                 onClick={() => {
                   navigate(`/Profile/${user}/${post.Category}/${post.$id}`, { replace: true });
                 }}
-                className="mt-2 shadow-lg h-auto w-full max-w-4xl py-4 px-6 flex flex-col bg-white rounded-xl transition-transform hover:scale-105">
-                <div className="flex justify-between items-center mb-4 text-gray-600">
+                className="mt-2 shadow-lg h-auto w-full max-w-md py-4 px-6 flex flex-col bg-white rounded-xl transition-transform hover:scale-105">
+                <div className="flex justify-between items-center mb-2 text-gray-600">
                   <p>{post.dateCreated}</p>
                   <p>You</p>
-                  <img className="h-10 w-10 rounded-full object-cover" src={avatar} alt="Avatar" />
+                  <img className="h-8 w-8 rounded-full object-cover" src={avatar} alt="Avatar" />
                 </div>
-                <h1 className="text-2xl font-bold mb-2">{post.Title}</h1>
-                <div className="flex h-auto items-center mb-4">
+                <h1 className="text-lg font-bold mb-2">{post.Title}</h1>
+                <div className="flex h-auto items-center mb-2">
                   <p className="flex-1 text-gray-700">{post.Content}</p>
-                  <div className="w-40 h-40 ml-4">
+                  <div className="w-24 h-24 ml-4">
                     <img className="w-full h-full object-cover rounded-lg shadow-sm" src={post.postImage} alt="Post" />
                   </div>
                 </div>
                 <div className="flex justify-between items-center">
-                  <div className="flex gap-4 items-center text-gray-500">
-                    <p className="flex items-center gap-2 bg-gray-200 px-3 py-1 rounded-full">
+                  <div className="flex gap-2 items-center text-gray-500">
+                    <p className="flex items-center gap-1 bg-gray-200 px-2 py-1 rounded-full">
                       <FaRegComment />
                       <span>{commentCounts[post.$id] || 0}</span>
                     </p>
-                    <div className="flex items-center gap-2 bg-gray-200 px-3 py-1 rounded-full">
+                    <div className="flex items-center gap-1 bg-gray-200 px-2 py-1 rounded-full">
                       <SlLike />
                       <p>10</p>
                       <SlDislike />
-                      <RiDeleteBin6Fill />
+                    </div>
+                    <div className='flex gap-2 ml-10'>
+                    <RiDeleteBin6Fill />
+                    <IoMdArchive />
                     </div>
                   </div>
-                  <button className="bg-gray-200 text-gray-700 py-1 px-4 rounded-full">{post.Category}</button>
+                  <button className="bg-gray-200 text-gray-700 py-1 px-3 rounded-full">{post.Category}</button>
                 </div>
               </div>
             ))

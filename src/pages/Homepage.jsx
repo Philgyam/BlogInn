@@ -2,18 +2,27 @@ import React, { useContext, useState } from 'react';
 import { ThemeContext } from '../components/ThemeProvider';
 import { HiSearch } from 'react-icons/hi';
 import Sidebar from '../components/Sidebar';
-import { Link } from 'react-router-dom';
-import AllPosts from './AllPosts';
 import Sidebarbig from '../components/Sidebarbig';
+import AllPosts from './AllPosts';
+import Foryou from '../components/Foryou';
+import Trending from '../components/Trending';
+import { MdOutlineExplore, MdOutlineWindow } from "react-icons/md";
+import AllPosts2 from './Allposts2';
 
 function Homepage() {
   const { theme } = useContext(ThemeContext);
 
-  const buttonLabels = ['For You', 'Recent', 'Trending'];
-  const [active, setActive] = useState('For You');
+  const buttonLabels = ['Recent', 'For You', 'Trending'];
+  const [active, setActive] = useState('Recent'); // Set default active button to 'Recent'
+  const [layout, setLayout] = useState('grid'); // Set default layout to 'grid'
+  const [showAllPosts2, setShowAllPosts2] = useState(false); // State to toggle between AllPosts and AllPosts2
 
   const clicked = (label) => {
     setActive(label);
+  };
+
+  const toggleLayout = () => {
+    setShowAllPosts2((prev) => !prev); // Toggle between true and false
   };
 
   return (
@@ -21,11 +30,13 @@ function Homepage() {
       {/* Header */}
       <div className="sticky top-0 z-50 bg-inherit shadow-md">
         <h1 className='text-2xl text-orange-500 mb-2 ml-1 font-mono text-center mt-1'>BlogInn</h1>
-        <div className='flex gap-8 items-center justify-center p-4'>
+        <div className='flex items-center justify-between p-4'>
           <div className='flex gap-8 items-center'>
-            <div className='lg:hidden '>
+            <div className='lg:hidden'>
               <Sidebar />
             </div>
+          </div>
+          <div className='flex-1 flex justify-center'>
             <form action="" className='relative flex items-center'>
               <input
                 type="text"
@@ -38,13 +49,19 @@ function Homepage() {
               </button>
             </form>
           </div>
+          <div className='flex items-center'>
+            <MdOutlineWindow
+              onClick={toggleLayout}
+              style={{
+                height: '2rem',
+                width: '2rem',
+                color: theme.backgroundColor === 'bg-black' ? 'white' : 'black',
+                cursor: 'pointer'
+              }}
+            />
+          </div>
         </div>
         <div className='flex lg:ml-[9rem] pl-3 pb-2'>
-          {/* <Link to='/addpost'>
-            <button className='text-3xl bg-gray-400 w-10 h-10 rounded-full bg-opacity-30 flex justify-center items-center'>
-              +
-            </button>
-          </Link> */}
           <div className='flex gap-4'>
             {buttonLabels.map((label) => (
               <button
@@ -56,6 +73,14 @@ function Homepage() {
                 {label}
               </button>
             ))}
+            <MdOutlineExplore
+              style={{
+                height: '2rem',
+                width: '2rem',
+                color: theme.backgroundColor === 'bg-black' ? 'white' : 'black',
+                marginLeft: '2rem'
+              }}
+            />
           </div>
         </div>
       </div>
@@ -71,7 +96,9 @@ function Homepage() {
 
         {/* Posts Content */}
         <div className="flex-grow overflow-y-auto">
-          <AllPosts />
+          {active === 'Recent' && (showAllPosts2 ? <AllPosts2 layout={layout} /> : <AllPosts layout={layout} />)}
+          {active === 'For You' && <Foryou />}
+          {active === 'Trending' && <Trending />}
         </div>
       </div>
     </div>
