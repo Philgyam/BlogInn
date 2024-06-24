@@ -81,7 +81,7 @@ function Sidebarbig() {
             
 
             </div>
-      <h2 className="text-2xl font-bold p-4">Menu</h2>
+      <h2 className="text-2xl font-bold p-4"></h2>
       
       <ul className="flex flex-col space-y-4 p-4">
         <li className="hover:bg-gray-700 p-2 rounded">
