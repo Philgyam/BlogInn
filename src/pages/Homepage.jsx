@@ -29,8 +29,8 @@ function Homepage() {
     <div className={`flex flex-col h-screen ${theme.backgroundColor}`}>
       {/* Header */}
       <div className="sticky top-0 z-50 bg-inherit shadow-md">
-        <h1 className='text-xl md:text-2xl text-orange-500 mb-2 ml-1 font-mono text-center mt-1'>BlogInn</h1>
-        <div className='flex items-center justify-between p-2 md:p-4'>
+        <h1 className='text-xl md:text-2xl text-orange-500 mb-1 ml-1 font-mono text-center mt-1'>BlogInn</h1>
+        <div className='flex items-center justify-between px-2 md:px-4 py-1 md:py-2'>
           <div className='flex gap-4 md:gap-8 items-center'>
             <div className='lg:hidden'>
               <Sidebar />
@@ -49,20 +49,8 @@ function Homepage() {
               </button>
             </form>
           </div>
-          <div className='flex items-center'>
-            <MdOutlineWindow
-              onClick={toggleLayout}
-              style={{
-                height: '1.5rem',
-                width: '1.5rem',
-                md: { height: '2rem', width: '2rem' },
-                color: theme.backgroundColor === 'bg-black' ? 'white' : 'black',
-                cursor: 'pointer'
-              }}
-            />
-          </div>
         </div>
-        <div className='flex lg:ml-[9rem] pl-2 md:pl-3 pb-2'>
+        <div className='flex lg:ml-[9rem] pl-2 md:pl-3 pb-1'>
           <div className='flex gap-2 md:gap-4'>
             {buttonLabels.map((label) => (
               <button
@@ -88,7 +76,7 @@ function Homepage() {
       </div>
 
       {/* Main Content */}
-      <div className="flex flex-grow overflow-hidden">
+      <div className="flex flex-grow overflow-hidden relative">
         {/* Sidebar */}
         <div className="hidden lg:flex lg:w-[10rem]">
           <div className="flex-shrink-0 w-[10rem]">
@@ -101,6 +89,19 @@ function Homepage() {
           {active === 'Recent' && (showAllPosts2 ? <AllPosts2 layout={layout} /> : <AllPosts layout={layout} />)}
           {active === 'For You' && <Foryou />}
           {active === 'Trending' && <Trending />}
+        </div>
+
+        {/* Window Button */}
+        <div className='absolute bottom-4 right-4'>
+          <MdOutlineWindow
+            onClick={toggleLayout}
+            style={{
+              height: '2rem',
+              width: '2rem',
+              color:  'black',
+              cursor: 'pointer'
+            }}
+          />
         </div>
       </div>
     </div>
