@@ -96,7 +96,7 @@ function Homepage() {
 
         {/* Posts Content */}
         <div className="flex-grow overflow-y-auto">
-          {active === 'Recent' && (showAllPosts2 ? <AllPosts2 layout={layout} /> : <AllPosts layout={layout} />)}
+          {active === 'Recent' && (showAllPosts2 ? <AllPosts layout={layout} /> : <AllPosts2 layout={layout} />)}
           {active === 'For You' && <Foryou />}
           {active === 'Trending' && <Trending />}
         </div>
