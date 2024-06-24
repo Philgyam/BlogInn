@@ -18,7 +18,9 @@ function AllPosts() {
 
   const fetchUserAvatars = async () => {
     try {
-      const userProfile = await databases.listDocuments(DATABASE_ID, COLLECTION_PROFILE_ID);
+      const userProfile = await databases.listDocuments(DATABASE_ID, COLLECTION_PROFILE_ID,[
+        Query.equal('isArchived', [false])
+      ]);
       const avatars = {};
       userProfile.documents.forEach((profile) => {
         avatars[profile.profile_id] = profile.UserAvatar;

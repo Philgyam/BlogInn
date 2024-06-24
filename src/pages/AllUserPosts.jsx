@@ -26,7 +26,9 @@ function AllUserPosts() {
     try {
       // Fetch posts
       const postResponse = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
-        Query.equal('postID', [`${userId}`])
+        Query.equal('postID', [`${userId}`]),
+        Query.equal('isArchived', [false])
+        
       ]);
 
       // Fetch comments
@@ -59,6 +61,17 @@ function AllUserPosts() {
       console.log('Error deleting post:', error);
     } finally {
       setShowModal(false);
+    }
+  };
+
+  const archivePost = async (postId) => {
+    try {
+      await databases.updateDocument(DATABASE_ID, COLLECTION_ID, postId, {
+        isArchived: true
+      });
+      setPosts(posts.filter(post => post.$id !== postId));
+    } catch (error) {
+      console.log('Error archiving post:', error);
     }
   };
 
@@ -174,7 +187,7 @@ function AllUserPosts() {
                     </div>
                     <div className="flex gap-4 ml-auto">
                       <RiDeleteBin6Fill style={{color:'red'}} onClick={(e) => { e.stopPropagation(); setSelectedPostId(post.$id); setShowModal(true); }} />
-                      <IoMdArchive style={{color:'blueviolet'}} />
+                      <IoMdArchive style={{color:'blueviolet'}} onClick={(e) => { e.stopPropagation(); archivePost(post.$id); }} />
                     </div>
                   </div>
                 </div>
