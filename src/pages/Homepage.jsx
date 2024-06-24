@@ -29,9 +29,9 @@ function Homepage() {
     <div className={`flex flex-col h-screen ${theme.backgroundColor}`}>
       {/* Header */}
       <div className="sticky top-0 z-50 bg-inherit shadow-md">
-        <h1 className='text-2xl text-orange-500 mb-2 ml-1 font-mono text-center mt-1'>BlogInn</h1>
-        <div className='flex items-center justify-between p-4'>
-          <div className='flex gap-8 items-center'>
+        <h1 className='text-xl md:text-2xl text-orange-500 mb-2 ml-1 font-mono text-center mt-1'>BlogInn</h1>
+        <div className='flex items-center justify-between p-2 md:p-4'>
+          <div className='flex gap-4 md:gap-8 items-center'>
             <div className='lg:hidden'>
               <Sidebar />
             </div>
@@ -40,7 +40,7 @@ function Homepage() {
             <form action="" className='relative flex items-center'>
               <input
                 type="text"
-                className='h-10 w-[15rem] pl-4 pr-10 font-mono bg-black bg-opacity-50 rounded-full shadow-md text-white focus:outline-none focus:ring-2 focus:ring-orange-500'
+                className='h-8 w-[12rem] md:h-10 md:w-[15rem] pl-4 pr-10 font-mono bg-black bg-opacity-50 rounded-full shadow-md text-white focus:outline-none focus:ring-2 focus:ring-orange-500'
                 required
                 placeholder='Search...'
               />
@@ -53,21 +53,22 @@ function Homepage() {
             <MdOutlineWindow
               onClick={toggleLayout}
               style={{
-                height: '2rem',
-                width: '2rem',
+                height: '1.5rem',
+                width: '1.5rem',
+                md: { height: '2rem', width: '2rem' },
                 color: theme.backgroundColor === 'bg-black' ? 'white' : 'black',
                 cursor: 'pointer'
               }}
             />
           </div>
         </div>
-        <div className='flex lg:ml-[9rem] pl-3 pb-2'>
-          <div className='flex gap-4'>
+        <div className='flex lg:ml-[9rem] pl-2 md:pl-3 pb-2'>
+          <div className='flex gap-2 md:gap-4'>
             {buttonLabels.map((label) => (
               <button
                 key={label}
                 onClick={() => clicked(label)}
-                className={`px-3 py-2 rounded transition-all duration-200 
+                className={`px-2 py-1 md:px-3 md:py-2 rounded transition-all duration-200 
                   ${active === label ? 'bg-orange-500 text-white' : theme.backgroundColor === 'bg-black' ? 'text-white' : 'text-black'}`}
               >
                 {label}
@@ -75,10 +76,11 @@ function Homepage() {
             ))}
             <MdOutlineExplore
               style={{
-                height: '2rem',
-                width: '2rem',
+                height: '1.5rem',
+                width: '1.5rem',
+                md: { height: '2rem', width: '2rem' },
                 color: theme.backgroundColor === 'bg-black' ? 'white' : 'black',
-                marginLeft: '2rem'
+                marginLeft: '1rem md:ml-2rem'
               }}
             />
           </div>
