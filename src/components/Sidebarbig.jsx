@@ -5,6 +5,9 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../utils/AuthContext';
 import { bucket, BUCKET_ID, databases, DATABASE_ID, COLLECTION_PROFILE_ID } from '../appwrite/appwriteconfig';
 import { account } from '../appwrite/appwriteconfig';
+import { FaHome, FaPowerOff } from "react-icons/fa";
+import { RiAccountCircleFill, RiTeamFill } from "react-icons/ri";
+import { IoMdAddCircle } from "react-icons/io";
 
 function Sidebarbig() {
   const { username, updateAvatar, avatar, setAvatar, updateUsername } = useContext(UsernameContext);
@@ -66,8 +69,10 @@ function Sidebarbig() {
     setIsClicked(!isClicked);
   };
 
+  const iconStyle = { height: '1rem', width: '1rem' };
+
   return (
-    <div className="h-[33rem] w-[8rem] md:w-[10rem] bg-gray-800 text-white sticky left-0 flex flex-col text-sm md:text-base">
+    <div className="h-[33rem]  w-[8rem] md:w-[10rem] bg-gray-800 text-white sticky left-0 flex flex-col text-sm md:text-base">
       <div className='mt-5 ml-3 bg-white w-6 h-6 md:w-5 md:h-5 rounded-full text-center flex justify-center items-center bg-opacity-50 cursor-pointer'>
         <img className='rounded-full w-6 h-6 md:w-5 md:h-5' src={avatar} alt="" />
       </div>
@@ -75,43 +80,39 @@ function Sidebarbig() {
       <ul className="flex flex-col space-y-1 md:space-y-2 p-2 md:p-4 text-left">
         <li className="hover:bg-gray-700 p-1 md:p-2 rounded">
           <Link to='/Home'>
-            <button
-              className=' py-1 px-2 md:py-2 md:px-4 rounded-full lg:text-[1rem] md:text-[.75rem] text-left w-full'
-            >
+            <button className='flex justify-start items-center gap-2 py-1 px-2 md:py-2 md:px-4 rounded-full lg:text-[1rem] md:text-[.75rem] text-left w-full'>
+              <FaHome style={iconStyle} />
               Home
             </button>
           </Link>
         </li>
         <li className="hover:bg-gray-700 p-1 md:p-2 rounded">
           <Link to='/Profile'>
-            <button
-              className=' py-1 px-2 md:py-2 md:px-4 rounded-full lg:text-[1rem] md:text-[.75rem] text-left w-full'
-            >
-              My Page
+            <button className='flex gap-2 py-1 px-2 md:py-2 md:px-4 rounded-full lg:text-[1rem] md:text-[.75rem] text-left w-full'>
+              <RiAccountCircleFill style={iconStyle} />
+              MyPage
             </button>
           </Link>
         </li>
         <li className="hover:bg-gray-700 p-1 md:p-2 rounded">
           <Link to='/addPost'>
-            <button
-              className=' py-1 px-2 md:py-2 md:px-4 rounded-full lg:text-[1rem] md:text-[.75rem] text-left w-full'
-            >
-              Add Post
+            <button className='flex justify-start items-center gap-2 py-1 px-2 md:py-2 md:px-4 rounded-full lg:text-[1rem] md:text-[.75rem] text-left w-full'>
+              <IoMdAddCircle style={iconStyle} />
+              AddPost
             </button>
           </Link>
         </li>
         <li className="hover:bg-gray-700 p-1 md:p-2 rounded">
           <Link to='/'>
-            <button
-              className=' py-1 px-2 md:py-2 md:px-4 rounded-full lg:text-[1rem] md:text-[.75rem] text-left w-full'
-              onClick={handleSubmit}
-            >
+            <button className='flex justify-start items-center gap-2 py-1 px-2 md:py-2 md:px-4 rounded-full lg:text-[1rem] md:text-[.75rem] text-left w-full' onClick={handleSubmit}>
+              <FaPowerOff style={{ ...iconStyle, color: 'red' }} />
               Logout
             </button>
           </Link>
         </li>
         <li className="hover:bg-gray-700 p-1 md:p-2 rounded">
-          <button className="w-full text-left">
+          <button className="w-full text-left flex justify-start items-center gap-2 py-1 px-2 md:py-2 md:px-4 rounded-full lg:text-[1rem] md:text-[.75rem] text-left w-full">
+            <RiTeamFill style={{ ...iconStyle, color: 'white' }} />
             Community
           </button>
         </li>

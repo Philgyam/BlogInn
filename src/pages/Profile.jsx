@@ -22,14 +22,17 @@ function Profile() {
     <div className={`flex flex-col h-screen ${theme.backgroundColor}`}>
       {/* Header */}
       <div className="sticky top-0 z-50 bg-inherit shadow-md">
-        <h1 className='text-2xl text-orange-500 mb-2 ml-1 font-mono text-center mt-1'>BlogInn</h1>
+        <h1 className='text-2xl text-orange-500 mb-2 ml-1 font-mono text-center mt-1 lg:hidden'>BlogInn</h1>
         <div className='flex gap-8 items-center justify-center p-4'>
-          <div className='flex gap-8 items-center'>
+          <div className='flex gap-8 justify-start w-full lg:gap-[10rem]'>
             <div className='lg:hidden'>
               <Sidebar />
             </div>
+            <div>
+            <h1 className=' hidden lg:block  text-2xl text-orange-500 mb-2 ml-1 font-mono text-center mt-1'>BlogInn</h1>
+            </div>
             <form action="" className='relative flex items-center'>
-              <input
+              <input 
                 type="text"
                 className='h-10 w-[15rem] pl-4 pr-10 font-mono bg-black bg-opacity-50 rounded-full shadow-md text-white focus:outline-none focus:ring-2 focus:ring-orange-500'
                 required
