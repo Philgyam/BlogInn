@@ -320,6 +320,26 @@ function FullPost() {
         <p className="text-gray-500">No other posts available.</p>
     )}
 </div>
+<div className="flex justify-center items-center pt-[2rem] pb-2">
+    <button
+    onClick={()=>{
+        navigate('/home')
+    }}
+    
+    className="flex items-center bg-blue-500 text-white font-semibold rounded-lg px-6 py-3 shadow-md hover:bg-blue-600 transition duration-200">
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 mr-2"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+        >
+            <path d="M10 3a1 1 0 01.6.2l7 5A1 1 0 0118 10h-1v7a2 2 0 01-2 2H5a2 2 0 01-2-2v-7H1a1 1 0 01-.6-1.8l7-5A1 1 0 0110 3zm0 2.5L4 9v8h3v-5h6v5h3V9l-6-4.5z" />
+        </svg>
+        Home
+    </button>
+</div>
+
 
         </div>
     );

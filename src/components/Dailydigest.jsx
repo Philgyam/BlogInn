@@ -1,8 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { databases, DATABASE_ID, COLLECTION_PROFILE_ID } from '../appwrite/appwriteconfig';
-import { ThemeContext } from '../components/ThemeProvider';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaRegComment } from "react-icons/fa";
 import dayjs from 'dayjs';
 
 function DailyDigest({ dailyDigestPosts, userAvatars }) {
@@ -24,8 +21,8 @@ function DailyDigest({ dailyDigestPosts, userAvatars }) {
 
   return (
     <div className="bg-white shadow-lg rounded-lg p-6">
-      <h2 className="text-2xl font-bold mb-4">Daily Digest</h2>
-      {dailyDigestPosts.map((post, index) => (
+      <h2 className="text-2xl font-bold mb-4">Daily Diest</h2>
+      {dailyDigestPosts.slice(0, 3).map((post, index) => ( // Limit to 3 posts
         <div key={index} className="mb-4 border-b border-gray-300 pb-2">
           <div className="flex items-center space-x-4">
             <img className="h-8 w-8 rounded-full object-cover" src={userAvatars[post.postID]} alt="" />
