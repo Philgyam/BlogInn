@@ -21,6 +21,8 @@ function AllPosts() {
     try {
       const userProfile = await databases.listDocuments(DATABASE_ID, COLLECTION_PROFILE_ID);
       const avatars = {};
+      const allUsers = userProfile.documents
+      console.log(userProfile.documents)
       userProfile.documents.forEach((profile) => {
         avatars[profile.profile_id] = profile.UserAvatar;
       });
@@ -184,6 +186,9 @@ function AllPosts() {
           {/* Follow Persons Section */}
           <div className="mt-6">
             <h2 className="text-xl font-bold mb-4">Follow Persons</h2>
+            {
+                // allUsers.map((el,i)=>(<div>hello</div>))
+            }
             {/* Add your follow persons content here */}
           </div>
         </div>

@@ -60,29 +60,37 @@ export const AuthProvider = ({children}) =>{
 
   }
 
-  const signUp = async (userInfo)=>{
-    setLoading(true)
-
+  const signUp = async (userInfo) => {
+    setLoading(true);
+  
     try {
-      let response = await account.create(ID.unique(), userInfo.email, userInfo.password2, userInfo.name)
-      await account.createEmailPasswordSession(userInfo.email,userInfo.password2)
-
-      let accountDetails = await account.get()
-    
-
-      setUser(accountDetails)
+      let response = await account.create(
+        ID.unique(),
+        userInfo.email,
+        userInfo.password,  // Changed from userInfo.password2
+        userInfo.name
+      );
+      await account.createEmailPasswordSession(
+        userInfo.email,
+        userInfo.password  // Changed from userInfo.password2
+      );
+  
+      let accountDetails = await account.get();
+  
+      setUser(accountDetails);
       
-      navigate('/avatar')
-      updateUsername(accountDetails.name)
-    
-      
+      navigate('/avatar');
+      updateUsername(accountDetails.name);
     } catch (error) {
-       console.error( error, 'there was an error')
+      console.error('Signup error:', error);
+      throw error;  // Re-throw the error so it can be caught in the component
+    } finally {
+      setLoading(false);
     }
+  };
 
-    setLoading(false)
-  }
 
+  
   const checkUserStatus = async()=>{
     try {
       let accountDetails = await account.get();

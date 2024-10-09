@@ -17,8 +17,6 @@ function Avatar() {
     const [loading, setLoading] = useState(false)
     const [username, setUsername] = useState('')
     const [fileName, setFileName] = useState('Choose Image');
-
-
     const { updateAvatar, avatar, updateUsername } = useContext(UsernameContext);
 
     const avatars = [
@@ -35,12 +33,8 @@ function Avatar() {
     useEffect(() => {
         const fetchAvatar = async () => {
             const userDetailes = await account.get();
-            // const userProfile = await databases.getDocument(DATABASE_ID, COLLECTION_PROFILE_ID, userDetailes.$id);
-            // updateAvatar(userProfile.UserAvatar);
             setUserId(userDetailes.$id);
-            console.log(userDetailes)
             setUsername(userDetailes.name)
-            console.log(userId);
         };
         fetchAvatar();
     }, []);
@@ -53,9 +47,6 @@ function Avatar() {
                 UserAvatar: avatar,
                 profile_id: userId
             });
-
-            
-
             const image = userProfile.UserAvatar;
             updateAvatar(image);
         } catch (error) {
@@ -95,16 +86,8 @@ function Avatar() {
             setLoading(true)
             if (!userImage) return;
             const fileId = uuid();
-            console.log(fileId);
-
-            // Simulate progress
-          
-           
-
             await bucket.createFile(BUCKET_ID, fileId, userImage);
 
-           
-            console.log('file uploaded');
             const fileUrl = bucket.getFileDownload(BUCKET_ID, fileId);
             updateAvatar(fileUrl);
         } catch (error) {
@@ -115,76 +98,56 @@ function Avatar() {
 
     return (
         <>
-            <div className={`flex flex-col h-screen w-full ${theme.backgroundColor} lg:flex-col items-center`}>
-                
-            
-                <div className='text-white mt-[5rem] text-2xl'>
-                    <h1 className={`${theme.backgroundColor === 'bg-black' ? 'text-white' : 'text-black'} font-bold font-mono`}>
-                        Hello
-                        <span className='text-orange-500 font-bold text-3xl ml-3'>{username}</span>
-                    </h1>
+            <div className={`flex flex-col h-screen w-full items-center ${theme.backgroundColor}`}>
+                <div className="text-white mt-10 text-4xl font-bold font-mono">
+                    Hello, <span className="text-orange-500">{username}</span>
                 </div>
-                <div className='mt-5 bg-white w-16 h-16 rounded-full text-center flex justify-center items-center bg-opacity-50 cursor-pointer'>
-                    <img className='rounded-full w-16 h-16' src={avatar} alt="" />
+
+                <div className="mt-5 bg-white w-32 h-32 rounded-full shadow-xl flex items-center justify-center relative glassmorphism">
+                    <img className="rounded-full w-32 h-32 object-cover" src={avatar} alt="avatar" />
                 </div>
-                <div className='flex mt-[1rem] gap-4 '>
+
+                <div className="flex mt-6 gap-4">
                     {avatars.map((avatarImage, index) => (
-                        <div key={index} className='mt-5 cursor-crosshair bg-white w-16 h-16 rounded-full text-center flex justify-center items-center bg-opacity-50'>
-                            <img onClick={() => { handleAvatar(avatarImage) }} className='rounded-full w-16 h-16' src={avatarImage} alt="" />
+                        <div key={index} className="w-16 h-16 rounded-full overflow-hidden cursor-pointer transition-transform transform hover:scale-105">
+                            <img onClick={() => { handleAvatar(avatarImage) }} className="w-full h-full object-cover" src={avatarImage} alt="avatar option" />
                         </div>
                     ))}
                 </div>
-                <div className='mt-10 text-black text-center flex flex-col  cursor-pointer'>
-                    <label className="bg-blue-500 mt-4 px-4 py-2 rounded-lg cursor-pointer text-white">
+
+                <div className="mt-8 flex flex-col items-center">
+                    <label className="bg-opacity-50 bg-gradient-to-r from-blue-400 to-purple-500 px-4 py-2 rounded-lg text-white cursor-pointer shadow-lg transition-transform transform hover:scale-105">
                         {fileName}
                         <input type="file" onChange={handleFileChange} style={{ display: 'none' }} />
                     </label>
-                    <button className='bg-blue-500 mt-4 px-4 py-2 rounded-lg' onClick={handleUploaded}>
+
+                    <button className="bg-opacity-50 bg-gradient-to-r from-purple-400 to-pink-500 mt-4 px-6 py-2 rounded-lg text-white shadow-lg transition-transform transform hover:scale-105" onClick={handleUploaded}>
                         Upload avatar
                     </button>
-                   
                 </div>
-             
-                <div>
-                    {
-                        loading?(
-                            <div className='w-full flex justify-center mt-4'>
-                            <Spinner
-                            thickness='3px'
-                             style={{
-                            height:'1.5rem',
-                            width:"1.5rem",
-                            color:'#FC4100',
-                            fontWeight:'bold',
-                            
-                            
-        
-                        }} />
-        
-                            </div>
-                        ):('')
-                    }
-                   
-               
-                    <form action='submit'>
-                        <input type="text"
-                            name='UserBio'
-                            value={userBio}
-                            onChange={(e) => setUserBio(e.target.value)}
-                            placeholder='Say Something nice about yourself 😊'
-                            className='h-20 w-[20rem] pl-1 font-mono mt-10 bg-black bg-opacity-50 rounded-md shadow-md text-white'
-                        />
-                    </form>
-                </div>
-                <div className='mt-10 text-white cursor-pointer bg-orange-500 py-2 px-5 rounded-xl'>
-                    <Link to='/categories'>
-                        <button onClick={onSubmit} className='cursor-pointer'>
+
+                {loading && (
+                    <div className="w-full flex justify-center mt-4">
+                        <Spinner thickness="3px" size="lg" color="orange.400" />
+                    </div>
+                )}
+
+                <form action="submit" className="mt-6 w-full flex justify-center">
+                    <input type="text"
+                        name="UserBio"
+                        value={userBio}
+                        onChange={(e) => setUserBio(e.target.value)}
+                        placeholder="Say Something nice about yourself 😊"
+                        className="w-80 h-12 px-4 text-white bg-opacity-30 bg-black rounded-md backdrop-blur-md border-0 placeholder-white shadow-md focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                    />
+                </form>
+
+                <div className="mt-10">
+                    <Link to="/categories">
+                        <button onClick={onSubmit} className="bg-orange-500 text-white px-6 py-2 rounded-full shadow-lg transition-transform transform hover:scale-105">
                             Next
                         </button>
                     </Link>
-                </div>
-                
-                <div>
                 </div>
             </div>
         </>

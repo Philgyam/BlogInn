@@ -1,45 +1,72 @@
-import React from 'react'
-import { TypeAnimation } from 'react-type-animation';
-import {Link} from 'react-router-dom'
-
+import React, { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ThemeContext } from '../components/ThemeProvider';
 
 function Categories() {
+  const { theme } = useContext(ThemeContext);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
+  const categories = [
+    'Tech', 'Lifestyle', 'Personal Development', 
+    'DIY', 'Business and Finance', 'Arts and Culture'
+  ];
+
+  const handleCategoryClick = (category) => {
+    setSelectedCategories(prevCategories => {
+      if (prevCategories.includes(category)) {
+        return prevCategories.filter(c => c !== category);
+      } else {
+        return [...prevCategories, category];
+      }
+    });
+  };
+
   return (
-   <>
-<div className='flex flex-col   h-screen w-full bg-gradient-to-br from-black to-teal-500 lg:flex-col  '>
-<h1 className='text-4xl text-orange-500 mb-5 font-mono text-center mt-2 xl:text-left xl:ml-10'>BlogInn</h1>
+    <div className={`flex flex-col min-h-screen w-full items-center ${theme.backgroundColor}`}>
+      <div className="container max-w-2xl mx-auto px-4 py-8">
+        <h1 className="text-white mt-10 text-4xl font-bold font-mono text-center mb-8">
+          Choose Your <span className="text-purple-400">Categories</span>
+        </h1>
 
-        <div className=' text-white text-center  xl:text-left xl:ml-10 text-[2rem]'> 
-            <p> Categories </p>
-        </div>
-        <div className='flex flex-col mt-5 gap-5 bg-[#F6F5F2] bg-opacity-30 mx-[2rem] xl:mx-[20rem]  text-white h-[30rem] justify-center rounded-3xl  '>
-            <button className='hover:bg-[#4793AF] cursor-pointer text-[1.5rem] mx-[5rem] xl:mx-[10rem] rounded-xl py-1'>Tech</button>
-            <button className='hover:bg-[#4793AF] cursor-pointer text-[1.5rem] mx-[5rem] xl:mx-[10rem] rounded-xl py-1'>Life Style</button>
-            <button className='hover:bg-[#4793AF] cursor-pointer text-[1.5rem] mx-[1rem] xl:mx-[10rem] rounded-xl py-1'>Personal Development</button>
-            <button className='hover:bg-[#4793AF] cursor-pointer text-[1.5rem] mx-[5rem] xl:mx-[10rem] rounded-xl py-1'>DIY</button>
-            <button className='hover:bg-[#4793AF] cursor-pointer text-[1.5rem] mx-[1rem] xl:mx-[10rem] rounded-xl py-1'
-            > Business and Finance </button>
-            <button className='hover:bg-[#4793AF] cursor-pointer text-[1.5rem] mx-[1rem] xl:mx-[10rem] rounded-xl py-2'>Arts and Culture</button>
-        </div>
-
-        <button className='mt-6  xl:ml-10 text-white underline text-left ml-2'>
-            <p>
-                Other Categories
-            </p>
-        </button>
-        <div className='mt-10 text-white text-center  py-2 px-5 rounded-xl'>
-
-        <Link to='/Home'>
-            <button className='text-white py-2 px-5 rounded-xl  bg-orange-500'>
-                Next
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+          {categories.map((category, index) => (
+            <button
+              key={index}
+              onClick={() => handleCategoryClick(category)}
+              className={`text-white text-lg py-3 px-6 rounded-lg shadow-lg transition-all duration-300 hover:scale-105
+                ${selectedCategories.includes(category) 
+                  ? 'bg-gradient-to-r from-purple-600 to-pink-500' 
+                  : 'bg-white bg-opacity-10 backdrop-blur-md hover:bg-opacity-20'}`}
+            >
+              {category}
             </button>
-            </Link>
+          ))}
         </div>
-        
 
+        <div className="flex flex-col items-center gap-6">
+          <button className="text-purple-400 underline text-lg hover:text-pink-400 transition-colors">
+            Other Categories
+          </button>
+
+          <Link to="/Home">
+            <button 
+              className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-8 py-3 rounded-full shadow-lg transition-all hover:from-purple-700 hover:to-pink-600 hover:scale-105"
+              onClick={() => console.log('Selected categories:', selectedCategories)}
+            >
+              Next
+            </button>
+          </Link>
+        </div>
+
+        {selectedCategories.length > 0 && (
+          <div className="mt-8 text-center">
+            <h2 className="text-white text-2xl mb-4">Selected Categories:</h2>
+            <p className="text-purple-300">{selectedCategories.join(', ')}</p>
+          </div>
+        )}
+      </div>
     </div>
-</>
-  )
+  );
 }
 
-export default Categories
+export default Categories;
