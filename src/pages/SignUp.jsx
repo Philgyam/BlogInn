@@ -27,8 +27,7 @@ function SignUp() {
       await signUp(userInfo);
       // Navigation is now handled in the AuthContext
     } catch (error) {
-      console.error('Sign up failed:', error);
-      alert('Sign up failed. Please try again.');
+ 
     }
   };
 
