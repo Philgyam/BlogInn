@@ -107,13 +107,19 @@ function Avatar() {
                     <img className="rounded-full w-32 h-32 object-cover" src={avatar} alt="avatar" />
                 </div>
 
-                <div className="flex mt-6 gap-4">
-                    {avatars.map((avatarImage, index) => (
-                        <div key={index} className="w-16 h-16 rounded-full overflow-hidden cursor-pointer transition-transform transform hover:scale-105">
-                            <img onClick={() => { handleAvatar(avatarImage) }} className="w-full h-full object-cover" src={avatarImage} alt="avatar option" />
-                        </div>
-                    ))}
-                </div>
+                <div className="flex mt-6 gap-4 flex-wrap">
+    {avatars.map((avatarImage, index) => (
+        <div key={index} className="w-16 h-16 rounded-full overflow-hidden cursor-pointer transition-transform transform hover:scale-105">
+            <img 
+                onClick={() => handleAvatar(avatarImage)} 
+                className="w-full h-full object-cover" 
+                src={avatarImage} 
+                alt="avatar option" 
+                loading="lazy" 
+            />
+        </div>
+    ))}
+</div>
 
                 <div className="mt-8 flex flex-col items-center">
                     <label className="bg-opacity-50 bg-gradient-to-r from-blue-400 to-purple-500 px-4 py-2 rounded-lg text-white cursor-pointer shadow-lg transition-transform transform hover:scale-105">
