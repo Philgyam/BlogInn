@@ -111,9 +111,12 @@ function AllPosts() {
       <div className="container mx-auto px-4 flex flex-col lg:flex-row">
         <div className="w-full lg:w-3/5">
           {loading ? (
-            <div className="flex justify-center items-center h-screen">
-              <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
-            </div>
+            // <div className="flex justify-center items-center h-screen">
+            //   <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+            // </div>
+            <div className="flex h-screen justify-center items-center bg-black">
+            <span class="loader"></span>
+           </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {posts.length === 0 ? (
