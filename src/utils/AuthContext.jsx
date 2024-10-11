@@ -117,7 +117,7 @@ export const AuthProvider = ({children}) =>{
   <AuthContext.Provider value={contextData}>
   {loading ? (
     <div className="flex h-screen justify-center items-center bg-black">
-     <span class="loader"></span>
+     <span className="loader"></span>
     </div>
   ) : (
     children

@@ -10,19 +10,19 @@ import { Query } from 'appwrite';
 function AllPosts() {
   const [posts, setPosts] = useState([]);
   const [userAvatars, setUserAvatars] = useState({});
+  const [allUsers, setAllUsers] = useState([]); // State for all users
   const { theme } = useContext(ThemeContext);
   const [userId, setUserId] = useState('');
   const [loading, setLoading] = useState(true);
   const [commentCounts, setCommentCounts] = useState({});
   const [dailyDigestPosts, setDailyDigestPosts] = useState([]);
+  const [followedUsers, setFollowedUsers] = useState({}); // State for followed users
   const navigate = useNavigate();
 
   const fetchUserAvatars = async () => {
     try {
       const userProfile = await databases.listDocuments(DATABASE_ID, COLLECTION_PROFILE_ID);
       const avatars = {};
-      const allUsers = userProfile.documents
-      console.log(userProfile.documents)
       userProfile.documents.forEach((profile) => {
         avatars[profile.profile_id] = profile.UserAvatar;
       });
@@ -32,9 +32,18 @@ function AllPosts() {
     }
   };
 
+  const fetchAllUsers = async () => {
+    try {
+      const userProfiles = await databases.listDocuments(DATABASE_ID, COLLECTION_PROFILE_ID);
+      setAllUsers(userProfiles.documents);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const postFetch = async () => {
     try {
-      const post = await databases.listDocuments(DATABASE_ID, COLLECTION_ID,[
+      const post = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
         Query.equal('isArchived', [false])
       ]);
       setPosts(post.documents);
@@ -70,19 +79,27 @@ function AllPosts() {
         const userDetails = await account.get();
         setUserId(userDetails.$id);
         await fetchUserAvatars();
+        await fetchAllUsers(); // Fetch all users
       } catch (error) {
         console.log(error);
       }
     };
 
     fetchUserDetails();
-  }, [posts]);
+  }, []);
 
   useEffect(() => {
     if (userId) {
       postFetch();
     }
   }, [userId]);
+
+  const toggleFollow = (userId) => {
+    setFollowedUsers((prevState) => ({
+      ...prevState,
+      [userId]: !prevState[userId],
+    }));
+  };
 
   const truncateContent = (content) => {
     const words = content.split(' ');
@@ -111,10 +128,9 @@ function AllPosts() {
       <div className="container mx-auto px-4 flex flex-col lg:flex-row">
         <div className="w-full lg:w-3/5">
           {loading ? (
-           
-            <div className="flex min-h-screen  justify-center items-center bg-black">
-            <span class="loader"></span>
-           </div>
+            <div className="flex min-h-screen justify-center items-center bg-black">
+              <span className="loader"></span>
+            </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {posts.length === 0 ? (
@@ -122,11 +138,15 @@ function AllPosts() {
                   <p>No posts by user</p>
                 </div>
               ) : (
-                posts.map((post, index) => (
+                posts.map((post) => (
                   <div 
-                    key={index}
+                    key={post.$id}
                     onClick={() => {
-                      navigate(`/profile/${post.Author}/${post.Category}/${post.$id}`, { replace: false });
+                      const author = post.Author.trim();  // Trimmed author
+                      const category = post.Category.trim();  // Trimmed category
+                      const path = `/post/${author}/${category}/${post.$id}`;  // Updated path
+                      console.log(`Navigating to: ${path}`);
+                      navigate(path, { replace: false });
                     }}
                     className={`bg-white shadow-lg rounded-lg overflow-hidden transition transform hover:scale-105 cursor-pointer flex border-b border-gray-300`}
                   >
@@ -187,10 +207,24 @@ function AllPosts() {
           {/* Follow Persons Section */}
           <div className="mt-6">
             <h2 className="text-xl font-bold mb-4">Follow Persons</h2>
-            {
-                // allUsers.map((el,i)=>(<div>hello</div>))
-            }
-            {/* Add your follow persons content here */}
+            <div className="space-y-4">
+              {allUsers.map((user) => (
+                <div key={user.profile_id} className="flex justify-between items-center">
+                  <div className="flex items-center space-x-3">
+                    <img className="h-8 w-8 rounded-full object-cover" src={userAvatars[user.profile_id]} alt="" />
+                    <span className="text-gray-800">{user.name}</span>
+                  </div>
+                  <button
+                    onClick={() => toggleFollow(user.profile_id)}
+                    className={`px-4 py-1 rounded-full text-xs ${
+                      followedUsers[user.profile_id] ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
+                    }`}
+                  >
+                    {followedUsers[user.profile_id] ? 'Buddy Read' : 'Follow'}
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

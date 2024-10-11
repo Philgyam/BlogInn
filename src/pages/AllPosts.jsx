@@ -34,8 +34,8 @@ function AllPosts() {
     try {
       const post = await databases.listDocuments(DATABASE_ID, COLLECTION_ID,
         [
-        Query.equal('isArchived', [false])
-      ]
+          Query.equal('isArchived', [false])
+        ]
       );
       setPosts(post.documents);
       selectRandomDailyDigestPosts(post.documents);
@@ -111,28 +111,28 @@ function AllPosts() {
       <div className="container mx-auto px-4 flex flex-col lg:flex-row">
         <div className="w-full lg:w-3/5">
           {loading ? (
-            // <div className="flex justify-center items-center h-screen">
-            //   <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
-            // </div>
             <div className="flex h-screen justify-center items-center bg-black">
-            <span class="loader"></span>
-           </div>
+              <span className="loader"></span>
+            </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {posts.length === 0 ? (
                 <div className="col-span-full text-center text-gray-500">
-                  <p>No posts by user</p>
+                  <p>No posts available</p>
                 </div>
               ) : (
-                posts.map((post, index) => (
+                posts.map((post) => (
                   <div 
-                    key={index}
+                    key={post.$id}
                     onClick={() => {
-                      navigate(`/profile/${post.Author}/${post.Category}/${post.$id}`, { replace: false });
+                      const author = post.Author.trim();  // Trimmed author
+                      const category = post.Category.trim();  // Trimmed category
+                      const path = `/post/${author}/${category}/${post.$id}`;  // Updated path
+                      console.log(`Navigating to: ${path}`);
+                      navigate(path, { replace: false });
                     }}
                     className={`bg-white shadow-lg rounded-lg overflow-hidden transition transform hover:scale-105 cursor-pointer flex flex-col border-b border-gray-300`}
                   >
-                    {/* {Th is where ot starts} */}
                     <div className="relative">
                       <img className="w-full h-48 object-cover" src={post.postImage} alt="" />
                       <div className="absolute bottom-0 right-0 p-2 bg-gray-800 bg-opacity-75 text-white">
@@ -167,7 +167,6 @@ function AllPosts() {
                         </div>
                       </div>
                     </div>
-                    {/* {Ends here} */}
                   </div>
                 ))
               )}
