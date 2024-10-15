@@ -5,7 +5,7 @@ export const UsernameContext = createContext();
 
 export const UsernameProvider = ({ children }) => {
   const [username, setUserName] = useState('');
-  const [avatar, setAvatar] = useState('https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/66306257003b3ba6261b/view?project=66201769ed5710073074&mode=admin');
+  const [avatar, setAvatar] = useState('https://cloud.appwrite.io/v1/storage/buckets/66292c86c05c5fc84f6b/files/670e8e96002ba2467cee/view?project=66201769ed5710073074&project=66201769ed5710073074&mode=admin');
 
   useEffect(() => {
     const getUser = async () => {
