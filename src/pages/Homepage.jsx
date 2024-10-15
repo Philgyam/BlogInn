@@ -57,7 +57,7 @@ function Homepage() {
           </div>
         </div>
         <div className='flex lg:ml-[9.2rem] pl-3 pb-2'>
-          <div className='flex gap-2 items-center w-full'>
+          <div className='flex ml-4 gap-2 items-center w-full'>
             {buttonLabels.map((label) => (
               <button
                 key={label}
