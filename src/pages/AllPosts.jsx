@@ -10,11 +10,13 @@ import { Query } from 'appwrite';
 function AllPosts() {
   const [posts, setPosts] = useState([]);
   const [userAvatars, setUserAvatars] = useState({});
+  const [allUsers, setAllUsers] = useState([]);
   const { theme } = useContext(ThemeContext);
   const [userId, setUserId] = useState('');
   const [loading, setLoading] = useState(true);
   const [commentCounts, setCommentCounts] = useState({});
   const [dailyDigestPosts, setDailyDigestPosts] = useState([]);
+  const [followedUsers, setFollowedUsers] = useState({});
   const navigate = useNavigate();
 
   const fetchUserAvatars = async () => {
@@ -30,13 +32,20 @@ function AllPosts() {
     }
   };
 
+  const fetchAllUsers = async () => {
+    try {
+      const userProfiles = await databases.listDocuments(DATABASE_ID, COLLECTION_PROFILE_ID);
+      setAllUsers(userProfiles.documents);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const postFetch = async () => {
     try {
-      const post = await databases.listDocuments(DATABASE_ID, COLLECTION_ID,
-        [
-          Query.equal('isArchived', [false])
-        ]
-      );
+      const post = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
+        Query.equal('isArchived', [false])
+      ]);
       setPosts(post.documents);
       selectRandomDailyDigestPosts(post.documents);
 
@@ -61,7 +70,7 @@ function AllPosts() {
 
   const selectRandomDailyDigestPosts = (posts) => {
     const shuffled = [...posts].sort(() => 0.5 - Math.random());
-    setDailyDigestPosts(shuffled.slice(0, 5));
+    setDailyDigestPosts(shuffled.slice(0, 3));
   };
 
   useEffect(() => {
@@ -70,6 +79,7 @@ function AllPosts() {
         const userDetails = await account.get();
         setUserId(userDetails.$id);
         await fetchUserAvatars();
+        await fetchAllUsers();
       } catch (error) {
         console.log(error);
       }
@@ -83,6 +93,13 @@ function AllPosts() {
       postFetch();
     }
   }, [userId]);
+
+  const toggleFollow = (userId) => {
+    setFollowedUsers((prevState) => ({
+      ...prevState,
+      [userId]: !prevState[userId],
+    }));
+  };
 
   const truncateContent = (content) => {
     const words = content.split(' ');
@@ -125,13 +142,13 @@ function AllPosts() {
                   <div 
                     key={post.$id}
                     onClick={() => {
-                      const author = post.Author.trim();  // Trimmed author
-                      const category = post.Category.trim();  // Trimmed category
-                      const path = `/post/${author}/${category}/${post.$id}`;  // Updated path
+                      const author = post.Author.trim();
+                      const category = post.Category.trim();
+                      const path = `/post/${author}/${category}/${post.$id}`;
                       console.log(`Navigating to: ${path}`);
                       navigate(path, { replace: false });
                     }}
-                    className={`bg-white shadow-lg rounded-lg overflow-hidden transition transform hover:scale-105 cursor-pointer flex flex-col border-b border-gray-300`}
+                    className={`bg-white text-green-600 shadow-lg rounded-lg overflow-hidden transition transform hover:scale-105 cursor-pointer flex flex-col border-b border-gray-300`}
                   >
                     <div className="relative">
                       <img className="w-full h-48 object-cover" src={post.postImage} alt="" />
@@ -172,9 +189,13 @@ function AllPosts() {
               )}
             </div>
           )}
+        
         </div>
-        <div className="hidden lg:block lg:w-2/5 lg:pl-12 mt-10 lg:mt-0">
-          <div className="bg-white shadow-lg rounded-lg p-6">
+      
+        {/* Right Sidebar */}
+        <div className=" lg:block lg:w-2/5 lg:pl-12 mt-10 lg:mt-0">
+          {/* Daily Digest Section */}
+          <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
             <h2 className="text-2xl font-bold mb-4">Daily Digest</h2>
             {dailyDigestPosts.map((post, index) => (
               <div key={index} className="mb-4 border-b border-gray-300 pb-2">
@@ -187,6 +208,29 @@ function AllPosts() {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Follow Persons Section */}
+          <div className="bg-white shadow-lg rounded-lg p-6">
+            <h2 className="text-2xl font-bold mb-4">Follow Persons</h2>
+            <div className="space-y-4">
+              {allUsers.slice(0, 5).map((user) => (
+                <div key={user.profile_id} className="flex justify-between items-center">
+                  <div className="flex items-center space-x-3">
+                    <img className="h-10 w-10 rounded-full object-cover" src={userAvatars[user.profile_id]} alt="" />
+                    <span className="text-gray-800">{user.username}</span>
+                  </div>
+                  <button
+                    onClick={() => toggleFollow(user.profile_id)}
+                    className={`px-4 py-1 rounded-full text-xs ${
+                      followedUsers[user.profile_id] ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
+                    }`}
+                  >
+                    {followedUsers[user.profile_id] ? 'Following' : 'Follow'}
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

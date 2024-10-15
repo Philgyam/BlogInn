@@ -141,7 +141,7 @@ function FullPost() {
     
 
     return (
-        <div className={`${theme.backgroundColor} ${theme.backgroundColor === 'bg-black' ? 'text-white' : 'text-black'} h-screen`} >
+        <div className={`${theme.backgroundColor} ${theme.backgroundColor === 'bg-black' ? 'text-white' : 'text-black'} h-full`} >
             <div className={`flex gap-[5rem] lg:flex-row flex-col px-5 lg:w-[50%] ${theme.backgroundColor}`}>
                 <div className=' w-full'>
                 <h1 className='text-3xl text-orange-500 mb-2 ml-2 mt-3 font-mono text-center'>BlogInn</h1>

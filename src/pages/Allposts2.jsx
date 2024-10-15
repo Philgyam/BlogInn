@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { account, databases, DATABASE_ID, COLLECTION_ID, COLLECTION_PROFILE_ID, COLLECTION_COMMENT_ID } from '../appwrite/appwriteconfig';
+import { account, databases, DATABASE_ID, COLLECTION_ID, COLLECTION_PROFILE_ID } from '../appwrite/appwriteconfig';
 import { ThemeContext } from '../components/ThemeProvider';
 import { useNavigate } from 'react-router-dom';
 import { FaRegComment } from "react-icons/fa";
@@ -10,13 +10,13 @@ import { Query } from 'appwrite';
 function AllPosts() {
   const [posts, setPosts] = useState([]);
   const [userAvatars, setUserAvatars] = useState({});
-  const [allUsers, setAllUsers] = useState([]); // State for all users
+  const [allUsers, setAllUsers] = useState([]);
   const { theme } = useContext(ThemeContext);
   const [userId, setUserId] = useState('');
   const [loading, setLoading] = useState(true);
   const [commentCounts, setCommentCounts] = useState({});
   const [dailyDigestPosts, setDailyDigestPosts] = useState([]);
-  const [followedUsers, setFollowedUsers] = useState({}); // State for followed users
+  const [followedUsers, setFollowedUsers] = useState({});
   const navigate = useNavigate();
 
   const fetchUserAvatars = async () => {
@@ -32,10 +32,15 @@ function AllPosts() {
     }
   };
 
+  const shuffleArray = (array) => {
+    return array.sort(() => Math.random() - 0.5);
+  };
+
   const fetchAllUsers = async () => {
     try {
       const userProfiles = await databases.listDocuments(DATABASE_ID, COLLECTION_PROFILE_ID);
-      setAllUsers(userProfiles.documents);
+      const shuffledUsers = shuffleArray(userProfiles.documents).slice(0, 3); // Shuffle and take 3 users
+      setAllUsers(shuffledUsers);
     } catch (error) {
       console.log(error);
     }
@@ -79,7 +84,7 @@ function AllPosts() {
         const userDetails = await account.get();
         setUserId(userDetails.$id);
         await fetchUserAvatars();
-        await fetchAllUsers(); // Fetch all users
+        await fetchAllUsers();
       } catch (error) {
         console.log(error);
       }
@@ -103,10 +108,7 @@ function AllPosts() {
 
   const truncateContent = (content) => {
     const words = content.split(' ');
-    if (words.length > 10) {
-      return words.slice(0, 10).join(' ') + '...';
-    }
-    return content;
+    return words.length > 10 ? words.slice(0, 10).join(' ') + '...' : content;
   };
 
   const formatDate = (date) => {
@@ -142,9 +144,9 @@ function AllPosts() {
                   <div 
                     key={post.$id}
                     onClick={() => {
-                      const author = post.Author.trim();  // Trimmed author
-                      const category = post.Category.trim();  // Trimmed category
-                      const path = `/post/${author}/${category}/${post.$id}`;  // Updated path
+                      const author = post.Author.trim();
+                      const category = post.Category.trim();
+                      const path = `/post/${author}/${category}/${post.$id}`;
                       console.log(`Navigating to: ${path}`);
                       navigate(path, { replace: false });
                     }}
@@ -212,7 +214,7 @@ function AllPosts() {
                 <div key={user.profile_id} className="flex justify-between items-center">
                   <div className="flex items-center space-x-3">
                     <img className="h-8 w-8 rounded-full object-cover" src={userAvatars[user.profile_id]} alt="" />
-                    <span className="text-gray-800">{user.name}</span>
+                    <span className="text-gray-800">{user.username}</span>
                   </div>
                   <button
                     onClick={() => toggleFollow(user.profile_id)}
@@ -223,7 +225,7 @@ function AllPosts() {
                     {followedUsers[user.profile_id] ? 'Buddy Read' : 'Follow'}
                   </button>
                 </div>
-              ))}
+              )).slice(0, 3)} {/* Display only 3 users */}
             </div>
           </div>
         </div>
