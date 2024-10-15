@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { AiOutlinePlus } from "react-icons/ai";
 import { ThemeContext } from '../components/ThemeProvider';
 import { UsernameContext } from '../components/UsernameContext';
 import { Link } from 'react-router-dom';
@@ -16,13 +17,13 @@ function Avatar() {
     const [loading, setLoading] = useState(false)
     const [username, setUsername] = useState('')
     const [fileName, setFileName] = useState('Choose Image');
-    const { updateAvatar, avatar } = useContext(UsernameContext);
+    const { updateAvatar, avatar, updateUsername } = useContext(UsernameContext);
 
     const avatars = [
         'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/66306257003b3ba6261b/view?project=66201769ed5710073074&mode=admin',
         'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/663061f5001d3867b651/view?project=66201769ed5710073074&mode=admin',
         'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/66306257003b3ba6261b/view?project=66201769ed5710073074&mode=admin',
-        'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/66306257003b3ba6261b/view?project=66201769ed5710073074&mode=admin',
+        'https://cloud.appwrite.io/v1/storage/buckets/66292c86c05c5fc84f6b/files/670e8e96002ba2467cee/view?project=66201769ed5710073074&project=66201769ed5710073074'
     ];
 
     const handleAvatar = async (avatarClicked) => {
@@ -38,7 +39,7 @@ function Avatar() {
         fetchAvatar();
     }, []);
 
-    const onSubmit = async () => {
+    const onSubmit = async (data) => {
         try {
             const userProfile = await databases.createDocument(DATABASE_ID, COLLECTION_PROFILE_ID, userId, {
                 username: username,
@@ -112,9 +113,7 @@ function Avatar() {
             <img 
                 onClick={() => handleAvatar(avatarImage)} 
                 className="w-full h-full object-cover" 
-                // src={avatarImage}
-                src='https://img.freepik.com/free-vector/hand-drawn-happy-black-woman-illustration_23-2149404964.jpg?t=st=1729006212~exp=1729009812~hmac=ce24e7277a51bdb3e534751e12aa41d186fbe8b1def5a6c8e9d4a55ea6f09219&w=740' 
-
+                src={avatarImage} 
                 alt="avatar option" 
                 loading="lazy" 
             />
