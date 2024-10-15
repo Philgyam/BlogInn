@@ -17,10 +17,10 @@ function Avatar() {
     const [loading, setLoading] = useState(false)
     const [username, setUsername] = useState('')
     const [fileName, setFileName] = useState('Choose Image');
-    const { updateAvatar, avatar, updateUsername } = useContext(UsernameContext);
+    const { updateAvatar, avatar } = useContext(UsernameContext);
 
     const avatars = [
-        'https://cloud.appwrite.io/v1/storage/buckets/66292c86c05c5fc84f6b/files/6e80143b-31f9-44ed-bc85-f69dd81b206d/view?project=66201769ed5710073074&project=66201769ed5710073074&mode=admin',
+        'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/66306257003b3ba6261b/view?project=66201769ed5710073074&mode=admin',
         'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/663061f5001d3867b651/view?project=66201769ed5710073074&mode=admin',
         'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/66306257003b3ba6261b/view?project=66201769ed5710073074&mode=admin',
         'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/66306257003b3ba6261b/view?project=66201769ed5710073074&mode=admin',
@@ -113,7 +113,9 @@ function Avatar() {
             <img 
                 onClick={() => handleAvatar(avatarImage)} 
                 className="w-full h-full object-cover" 
-                src={avatarImage} 
+                // src={avatarImage} 
+                src= 'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/66306257003b3ba6261b/view?project=66201769ed5710073074&mode=admin'
+
                 alt="avatar option" 
                 loading="lazy" 
             />

@@ -157,7 +157,9 @@ function FullPost() {
                         <p className='italic mr-2'>Category: {post.Category}</p>
                     </div>
                     <div className='w-full mt-5 mb-10'>
-                        <img className='w-full max-h-[300px]  object-cover rounded-2xl border border-gray-200 shadow-md' src={post.postImage} alt="Post" />
+                        <img className='w-full max-h-[300px]  object-cover rounded-2xl border border-gray-200 shadow-md' 
+                        src={post.postImage} 
+                        alt="Post" />
                     </div>
                     <h1 className='text-center text-3xl font-bold mt-5'>{post.Title}</h1>
                     <p className='text-center mt-4 px-4 md:px-0'>{post.Content}</p>
