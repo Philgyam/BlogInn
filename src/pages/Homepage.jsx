@@ -57,12 +57,12 @@ function Homepage() {
           </div>
         </div>
         <div className='flex lg:ml-[9.2rem] pl-3 pb-2'>
-          <div className='flex gap-4'>
+          <div className='flex gap-2 items-center w-full'>
             {buttonLabels.map((label) => (
               <button
                 key={label}
                 onClick={() => clicked(label)}
-                className={`px-3 py-2 rounded transition-all duration-200 
+                className={`px-3 py-1 rounded  transition-all duration-200 
                   ${active === label ? 'bg-orange-500 text-white' : theme.backgroundColor === 'bg-black' ? 'text-white' : 'text-black'}`}
               >
                 {label}
