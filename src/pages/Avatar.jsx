@@ -20,7 +20,7 @@ function Avatar() {
     const { updateAvatar, avatar, updateUsername } = useContext(UsernameContext);
 
     const avatars = [
-        'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/66306257003b3ba6261b/view?project=66201769ed5710073074&mode=admin',
+        'https://cloud.appwrite.io/v1/storage/buckets/66292c86c05c5fc84f6b/files/6e80143b-31f9-44ed-bc85-f69dd81b206d/view?project=66201769ed5710073074&project=66201769ed5710073074&mode=admin',
         'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/663061f5001d3867b651/view?project=66201769ed5710073074&mode=admin',
         'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/66306257003b3ba6261b/view?project=66201769ed5710073074&mode=admin',
         'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/66306257003b3ba6261b/view?project=66201769ed5710073074&mode=admin',
@@ -39,7 +39,7 @@ function Avatar() {
         fetchAvatar();
     }, []);
 
-    const onSubmit = async (data) => {
+    const onSubmit = async () => {
         try {
             const userProfile = await databases.createDocument(DATABASE_ID, COLLECTION_PROFILE_ID, userId, {
                 username: username,
