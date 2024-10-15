@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { AiOutlinePlus } from "react-icons/ai";
 import { ThemeContext } from '../components/ThemeProvider';
 import { UsernameContext } from '../components/UsernameContext';
 import { Link } from 'react-router-dom';
@@ -113,8 +112,8 @@ function Avatar() {
             <img 
                 onClick={() => handleAvatar(avatarImage)} 
                 className="w-full h-full object-cover" 
-                // src={avatarImage} 
-                src= 'https://cloud.appwrite.io/v1/storage/buckets/66305f98003d99e0d5b5/files/66306257003b3ba6261b/view?project=66201769ed5710073074&mode=admin'
+                // src={avatarImage}
+                src='https://img.freepik.com/free-vector/hand-drawn-happy-black-woman-illustration_23-2149404964.jpg?t=st=1729006212~exp=1729009812~hmac=ce24e7277a51bdb3e534751e12aa41d186fbe8b1def5a6c8e9d4a55ea6f09219&w=740' 
 
                 alt="avatar option" 
                 loading="lazy" 
