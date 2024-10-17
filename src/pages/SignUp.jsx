@@ -1,14 +1,14 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { FcGoogle } from "react-icons/fc";
 import { BsArrowRight } from "react-icons/bs";
 import { ThemeContext } from '../components/ThemeProvider';
 import { useAuth } from '../utils/AuthContext';
-import { useNavigate } from 'react-router-dom';
 
 function SignUp() {
   const { theme } = useContext(ThemeContext);
   const signupForm = useRef(null);
-  const { signUp } = useAuth();
+  const { signUp, verificationSent, signInWithGoogle } = useAuth(); // Add signInWithGoogle
+  const [confirmationMessage, setConfirmationMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,26 +16,35 @@ function SignUp() {
     const email = signupForm.current.email.value;
     const password = signupForm.current.password1.value;
     const password2 = signupForm.current.password2.value;
-  
+
     if (password !== password2) {
       alert('Passwords do not match');
       return;
     }
-  
-    const userInfo = { name, email, password };  // Use 'password' instead of 'password1'
+
+    const userInfo = { name, email, password };
     try {
       await signUp(userInfo);
-      // Navigation is now handled in the AuthContext
+      setConfirmationMessage('Dear user, a verification link has been sent to your email. Kindly click on the link to be redirected.');
     } catch (error) {
- 
+      alert('Signup failed. Please try again.');
     }
   };
 
-  const inputClasses = `appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm bg-white bg-opacity-20 backdrop-filter `;
+  useEffect(() => {
+    if (verificationSent) {
+      setConfirmationMessage('Dear user, a verification link has been sent to your email. Kindly click on the link to be redirected.');
+      console.log('Verification email sent');
+    }
+  }, [verificationSent]);
+
+ 
+
+  const inputClasses = `appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm bg-white bg-opacity-20 backdrop-filter`;
 
   return (
     <div className={`min-h-screen flex items-center justify-center ${theme.backgroundColor}`}>
-      <div className="max-w-md w-full space-y-8 p-10 bg-white bg-opacity-10 rounded-xl shadow-lg backdrop-filter ">
+      <div className="max-w-md w-full space-y-8 p-10 bg-white bg-opacity-10 rounded-xl shadow-lg backdrop-filter">
         <div className="flex flex-col items-center">
           <div className='rounded-full h-20 w-20 bg-white overflow-hidden mb-4 shadow-lg'>
             <img className='w-full h-full object-cover' src="https://img.freepik.com/free-photo/3d-illustration-cartoon-female-tourist-with-camera_1142-32317.jpg?t=st=1713258403~exp=1713262003~hmac=40049ffdfe6e43796fc517fe880d3bad4d055e48e00946120ef1431cc510c8f7&w=740" alt="Avatar" />
@@ -63,6 +72,13 @@ function SignUp() {
             </button>
           </div>
         </form>
+
+        {/* Confirmation Message */}
+        {verificationSent && confirmationMessage && (
+          <div className="mt-4 p-4 bg-green-100 text-green-800 rounded-md">
+            {confirmationMessage}
+          </div>
+        )}
 
         <div className="mt-6">
           <div className="relative">
