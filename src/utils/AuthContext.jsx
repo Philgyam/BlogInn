@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    // Log when verificationSent changes
+   
     console.log('Verification sent state changed:', verificationSent);
   }, [verificationSent]);
 
@@ -47,29 +47,33 @@ export const AuthProvider = ({ children }) => {
   const signUp = async (userInfo) => {
     setLoading(true);
     try {
-      await account.create(ID.unique(), userInfo.email, userInfo.password, userInfo.name);
-      
-      // Create session after signing up
-      await account.createEmailPasswordSession(userInfo.email, userInfo.password);
-      
-      // Send verification email
-      await account.createVerification('https://blog-inn.vercel.app/avatar');
+        console.log('Signing up user with:', userInfo);
 
-      // Set verificationSent to true immediately after the email is sent
-      setVerificationSent(true);
-      console.log('Verification email sent');
+        await account.create(ID.unique(), userInfo.email, userInfo.password,userInfo.name );
+        
+        // Create session for the new user
+        await account.createEmailPasswordSession(userInfo.email, userInfo.password);
+        
+        // Send verification email
+        await account.createVerification('https://blog-inn.vercel.app/avatar');
 
-      const accountDetails = await account.get();
-      setUser(accountDetails);
-      updateUsername(accountDetails.name);
+        // setVerificationSent(true);
+        console.log('Verification email sent');
 
-      navigate('/avatar'); // Adjust the path as necessary
+        // Fetch user details
+        const accountDetails = await account.get();
+        setUser(accountDetails);
+        
+        // Navigate to the avatar page
+        navigate('/avatar');
     } catch (error) {
-      console.error('Signup error:', error);
+        console.error('Signup error:', error);
+        const errorMessage = error.response?.message || 'An unknown error occurred';
+        alert(`Signup failed: ${errorMessage}`);
     } finally {
-      setLoading(false);
+        setLoading(false); // Ensure loading state is reset
     }
-  };
+};
 
 
   const handleAuth = async () => {

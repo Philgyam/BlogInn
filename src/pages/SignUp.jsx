@@ -23,12 +23,8 @@ function SignUp() {
     }
 
     const userInfo = { name, email, password };
-    try {
-      await signUp(userInfo);
-      setConfirmationMessage('Dear user, a verification link has been sent to your email. Kindly click on the link to be redirected.');
-    } catch (error) {
-      alert('Signup failed. Please try again.');
-    }
+    signUp(userInfo)
+   
   };
 
   useEffect(() => {
