@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
         // Send verification email
         await account.createVerification('https://blog-inn.vercel.app/avatar');
 
-        // setVerificationSent(true);
+        setVerificationSent(true);
         console.log('Verification email sent');
 
         // Fetch user details
