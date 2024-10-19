@@ -65,7 +65,6 @@ export const AuthProvider = ({ children }) => {
         setUser(accountDetails);
         
         // Navigate to the avatar page
-        navigate('/avatar');
     } catch (error) {
         console.error('Signup error:', error);
         const errorMessage = error.response?.message || 'An unknown error occurred';
