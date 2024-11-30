@@ -7,7 +7,7 @@ import { useAuth } from '../utils/AuthContext';
 function SignUp() {
   const { theme } = useContext(ThemeContext);
   const signupForm = useRef(null);
-  const { signUp, verificationSent, signInWithGoogle } = useAuth(); // Add signInWithGoogle
+  const { signUp, verificationSent, handleAuth} = useAuth(); // Add signInWithGoogle
   const [confirmationMessage, setConfirmationMessage] = useState('');
 
   const handleSubmit = async (e) => {
@@ -26,6 +26,10 @@ function SignUp() {
     signUp(userInfo)
    
   };
+  const AuthHandle =()=>{
+    handleAuth()
+  }
+
 
   useEffect(() => {
     if (verificationSent) {
@@ -90,6 +94,7 @@ function SignUp() {
 
           <div className="mt-6">
             <button
+            onClick={AuthHandle}
               type="button"
               className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg text-sm font-medium text-white hover:bg-opacity-30 transition duration-150 ease-in-out"
             >
