@@ -229,76 +229,70 @@ function AddPost() {
         />
          
          <div className='mb-10'>
+    <div className='py-5 text-lg font-semibold text-center'>
+        Please upload a preview image for your post
+    </div>
 
-         <div className='py-5 text-[1.1rem]  text-center'>
-        Please upload a preview Image for your Post
-       </div>
+    <div className='flex flex-col items-center'>
+        <input
+            type="file"
+            name='postImage'
+            className='mb-4 border rounded-md p-2 bg-gray-100 text-gray-700'
+            onChange={handleFileChange}
+        />
 
-       <div className='flex px-4 items-center'>
-        
+        <div className='bg-gray-200 h-[10rem] w-[15rem] rounded-md overflow-hidden flex items-center justify-center'>
+            {url ? (
+                <img className='h-full w-full object-cover' src={url} alt="Preview" />
+            ) : (
+                <span className='text-gray-400'>No image selected</span>
+            )}
+        </div>
 
-       <input type="file"
-       name='postImage'
-      
-        className='ml-4'
-        onChange={handleFileChange}
-
-       
-       />
-
-       <div className='bg-gray-200 h-[5rem]  w-[9rem]'>
-       {url && <img className='h-full w-full object-cover' src={url} alt="Preview" />}
-       
-     
-       </div>
-       
-
-       </div>
-
-       <button
-       className='ml-8 text-[1rem] flex items-center w-[7rem] h-10 bg-blue-600 px-5 rounded-sm '
-       onClick={handleUploaded}
-       type='button'
-       >
-       <div>Upload</div>
-              {upload && (
-                <Spinner
-                  thickness='3px'
-                  style={{
-                    height: '1rem',
-                    width: "1rem",
-                    color: '#FC4100',
-                    fontWeight: 'bold',
-                    marginLeft: '0.5rem'
-                  }}
-                />
-              )}
-       </button>
-    
-
-       
-
-
-         </div>
-       
-        
-        <div className='flex items-center justify-center  mb-4 gap-10'>
-        
-        <select
-        name='Category'
-        control = {control}
-       className='h-10 mt-4 py-2 px-4 w-25 bg-cyan-950 text-white rounded-lg'
-       {...register('Category', { required: true })}
-       >
-          {Categories.map((category)=>(
-            <option  value={category} key={category}>{category}</option>
-          ))}
-
-        </select>
         <button
-        className='mt-5 ml-5 py-2 px-4 text-white rounded-md bg-cyan-950'
-         type="submit">Submit</button>
-         </div>
+            className='mt-4 text-lg flex items-center w-32 h-10 bg-blue-600 text-white px-4 rounded-md hover:bg-blue-700 transition'
+            onClick={handleUploaded}
+            type='button'
+        >
+            <div>Upload</div>
+            {upload && (
+                <Spinner
+                    thickness='3px'
+                    style={{
+                        height: '1rem',
+                        width: "1rem",
+                        color: '#FC4100',
+                        fontWeight: 'bold',
+                        marginLeft: '0.5rem'
+                    }}
+                />
+            )}
+        </button>
+    </div>
+</div>
+       
+        
+<div className='flex items-center justify-center mb-4 gap-8'>
+    <select
+        name='Category'
+        control={control}
+        className='h-10 py-2 px-4 bg-cyan-950 text-white rounded-lg border border-transparent focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:border-transparent'
+        {...register('Category', { required: true })}
+    >
+        {Categories.map((category) => (
+            <option value={category} key={category}>
+                {category}
+            </option>
+        ))}
+    </select>
+
+    <button
+        className='py-2 px-6 text-white rounded-lg bg-cyan-950 hover:bg-cyan-700 transition duration-200'
+        type="submit"
+    >
+        Submit
+    </button>
+</div>
       </form>
       {submitted ? (
         <div className='text-white bg-green-200 py-10 px-10 rounded-xl'>Hello there</div>
