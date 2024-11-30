@@ -12,7 +12,7 @@ export const ThemeContext = createContext()
   const [theme,setTheme]= useState(()=>{
      const storedTheme = localStorage.getItem('theme');
      return storedTheme ? JSON.parse(storedTheme): {
-          backgroundColor: 'bg-gradient-to-br from-black to-teal-500',
+          backgroundColor: 'bg-gradient-to-br from-orange-500 to-red-400',
           textColor: 'text-white'
      }
 
