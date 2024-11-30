@@ -32,17 +32,11 @@ function Sidebarbig() {
 
   const colorChange1 = () => {
     updateTheme({
-      backgroundColor: 'bg-[#FFF3C7]',
-      textColor: 'text-black'
-    });
-  };
-
-  const colorChange2 = () => {
-    updateTheme({
-      backgroundColor: 'bg-gradient-to-br from-black to-teal-500',
+      backgroundColor: 'bg-[#003C43]',
       textColor: 'text-white'
     });
   };
+
 
   const colorChange3 = () => {
     updateTheme({
@@ -72,7 +66,7 @@ function Sidebarbig() {
   const iconStyle = { height: '1rem', width: '1rem' };
 
   return (
-    <div className="h-[33rem]  w-[8rem] md:w-[10rem] bg-gray-800 text-white sticky left-0 flex flex-col text-sm md:text-base">
+    <div className=" mt-3 pb-3  w-[8rem] md:w-[10rem] rounded-lg bg-[#243642] text-white sticky left-2 flex flex-col text-sm md:text-base">
       <div className='mt-5 ml-3 bg-white w-6 h-6 md:w-5 md:h-5 rounded-full text-center flex justify-center items-center bg-opacity-50 cursor-pointer'>
         <img className='rounded-full w-6 h-6 md:w-5 md:h-5' src={avatar} alt="" />
       </div>
@@ -111,7 +105,7 @@ function Sidebarbig() {
           </Link>
         </li>
         <li className="hover:bg-gray-700 p-1 md:p-2 rounded">
-          <button className="w-full text-left flex justify-start items-center gap-2 py-1 px-2 md:py-2 md:px-4 rounded-full lg:text-[1rem] md:text-[.75rem] text-left w-full">
+          <button className="w-full text-left flex justify-start items-center gap-2 py-1 px-2 md:py-2 md:px-4 rounded-full lg:text-[1rem] md:text-[.75rem] ">
             <RiTeamFill style={{ ...iconStyle, color: 'white' }} />
             Community
           </button>
@@ -119,7 +113,6 @@ function Sidebarbig() {
       </ul>
       <div className='flex flex-row justify-end gap-2 md:gap-3 pt-4 pr-4'>
         <div onClick={colorChange1} className='w-4 h-4 md:w-5 md:h-5 bg-[#FFF3C7] rounded-full hover:cursor-pointer'></div>
-        <div onClick={colorChange2} className='w-4 h-4 md:w-5 md:h-5 bg-[#068DA9] rounded-full hover:cursor-pointer'></div>
         <div onClick={colorChange3} className='w-4 h-4 md:w-5 md:h-5 rounded-full bg-[#ECF8F9] hover:cursor-pointer'></div>
         <div onClick={colorChange4} className='w-4 h-4 md:w-5 md:h-5 bg-black rounded-full hover:cursor-pointer'></div>
       </div>

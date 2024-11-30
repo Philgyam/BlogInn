@@ -67,7 +67,7 @@ function FullPost() {
                 setUserImage(userProfile.UserAvatar);
                 setUsername(userProfile.username);
                 setUserId(userDetails.$id);
-                console.log(userDetails)
+                console.log(userProfile)
             } catch (error) {
                 console.log(error, 'Error fetching user profile');
             }
@@ -76,11 +76,32 @@ function FullPost() {
     }, []);
 
     const submitPost = async () => {
+
+        
+        console.log({
+            author: username,
+            date_commented: currentDate,
+            post_id: postId,
+            userAvatar: userImage,
+            content: commentContent
+        });
+
         try {
-            if (!commentContent) return;
-            if(!userId){
-                console.log('no id')
+            // Validate fields
+            if (!commentContent || !userId || !username || !currentDate || !postId || !userImage) {
+                console.log('Missing required fields');
+                return;
             }
+    
+            console.log({
+                author: username,
+                date_commented: currentDate,
+                post_id: postId,
+                userAvatar: userImage,
+                content: commentContent
+            });
+    
+            // Create document in Appwrite
             await databases.createDocument(DATABASE_ID, COLLECTION_COMMENT_ID, uuidv4(), {
                 author: username,
                 date_commented: currentDate,
@@ -93,12 +114,16 @@ function FullPost() {
                 Permission.delete(Role.user(userId)),
                 Permission.update(Role.user(userId)),
             ]);
+    
+            // Reset content and fetch comments
             setCommentContent('');
             fetchComments();
+    
         } catch (error) {
             console.log(error, 'Error submitting comment');
         }
     };
+    
 
     const fetchComments = async () => {
         try {
