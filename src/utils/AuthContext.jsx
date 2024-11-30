@@ -81,7 +81,7 @@ export const AuthProvider = ({ children }) => {
       // Create OAuth2 session with the specified provider
       await account.createOAuth2Session(
         OAuthProvider.Google, // Or replace with 'google' if you encounter issues with the enum
-        'https://blog-inn.vercel.app/home', // Redirect URL after successful login
+        'https://blog-inn.vercel.app/avatar', // Redirect URL after successful login
         'https://blog-inn.vercel.app' // URL for handling errors or cancellations
       );
   
