@@ -150,50 +150,56 @@ function FullPost() {
             lastScrollY = currentScrollY;
         };
 
-        const checkIfMobile = () => {
-            return window.innerWidth <= 768;
+        const checkIfMobileOrMedium = () => {
+            return window.innerWidth <= 1024; // Adjust threshold for medium devices (tablet)
         };
 
-        if (checkIfMobile()) {
+        if (checkIfMobileOrMedium()) {
             window.addEventListener('scroll', handleScroll);
         }
 
-        // Clean up event listener on unmount
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
+
     
 
     return (
-        <div className={`${theme.backgroundColor} ${theme.backgroundColor === 'bg-black' ? 'text-white' : 'text-black'} h-full`} >
-            <div className={`flex gap-[5rem] lg:flex-row flex-col px-5 lg:w-[50%] ${theme.backgroundColor}`}>
-                <div className=' w-full'>
-                <h1 className='text-3xl text-orange-500 mb-2 ml-2 mt-3 font-mono text-center'>BlogInn</h1>
-                <div className='flex flex-col mt-5'>
-                    <div className='w-16 h-16 flex mb-4'>
-                        <img className='w-full  h-full object-cover rounded-full shadow-lg' src={post.Avatar} alt="Author Avatar" />
-                    </div>
-                    <div className='flex flex-col'>
-                        <p className='text-lg font-semibold'>Author: {post.Author}</p>
-                        <p className='text-gray-600'>{post.dateCreated}</p>
-                    </div>
-                    <div className='mt-2 flex justify-end'>
-                        <p className='italic mr-2'>Category: {post.Category}</p>
-                    </div>
-                    <div className='w-full mt-5 mb-10'>
-                        <img className='w-full max-h-[300px]  object-cover rounded-2xl border border-gray-200 shadow-md' 
-                        src={post.postImage} 
-                        alt="Post" />
-                    </div>
-                    <h1 className='text-center text-3xl font-bold mt-5'>{post.Title}</h1>
-                    <p className='text-center mt-4 px-4 md:px-0'>{post.Content}</p>
-                </div>
-                <div className="mt-10 border-b-2 border-b-gray-300 w-full"></div>
-                </div>
-               
-                <div className='hidden lg:flex'>
-                <CommentSection
+        <div className={`${theme.backgroundColor} ${theme.backgroundColor === 'bg-black' ? 'text-white' : 'text-black'} lg:h-full mx-auto xl:px-[20rem] `} >
+         <div className={`flex gap-[5rem] lg:flex-row flex-col px-5 lg:w-full ${theme.backgroundColor}`}>
+    <div className='flex-1'> {/* Left side for post content */}
+        <h1 className='text-3xl text-orange-500 mb-2 ml-2 mt-3 font-mono text-center'>BlogInn</h1>
+        <div className='flex flex-col mt-5'>
+            <div className='w-16 h-16 flex mb-4'>
+                <img className='w-full h-full object-cover rounded-full shadow-lg' src={post.Avatar} alt="Author Avatar" />
+            </div>
+            <div className='flex flex-col'>
+                <p className='text-lg font-semibold'>Author: {post.Author}</p>
+                <p className='text-gray-600'>{post.dateCreated}</p>
+            </div>
+            <div className='mt-2 flex justify-end'>
+                <p className='italic mr-2'>Category: {post.Category}</p>
+            </div>
+            <div className='md:w-full flex items-center justify-center mt-5 mb-10'>
+                <img className='md:w-[50%] md: max-h-[300px] object-cover rounded-2xl border border-gray-200 shadow-md' 
+                src={post.postImage} 
+                alt="Post" />
+            </div>
+            <h1 className='text-center text-3xl font-bold mt-5'>{post.Title}</h1>
+            <p className='text-center mt-4 px-4 md:px-0'>{post.Content}</p>
+        </div>
+        <div className="mt-10 border-b-2 border-b-gray-300 w-full"></div>
+    </div>
+    
+    {/* Right side text */}
+    <div className='flex-1 hidden mt-[10rem]  lg:block text-white'> {/* Take full width on large screens */}
+        <div className='p-6'>
+        <OtherPosts userPosts={userPosts} author={post.Author} />
+
+        </div>
+        <div>
+        <CommentSection
                     comments={comments}
                     setCommentContent={setCommentContent}
                     commentContent={commentContent}
@@ -202,38 +208,36 @@ function FullPost() {
                     userImage={userImage}
 
                 />
-                <div className={`${theme.backgroundColor}  lg:hidden  ${theme.backgroundColor === 'bg-black' ? 'text-white' : 'text-black'} `}>
-    
-    
-                 <OtherPosts userPosts={userPosts} author={post.Author} />
-    
-               </div>
-
-
-                </div>
-            </div>
+                
+        </div>
+    </div>
+</div>
+            
 
             {showComments && (
-                <CommentSection
-                    comments={comments}
-                    setCommentContent={setCommentContent}
-                    commentContent={commentContent}
-                    submitPost={submitPost}
-                    commentNum={commentNum}
-                    userImage={userImage}
+    <div className="lg:hidden md:flex md:justify-center md:w-full mt-8">
+        <div className="md:w-3/4"> {/* Adjust width as needed */}
+            <CommentSection
+                comments={comments}
+                setCommentContent={setCommentContent}
+                commentContent={commentContent}
+                submitPost={submitPost}
+                commentNum={commentNum}
+                userImage={userImage}
+            />
+        </div>
+    </div>
+)}
 
-                />
-            )}
 
-
-<div className={`${theme.backgroundColor}  lg:hidden  ${theme.backgroundColor === 'bg-black' ? 'text-white' : 'text-black'} `}>
+<div className={`${theme.backgroundColor} lg:w-[50%]   ${theme.backgroundColor === 'bg-black' ? 'text-white' : 'text-black'} `}>
     
     
     <OtherPosts userPosts={userPosts} author={post.Author} />
     
 </div>
 
-            <div className="flex justify-center  items-center pt-[2rem] pb-2">
+            <div className="flex justify-center lg:justify-start lg:ml-5 pb-10  items-center pt-[2rem] ">
                 <button
                     onClick={() => navigate('/home')}
                     className="flex items-center bg-blue-500 text-white font-semibold rounded-lg px-6 py-3 shadow-md hover:bg-blue-600 transition duration-200">
