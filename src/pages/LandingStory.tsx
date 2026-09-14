@@ -1,10 +1,15 @@
+import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import DOMPurify from 'dompurify'
 import { ArrowLeft, ArrowRight, BookOpenText, Clock3, Share2 } from 'lucide-react'
 import { toast } from 'sonner'
 
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/ThemeToggle'
-import { findLandingStory } from '@/data/landing-stories'
+import { getPost } from '@/lib/appwrite'
+import { formatRelativeDate } from '@/lib/search'
+import type { PostDoc } from '@/types'
 
 const STORY_TONES: Record<string, string> = {
   Technology: 'bg-[#2b3a67] text-white',
@@ -14,8 +19,47 @@ const STORY_TONES: Record<string, string> = {
 }
 
 export default function LandingStory() {
-  const { slug } = useParams<{ slug: string }>()
-  const story = findLandingStory(slug)
+  const { id } = useParams<{ id: string }>()
+  const [story, setStory] = useState<PostDoc | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!id) {
+      setLoading(false)
+      return
+    }
+
+    let active = true
+    setLoading(true)
+    getPost(id)
+      .then((post) => {
+        if (active) setStory(post)
+      })
+      .catch(() => {
+        if (active) setStory(null)
+      })
+      .finally(() => {
+        if (active) setLoading(false)
+      })
+
+    return () => {
+      active = false
+    }
+  }, [id])
+
+  if (loading) {
+    return (
+      <main className="mesh-bg min-h-screen bg-background p-6">
+        <div className="mx-auto max-w-6xl space-y-5">
+          <div className="glass-shimmer h-10 w-40 rounded-full" />
+          <div className="grid gap-6 lg:grid-cols-[0.72fr_1.28fr]">
+            <div className="glass-shimmer h-96 rounded-3xl" />
+            <div className="glass-shimmer h-96 rounded-3xl" />
+          </div>
+        </div>
+      </main>
+    )
+  }
 
   if (!story) {
     return (
@@ -34,7 +78,7 @@ export default function LandingStory() {
   const handleShare = async () => {
     try {
       if (navigator.share) {
-        await navigator.share({ title: story.title, text: story.excerpt, url: window.location.href })
+        await navigator.share({ title: story.Title, text: story.postDescribe, url: window.location.href })
       } else {
         await navigator.clipboard.writeText(window.location.href)
         toast.success('Story link copied')
@@ -46,8 +90,13 @@ export default function LandingStory() {
   }
 
   const storyNumber = String(
-    ['Technology', 'DIY', 'Fashion', 'Health'].indexOf(story.category) + 1,
+    ['Technology', 'DIY', 'Fashion', 'Education', 'Health', 'Relationship'].indexOf(story.Category) + 1,
   ).padStart(2, '0')
+  const readingMinutes = Math.max(
+    1,
+    Math.ceil(story.Content.replace(/<[^>]+>/g, ' ').split(/\s+/).length / 220),
+  )
+  const sanitizedContent = DOMPurify.sanitize(story.Content)
 
   return (
     <div className="mesh-bg min-h-screen bg-background text-foreground">
@@ -84,52 +133,49 @@ export default function LandingStory() {
 
         <section className="grid grid-cols-1 gap-6 lg:grid-cols-[0.72fr_1.28fr] lg:items-stretch">
           <div
-            className={`relative flex min-h-72 overflow-hidden rounded-3xl p-6 sm:min-h-96 ${STORY_TONES[story.category]}`}
+            className={`relative flex min-h-72 overflow-hidden rounded-3xl p-6 sm:min-h-96 ${STORY_TONES[story.Category] || 'bg-primary text-primary-foreground'}`}
           >
+            {story.postImage && (
+              <img src={story.postImage} alt="" className="absolute inset-0 size-full object-cover opacity-25" />
+            )}
             <span className="text-8xl font-black opacity-10 sm:text-9xl">{storyNumber}</span>
             <div className="absolute right-7 bottom-7 left-7">
-              <p className="text-xs font-semibold opacity-70">{story.category.toUpperCase()}</p>
+              <p className="text-xs font-semibold opacity-70">{story.Category.toUpperCase()}</p>
               <p className="mt-2 text-2xl font-bold leading-tight">A story from the rooms at BlogInn.</p>
             </div>
           </div>
 
           <div className="glass flex flex-col justify-center rounded-3xl border-transparent p-6 sm:p-10">
             <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-primary">
-              <span>{story.category.toUpperCase()}</span>
+              <span>{story.Category.toUpperCase()}</span>
               <span aria-hidden="true">·</span>
               <span className="flex items-center gap-1">
                 <Clock3 className="size-3" />
-                {story.readTime}
+                {readingMinutes} min read
               </span>
             </div>
-            <h1 className="mt-4 text-3xl font-bold leading-tight sm:text-5xl">{story.title}</h1>
+            <h1 className="mt-4 text-3xl font-bold leading-tight sm:text-5xl">{story.Title}</h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
-              {story.excerpt}
+              {story.postDescribe}
             </p>
+            <div className="mt-6 flex items-center gap-3">
+              <Avatar className="size-10">
+                <AvatarImage src={story.Avatar} alt={story.Author} />
+                <AvatarFallback>{story.Author.slice(0, 2).toUpperCase()}</AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="text-sm font-semibold">{story.Author}</p>
+                <p className="text-xs text-muted-foreground">{formatRelativeDate(story.dateCreated)}</p>
+              </div>
+            </div>
           </div>
         </section>
 
         <article className="mx-auto max-w-3xl py-10 sm:py-14">
-          <p className="text-lg leading-8 first-letter:float-left first-letter:mr-3 first-letter:text-6xl first-letter:font-bold first-letter:leading-[0.9] first-letter:text-primary">
-            {story.opening}
-          </p>
-
-          {story.sections.map((section) => (
-            <section key={section.heading} className="mt-10">
-              <h2 className="text-2xl font-bold">{section.heading}</h2>
-              <div className="mt-4 space-y-5">
-                {section.paragraphs.map((paragraph) => (
-                  <p key={paragraph} className="text-base leading-8 text-foreground/80 sm:text-lg">
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
-            </section>
-          ))}
-
-          <p className="mt-10 border-l-4 border-[#e8a33d] pl-5 text-lg font-medium leading-8">
-            {story.closing}
-          </p>
+          <div
+            className="prose prose-neutral max-w-none prose-headings:font-bold prose-p:leading-8 prose-blockquote:border-[#e8a33d] dark:prose-invert"
+            dangerouslySetInnerHTML={{ __html: sanitizedContent }}
+          />
 
           <aside className="glass mt-12 flex flex-col gap-5 rounded-3xl border-transparent p-6 sm:flex-row sm:items-center sm:justify-between">
             <div>

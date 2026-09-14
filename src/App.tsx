@@ -32,7 +32,7 @@ function App() {
             <Route path="/signIn" element={<SignIn />} />
             <Route path="/signUp" element={<SignUp />} />
             <Route path="/auth/callback" element={<OAuthCallback />} />
-            <Route path="/stories/:slug" element={<LandingStory />} />
+            <Route path="/stories/:id" element={<LandingStory />} />
 
             <Route element={<PrivateRoutes />}>
               <Route path="/verify-email" element={<VerifyEmail />} />

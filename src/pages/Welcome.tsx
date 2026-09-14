@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   ArrowRight,
@@ -11,15 +12,39 @@ import {
 
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/ThemeToggle'
-import { LANDING_STORIES } from '@/data/landing-stories'
-import { CATEGORIES } from '@/types'
+import { getPost } from '@/lib/appwrite'
+import { CATEGORIES, type PostDoc } from '@/types'
 
 const WRITER_ILLUSTRATION =
   'https://img.freepik.com/free-photo/3d-illustration-cartoon-female-tourist-with-camera_1142-32317.jpg?semt=ais_hybrid&w=900'
 
-const [technologyStory, diyStory, fashionStory, healthStory] = LANDING_STORIES
+const FEATURED_STORY_IDS = [
+  'story-digital-rituals',
+  'story-window-garden',
+  'story-private-style',
+  'story-walk-reset',
+]
+
+const readingTime = (story: PostDoc) =>
+  `${Math.max(1, Math.ceil(story.Content.replace(/<[^>]+>/g, ' ').split(/\s+/).length / 220))} min read`
 
 export default function Welcome() {
+  const [featuredStories, setFeaturedStories] = useState<PostDoc[] | null>(null)
+
+  useEffect(() => {
+    let active = true
+    Promise.all(
+      FEATURED_STORY_IDS.map((id) => getPost(id).catch(() => null)),
+    ).then((stories) => {
+      if (active) setFeaturedStories(stories.filter((story): story is PostDoc => story !== null))
+    })
+    return () => {
+      active = false
+    }
+  }, [])
+
+  const [technologyStory, diyStory, fashionStory, healthStory] = featuredStories ?? []
+
   return (
     <div className="mesh-bg min-h-screen overflow-hidden bg-background text-foreground">
       <section className="relative min-h-[calc(100svh-4.5rem)] overflow-hidden border-b border-white/40">
@@ -183,9 +208,10 @@ export default function Welcome() {
             </Button>
           </div>
 
+          {technologyStory && diyStory && fashionStory && healthStory ? (
           <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <Link
-              to={`/stories/${technologyStory.slug}`}
+              to={`/stories/${technologyStory.$id}`}
               className="group relative flex min-h-80 flex-col overflow-hidden rounded-3xl bg-primary p-6 text-primary-foreground sm:col-span-2 lg:row-span-2"
             >
               <div className="absolute -right-10 -bottom-12 h-56 w-44 rotate-12 rounded-3xl bg-[#3b4e86]" />
@@ -203,13 +229,13 @@ export default function Welcome() {
               </span>
               <div className="relative mt-auto max-w-sm pr-20 sm:pr-28">
                 <p className="text-xs font-semibold text-[#e8a33d]">
-                  {technologyStory.category.toUpperCase()} · {technologyStory.readTime.toUpperCase()}
+                  {technologyStory.Category.toUpperCase()} · {readingTime(technologyStory).toUpperCase()}
                 </p>
                 <h3 className="mt-2 text-2xl font-bold leading-tight">
-                  {technologyStory.title}
+                  {technologyStory.Title}
                 </h3>
                 <p className="mt-3 text-sm leading-6 text-primary-foreground/70">
-                  {technologyStory.excerpt}
+                  {technologyStory.postDescribe}
                 </p>
                 <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[#e8a33d]">
                   Read story <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
@@ -218,24 +244,24 @@ export default function Welcome() {
             </Link>
 
             <Link
-              to={`/stories/${diyStory.slug}`}
+              to={`/stories/${diyStory.$id}`}
               className="group relative flex min-h-44 flex-col overflow-hidden rounded-3xl bg-[#e8a33d] p-6 text-[#1b1a20] sm:col-span-2"
             >
               <Sparkles className="absolute top-5 right-6 size-10 text-[#1b1a20]/15" />
               <p className="text-xs font-semibold">
-                {diyStory.category.toUpperCase()} · {diyStory.readTime.toUpperCase()}
+                {diyStory.Category.toUpperCase()} · {readingTime(diyStory).toUpperCase()}
               </p>
               <h3 className="mt-3 max-w-xl text-xl font-bold leading-snug sm:text-2xl">
-                {diyStory.title}
+                {diyStory.Title}
               </h3>
               <p className="mt-auto max-w-xl text-sm leading-6 text-[#1b1a20]/70">
-                {diyStory.excerpt}
+                {diyStory.postDescribe}
               </p>
               <ArrowRight className="absolute right-6 bottom-6 size-4 transition-transform group-hover:translate-x-1" />
             </Link>
 
             <Link
-              to={`/stories/${fashionStory.slug}`}
+              to={`/stories/${fashionStory.$id}`}
               className="glass glass-interactive group flex min-h-44 flex-col rounded-3xl border-transparent p-5"
             >
               <span className="flex size-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
@@ -243,17 +269,17 @@ export default function Welcome() {
               </span>
               <div className="mt-auto">
                 <p className="text-xs font-semibold text-primary">
-                  {fashionStory.category.toUpperCase()} · {fashionStory.readTime.toUpperCase()}
+                  {fashionStory.Category.toUpperCase()} · {readingTime(fashionStory).toUpperCase()}
                 </p>
-                <h3 className="mt-1 text-lg font-bold">{fashionStory.title}</h3>
+                <h3 className="mt-1 text-lg font-bold">{fashionStory.Title}</h3>
                 <p className="mt-2 text-sm leading-5 text-muted-foreground">
-                  {fashionStory.excerpt}
+                  {fashionStory.postDescribe}
                 </p>
               </div>
             </Link>
 
             <Link
-              to={`/stories/${healthStory.slug}`}
+              to={`/stories/${healthStory.$id}`}
               className="group relative flex min-h-44 flex-col overflow-hidden rounded-3xl bg-[#b4482b] p-5 text-white"
             >
               <div className="flex items-start justify-between">
@@ -264,15 +290,26 @@ export default function Welcome() {
               </div>
               <div className="mt-auto">
                 <p className="text-xs font-semibold text-[#f4c981]">
-                  {healthStory.category.toUpperCase()} · {healthStory.readTime.toUpperCase()}
+                  {healthStory.Category.toUpperCase()} · {readingTime(healthStory).toUpperCase()}
                 </p>
-                <h3 className="mt-1 text-lg font-bold">{healthStory.title}</h3>
+                <h3 className="mt-1 text-lg font-bold">{healthStory.Title}</h3>
                 <p className="mt-2 text-sm leading-5 text-white/70">
-                  {healthStory.excerpt}
+                  {healthStory.postDescribe}
                 </p>
               </div>
             </Link>
           </div>
+          ) : featuredStories === null ? (
+            <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {Array.from({ length: 4 }).map((_, index) => (
+                <div key={index} className="glass-shimmer h-48 rounded-3xl" />
+              ))}
+            </div>
+          ) : (
+            <div className="glass mt-8 rounded-3xl border-dashed p-8 text-center text-muted-foreground">
+              Featured stories are checking in. Please try again shortly.
+            </div>
+          )}
         </div>
       </section>
     </div>
