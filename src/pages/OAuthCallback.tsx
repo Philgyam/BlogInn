@@ -1,17 +1,21 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { ArrowLeft, Loader2 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { useAuth } from '@/context/AuthContext'
-import { getProfile } from '@/lib/appwrite'
+import { account, getProfile } from '@/lib/appwrite'
 
 export default function OAuthCallback() {
-  const { user, loading } = useAuth()
+  const { refreshUser } = useAuth()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const [message, setMessage] = useState<string | null>(null)
+  const completing = useRef(false)
+
+  const userId = searchParams.get('userId')
+  const secret = searchParams.get('secret')
 
   const providerError =
     searchParams.get('error_description') ||
@@ -23,16 +27,26 @@ export default function OAuthCallback() {
       setMessage(providerError)
       return
     }
-    if (loading) return
-    if (!user) {
-      setMessage('Google did not create a session. Please try again.')
+    if (!userId || !secret) {
+      setMessage('Google did not return a valid sign-in token. Please try again.')
       return
     }
+    if (completing.current) return
+    completing.current = true
+
+    window.history.replaceState({}, '', '/auth/callback')
 
     let active = true
-    getProfile(user.$id)
+    account
+      .createSession(userId, secret)
+      .then(async () => {
+        await refreshUser()
+        return getProfile(userId)
+      })
       .then((profile) => {
-        if (active) navigate(profile ? '/home' : '/avatar', { replace: true })
+        if (active) {
+          navigate(profile ? '/home' : '/avatar', { replace: true })
+        }
       })
       .catch((error) => {
         if (active) {
@@ -43,7 +57,7 @@ export default function OAuthCallback() {
     return () => {
       active = false
     }
-  }, [loading, navigate, providerError, user])
+  }, [navigate, providerError, refreshUser, secret, userId])
 
   return (
     <main className="mesh-bg flex min-h-screen items-center justify-center bg-background p-4">

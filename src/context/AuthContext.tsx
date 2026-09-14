@@ -1,4 +1,5 @@
 import {
+  useCallback,
   createContext,
   useContext,
   useEffect,
@@ -40,14 +41,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<Models.User<Models.Preferences> | null>(null)
   const [loading, setLoading] = useState(true)
 
-  const refreshUser = async () => {
+  const refreshUser = useCallback(async () => {
     try {
       const accountDetails = await account.get()
       setUser(accountDetails)
     } catch {
       setUser(null)
     }
-  }
+  }, [])
 
   useEffect(() => {
     ;(async () => {
@@ -55,7 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await refreshUser()
       setLoading(false)
     })()
-  }, [])
+  }, [refreshUser])
 
   const clearActiveSession = async () => {
     try {
@@ -119,7 +120,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const failureUrl = new URL('/auth/callback', window.location.origin)
       failureUrl.searchParams.set('status', 'failed')
 
-      await account.createOAuth2Session(
+      account.createOAuth2Token(
         OAuthProvider.Google,
         successUrl.toString(),
         failureUrl.toString(),
